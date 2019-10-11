@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,7 +19,7 @@ public class Game {
      */
     void startGame() {
         game.start();
-        mainLoop();
+        //mainLoop();
     }
 
     private void mainLoop() {
