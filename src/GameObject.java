@@ -1,4 +1,8 @@
+import java.awt.*;
+
 abstract class GameObject {
+
+    // Represents game object coordinates and hitbox size within the scene it is in.
     private double x;
     private double y;
     private double width;
@@ -41,4 +45,6 @@ abstract class GameObject {
     }
 
     abstract boolean collidesWith(GameObject other);
+
+    abstract Image getImage();
 }
