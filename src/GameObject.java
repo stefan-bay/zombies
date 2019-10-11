@@ -8,8 +8,17 @@ abstract class GameObject {
     private double width;
     private double height;
 
-    GameObject() {
-
+    double getMaxX() {
+        return getX() + getWidth() / 2;
+    }
+    double getMinX() {
+        return getX() - getWidth() / 2;
+    }
+    double getMaxY() {
+        return getY() + getHeight() / 2;
+    }
+    double getMinY() {
+        return getY() + getHeight() / 2;
     }
 
     GameObject(double x, double y, double width, double height) {
@@ -48,7 +57,9 @@ abstract class GameObject {
         this.height = height;
     }
 
-    abstract boolean collidesWith(GameObject other);
+    boolean collidesWith(GameObject other) {
+        return false;
+    }
 
     abstract Image getImage();
 }
