@@ -8,6 +8,10 @@ abstract class GameObject {
     private double width;
     private double height;
 
+    GameObject() {
+
+    }
+
     GameObject(double x, double y, double width, double height) {
         this.x = x;
         this.y = y;

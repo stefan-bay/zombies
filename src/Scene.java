@@ -4,11 +4,15 @@ import java.util.ArrayList;
 
 public class Scene extends JPanel{
 
-    ArrayList<GameObject> gameObjects = new ArrayList<>();
+    ArrayList<GameObject> objectsToDraw;
+
+    Scene(ArrayList<GameObject> objects) {
+        this.objectsToDraw = objects;
+    }
 
     @Override
     public void paintComponent(Graphics g) {
-        for (GameObject gameObject : gameObjects) {
+        for (GameObject gameObject : objectsToDraw) {
             g.drawImage(gameObject.getImage(), (int)gameObject.getX(), (int)gameObject.getY(), null );
         }
     }

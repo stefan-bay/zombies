@@ -7,19 +7,22 @@ import java.util.TimerTask;
 public class Game {
 
     int tickTime = 10;
+    GameMode game;
 
-    Game() {
-
+    Game(GameMode gameMode) {
+        this.game = gameMode;
     }
 
     /**
      * Starts the game by initializing and starting the game loop.
      */
     void startGame() {
-
+        game.start();
+        mainLoop();
     }
 
     private void mainLoop() {
+        game.update();
         Timer gameTimer = new Timer();
         gameTimer.schedule(new TimerTask() {
             @Override
