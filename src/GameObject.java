@@ -45,9 +45,7 @@ abstract class GameObject {
         return height;
     }
 
-    void setX(double x) {
-        this.x = x;
-    }
+    void setX(double x) { this.x = x; }
     void setY(double y) {
         this.y = y;
     }

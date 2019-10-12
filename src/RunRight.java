@@ -53,6 +53,8 @@ public class RunRight implements GameMode {
                 runRight();
             } else if (keysPressed[0]) {
                 runLeft();
+            } else {
+                playerStop();
             }
             checkWin();
             gameScene.repaint();
@@ -111,6 +113,10 @@ public class RunRight implements GameMode {
 
     void runLeft() {
         player.move(-2,0);
+    }
+
+    void playerStop() {
+        player.move(0, 0);
     }
 
 }
