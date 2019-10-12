@@ -9,6 +9,7 @@ public class Game {
 
     int tickTime = 10;
     GameMode game;
+    Timer gameTimer = new Timer();
 
     Game(GameMode gameMode) {
         this.game = gameMode;
@@ -19,12 +20,11 @@ public class Game {
      */
     void startGame() {
         game.start();
-        //mainLoop();
+        mainLoop();
     }
 
     private void mainLoop() {
         game.update();
-        Timer gameTimer = new Timer();
         gameTimer.schedule(new TimerTask() {
             @Override
             public void run() {
