@@ -26,7 +26,7 @@ public class RunRight implements GameMode {
 
     void checkWin() {
         if(player.collidesWith(victoryBox)) {
-            //gameObjects.clear();
+            gameObjects.clear();
             gameObjects.add(new GameObject(-size/2,-size/2,size,size) {
                 @Override
                 Image getImage() {

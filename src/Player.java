@@ -7,16 +7,28 @@ import java.util.ArrayList;
 
 public class Player extends GameObject {
 
+    enum Direction {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    }
+
     Image playerImage;
     static double widthInitial = 21;
     static double heightInitial = 34;
     static double xInitial = 0;
     static double yInitial = -heightInitial;
 
+    Direction direction;
+
     Animation currentAnimation;
 
     Animation runRightAnimation;
-    Animation idleAnimation;
+    Animation runLeftAnimation;
+
+    Animation idleRightAnimation;
+    Animation idleLeftAnimation;
 
     Player() {
         super(xInitial, yInitial, widthInitial, heightInitial);
@@ -25,45 +37,66 @@ public class Player extends GameObject {
         g.setColor(Color.CYAN);
         g.fillRect(0,0,(int)widthInitial,(int)heightInitial);
 
-        ArrayList<BufferedImage> run = new ArrayList<>();
+        ArrayList<BufferedImage> runRight = new ArrayList<>();
         for (int i = 1; i < 9; i++) {
             try {
-                run.add(ImageIO.read(new File("res/robot/Run (" + i + ").png")));
+                runRight.add(ImageIO.read(new File("res/robot/Run (" + i + ").png")));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        runRightAnimation = new Animation(run);
+        runRightAnimation = new Animation(runRight);
 
-        ArrayList<BufferedImage> idle = new ArrayList<>();
-        for (int i = 1; i < 9; i++) {
+        ArrayList<BufferedImage> runLeft = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            runLeft.add(Animation.flipImage(runRight.get(i)));
+        }
+        runLeftAnimation = new Animation(runLeft);
+
+        ArrayList<BufferedImage> idleRight = new ArrayList<>();
+        for (int i = 1; i < 11; i++) {
             try {
-                idle.add(ImageIO.read(new File("res/robot/Idle (" + i + ").png")));
+                idleRight.add(ImageIO.read(new File("res/robot/Idle (" + i + ").png")));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        idleAnimation = new Animation(idle);
+        idleRightAnimation = new Animation(idleRight);
 
-        this.setWidth(idle.get(0).getWidth());
-        this.setHeight(idle.get(0).getHeight());
-
-//        System.out.println(idle.get(0).getWidth());
-//        System.out.println(idle.get(0).getHeight());
-//        System.out.println(this.getWidth());
-//        System.out.println(this.getHeight());
+        ArrayList<BufferedImage> idleLeft = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            idleLeft.add(Animation.flipImage(idleRight.get(i)));
+        }
+        idleLeftAnimation = new Animation(idleLeft);
 
 
-        currentAnimation = idleAnimation;
+        this.direction = Direction.RIGHT;
+
+        this.setWidth(idleRight.get(0).getWidth());
+        this.setHeight(idleRight.get(0).getHeight());
+
+        setCurrentAnimation(idleRightAnimation);
     }
 
     void move(double x, double y) {
-        if (x > 0)
-            currentAnimation = runRightAnimation;
-        else if (x == 0 && y == 0)
-            currentAnimation = idleAnimation;
+        if (x > 0) {
+            this.direction = Direction.RIGHT;
+            setCurrentAnimation(runRightAnimation);
+        } else if (x < 0) {
+            this.direction = Direction.LEFT;
+            setCurrentAnimation(runLeftAnimation);
+        } else if (x == 0 && y == 0)
+            if (this.direction == Direction.RIGHT)
+                setCurrentAnimation(idleRightAnimation);
+            else
+                setCurrentAnimation(idleLeftAnimation);
+
         setX(getX() + x);
         setY(getY() + y);
+    }
+
+    public void setCurrentAnimation(Animation animation) {
+        this.currentAnimation = animation;
     }
 
     public void setPlayerImage(Image image) {
