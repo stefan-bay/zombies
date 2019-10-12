@@ -9,16 +9,17 @@ abstract class GameObject {
     private double height;
 
     double getMaxX() {
-        return getX() + getWidth() / 2;
+        return getX() + (getWidth() / 2);
     }
+
     double getMinX() {
-        return getX() - getWidth() / 2;
+        return getX() - (getWidth() / 2);
     }
     double getMaxY() {
         return getY() + getHeight() / 2;
     }
     double getMinY() {
-        return getY() + getHeight() / 2;
+        return getY() -  getWidth() / 2;
     }
 
     GameObject(double x, double y, double width, double height) {
@@ -64,6 +65,5 @@ abstract class GameObject {
                 other.getMaxX() > this.getMinY() && other.getMaxY() < this.getMaxY();
         return xOverlap && yOverlap;
     }
-
     abstract Image getImage();
 }
