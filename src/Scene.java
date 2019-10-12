@@ -19,9 +19,13 @@ public class Scene extends JPanel{
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        Graphics2D g2d = (Graphics2D)g;
+
         g.translate(getWidth()/2,getHeight()/2);
         for (GameObject gameObject : objectsToDraw) {
             g.drawImage(gameObject.getImage(), (int) gameObject.getX(), (int) gameObject.getY(), null );
+//            g2d.fill(gameObject.getImage().getGraphics().getClip());
         }
     }
 }

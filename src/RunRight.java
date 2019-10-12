@@ -48,6 +48,7 @@ public class RunRight implements GameMode {
 
     @Override
     public void update() {
+//        System.out.println(player.getWidth() +", "+ player.getHeight());
         if(!won) {
             if (keysPressed[3]) {
                 runRight();

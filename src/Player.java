@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class Player extends GameObject {
 
     Image playerImage;
-    static double widthInitial = 20;
-    static double heightInitial = 30;
+    static double widthInitial = 40;
+    static double heightInitial = 39;
     static double xInitial = 0;
     static double yInitial = -heightInitial;
 
