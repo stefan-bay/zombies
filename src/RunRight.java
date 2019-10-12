@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 /**
@@ -11,6 +13,7 @@ public class RunRight implements GameMode {
     ArrayList<GameObject> gameObjects = new ArrayList<>();
     Scene gameScene;
     JFrame container;
+    Player player;
 
     RunRight(JFrame frame) {
         container = frame;
@@ -30,11 +33,36 @@ public class RunRight implements GameMode {
 
     void initializeGame() {
         Ground ground = new Ground(-size/2, 0, size, size/2);
-        Player player = new Player();
+        player = new Player();
         gameObjects.add(ground);
         gameObjects.add(player);
         gameScene = new Scene(gameObjects, size, size);
         container.add(gameScene);
         container.pack();
+        container.addKeyListener(keyListener);
     }
+
+    KeyListener keyListener = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent keyEvent) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent keyEvent) {
+            if(keyEvent.getKeyCode() == KeyEvent.VK_D) {
+               runRight();
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent keyEvent) {
+
+        }
+    };
+
+    void runRight() {
+        player.move(10,0);
+        gameScene.repaint();
+    }
+
 }
