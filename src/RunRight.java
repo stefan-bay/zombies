@@ -35,7 +35,12 @@ public class RunRight implements GameMode {
                     Graphics g = win.getGraphics();
                     g.setColor(Color.magenta);
                     g.fillRect(0,0,size,size);
-                    g.drawString("YOU WIN", 0,0);
+                    g.setColor(Color.CYAN);
+                    for (int i = 0; i < size; i+=20) {
+                        for(int j = 0; j< size; j+=55) {
+                            g.drawString("YOU WIN", j,i);
+                        }
+                    }
                     return win;
                 }
             });
