@@ -29,8 +29,10 @@ public class RunRight implements GameMode {
 
 
     void initializeGame() {
-        Ground ground = new Ground(0, -size/4, size, size/2);
+        Ground ground = new Ground(-size/2, 0, size, size/2);
+        Player player = new Player();
         gameObjects.add(ground);
+        gameObjects.add(player);
         gameScene = new Scene(gameObjects, size, size);
         container.add(gameScene);
         container.pack();

@@ -21,7 +21,7 @@ public class Scene extends JPanel{
         super.paintComponent(g);
         g.translate(getWidth()/2,getHeight()/2);
         for (GameObject gameObject : objectsToDraw) {
-            g.drawImage(gameObject.getImage(), (int)-width/2, 0, null );
+            g.drawImage(gameObject.getImage(), (int) gameObject.getX(), (int) gameObject.getY(), null );
         }
     }
 }
