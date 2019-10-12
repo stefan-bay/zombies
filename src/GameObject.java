@@ -58,7 +58,11 @@ abstract class GameObject {
     }
 
     boolean collidesWith(GameObject other) {
-        return false;
+        boolean xOverlap = this.getMaxX() > other.getMinX() && this.getMaxX() < other.getMaxX() ||
+                other.getMaxX() > this.getMinX() && other.getMaxX() < this.getMaxX();
+        boolean yOverlap = this.getMaxY() > other.getMinY() && this.getMaxY() < other.getMaxY() ||
+                other.getMaxX() > this.getMinY() && other.getMaxY() < this.getMaxY();
+        return xOverlap && yOverlap;
     }
 
     abstract Image getImage();

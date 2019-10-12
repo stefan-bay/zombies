@@ -7,7 +7,7 @@ import java.util.TimerTask;
  */
 public class Game {
 
-    int tickTime = 10;
+    int tickTime = 100;
     GameMode game;
     Timer gameTimer = new Timer();
 
