@@ -19,7 +19,7 @@ abstract class GameObject {
         return getY() + getHeight() / 2;
     }
     double getMinY() {
-        return getY() -  getWidth() / 2;
+        return getY() -  getHeight() / 2;
     }
 
     GameObject(double x, double y, double width, double height) {
@@ -57,11 +57,12 @@ abstract class GameObject {
     }
 
     boolean collidesWith(GameObject other) {
-        boolean xOverlap = this.getMaxX() > other.getMinX() && this.getMaxX() < other.getMaxX() ||
-                other.getMaxX() > this.getMinX() && other.getMaxX() < this.getMaxX();
+        boolean xOverlap = this.getMaxX() > other.getMinX();// && this.getMaxX() < other.getMaxX();
+        /* ||
+                other.getMaxX() > this.getMinX() && other.getMaxX() < this.getMaxX();*/
         boolean yOverlap = this.getMaxY() > other.getMinY() && this.getMaxY() < other.getMaxY() ||
                 other.getMaxX() > this.getMinY() && other.getMaxY() < this.getMaxY();
-        return xOverlap && yOverlap;
+        return xOverlap;
     }
     abstract Image getImage();
 }
