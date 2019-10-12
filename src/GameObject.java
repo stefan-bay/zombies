@@ -19,7 +19,7 @@ abstract class GameObject {
         return getY() + getHeight() / 2;
     }
     double getMinY() {
-        return getY() -  getHeight() / 2;
+        return getY() -  getWidth() / 2;
     }
 
     GameObject(double x, double y, double width, double height) {
@@ -56,13 +56,24 @@ abstract class GameObject {
         this.height = height;
     }
 
+//    boolean collidesWith(GameObject other) {
+//        boolean xOverlap = this.getMaxX() > other.getMinX() && this.getMaxX() < other.getMaxX() ||
+//                other.getMaxX() > this.getMinX() && other.getMaxX() < this.getMaxX();
+//        boolean yOverlap = this.getMaxY() > other.getMinY() && this.getMaxY() < other.getMaxY() ||
+//                other.getMaxX() > this.getMinY() && other.getMaxY() < this.getMaxY();
+//        return xOverlap && yOverlap;
+//    }
+
     boolean collidesWith(GameObject other) {
-        boolean xOverlap = this.getMaxX() > other.getMinX();// && this.getMaxX() < other.getMaxX();
-        /* ||
-                other.getMaxX() > this.getMinX() && other.getMaxX() < this.getMaxX();*/
-        boolean yOverlap = this.getMaxY() > other.getMinY() && this.getMaxY() < other.getMaxY() ||
-                other.getMaxX() > this.getMinY() && other.getMaxY() < this.getMaxY();
-        return xOverlap;
+        if (this.getX() < other.getX() + other.getWidth() &&
+                this.getX() + this.getWidth() > other.getX() &&
+                this.getY() < other.getY() + other.getHeight() &&
+                this.getY() + this.getHeight() > other.getY()) {
+            return true;
+        }
+
+        return false;
     }
+
     abstract Image getImage();
 }

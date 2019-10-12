@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class Player extends GameObject {
 
     Image playerImage;
-    static double widthInitial = 40;
-    static double heightInitial = 39;
+    static double widthInitial = 21;
+    static double heightInitial = 34;
     static double xInitial = 0;
     static double yInitial = -heightInitial;
 
@@ -44,6 +44,15 @@ public class Player extends GameObject {
             }
         }
         idleAnimation = new Animation(idle);
+
+        this.setWidth(idle.get(0).getWidth());
+        this.setHeight(idle.get(0).getHeight());
+
+//        System.out.println(idle.get(0).getWidth());
+//        System.out.println(idle.get(0).getHeight());
+//        System.out.println(this.getWidth());
+//        System.out.println(this.getHeight());
+
 
         currentAnimation = idleAnimation;
     }

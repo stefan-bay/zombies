@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class Scene extends JPanel{
@@ -25,7 +26,7 @@ public class Scene extends JPanel{
         g.translate(getWidth()/2,getHeight()/2);
         for (GameObject gameObject : objectsToDraw) {
             g.drawImage(gameObject.getImage(), (int) gameObject.getX(), (int) gameObject.getY(), null );
-//            g2d.fill(gameObject.getImage().getGraphics().getClip());
+            g2d.draw(new Rectangle2D.Double(gameObject.getX(), gameObject.getY(), gameObject.getWidth(), gameObject.getHeight()));
         }
     }
 }
