@@ -49,8 +49,13 @@ public class RunRight implements GameMode {
 
         @Override
         public void keyPressed(KeyEvent keyEvent) {
-            if(keyEvent.getKeyCode() == KeyEvent.VK_D) {
-               runRight();
+            switch (keyEvent.getKeyCode()) {
+                case KeyEvent.VK_D:
+                    runRight();
+                    break;
+                case KeyEvent.VK_A:
+                    runLeft();
+                    break;
             }
         }
 
@@ -62,6 +67,11 @@ public class RunRight implements GameMode {
 
     void runRight() {
         player.move(10,0);
+        gameScene.repaint();
+    }
+
+    void runLeft() {
+        player.move(-10,0);
         gameScene.repaint();
     }
 
