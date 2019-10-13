@@ -26,6 +26,9 @@ public class RunRight implements GameMode {
     }
 
     void checkWin() {
+        if(player.collidesWith(victoryBox)) {
+            gameObjects.clear();
+            gameObjects.add(new GameObject(-size/2,-size/2,size,size) {
         if(player.intersects(victoryBox)) {
             gameObjects.clear();
             GameObject winObject = new GameObject(-size/2,-size/2,size,size) {
@@ -34,7 +37,7 @@ public class RunRight implements GameMode {
                     Image win = new BufferedImage(size,size, BufferedImage.TYPE_INT_RGB);
                     Graphics g = win.getGraphics();
                     g.setColor(Color.magenta);
-                    g.fillRect(0,0,size,size);
+                    //g.fillRect(0,0,size,size);
                     g.setColor(Color.CYAN);
                     for (int i = 0; i < size; i+=20) {
                         for(int j = 0; j< size; j+=55) {
