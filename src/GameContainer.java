@@ -21,11 +21,12 @@ public class GameContainer {
         // Show Main Menu
         // call this.launchGameMode(gameMode) with a gamemode when it is seletced.
         //Temp
-        launchGameMode(gameMode.RUNRIGHT);
+        launchGameMode(gameMode.TOPDOWN);
     }
 
     enum gameMode {
         RUNRIGHT,
+        TOPDOWN,
     }
 
     void launchGameMode(gameMode mode) {
@@ -33,6 +34,9 @@ public class GameContainer {
         switch (mode) {
             case RUNRIGHT:
                 gameModeInstance = new RunRight(frame);
+                break;
+            case TOPDOWN:
+                gameModeInstance = new TopDown(frame);
                 break;
             default:
                 gameModeInstance = new RunRight(frame);
