@@ -17,6 +17,7 @@ public class Player extends GameObject {
 
     Animation runRightAnimation;
     Animation idleAnimation;
+    GameContainer.gameMode mode = GameContainer.gameMode.RUNRIGHT;
 
     Player() {
         super(xInitial, yInitial, widthInitial, heightInitial);
@@ -48,22 +49,16 @@ public class Player extends GameObject {
         this.setWidth(idle.get(0).getWidth());
         this.setHeight(idle.get(0).getHeight());
 
-//        System.out.println(idle.get(0).getWidth());
-//        System.out.println(idle.get(0).getHeight());
-//        System.out.println(this.getWidth());
-//        System.out.println(this.getHeight());
-
 
         currentAnimation = idleAnimation;
     }
 
     void move(double x, double y) {
+        super.move(x,y);
         if (x > 0)
             currentAnimation = runRightAnimation;
         else if (x == 0 && y == 0)
             currentAnimation = idleAnimation;
-        setX(getX() + x);
-        setY(getY() + y);
     }
 
     public void setPlayerImage(Image image) {

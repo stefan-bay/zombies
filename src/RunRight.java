@@ -18,6 +18,7 @@ public class RunRight implements GameMode {
     VictoryBox victoryBox;
     boolean[] keysPressed = new boolean[26];
     boolean won = false;
+    boolean jumping = false;
 
     RunRight(JFrame frame) {
         container = frame;
@@ -25,15 +26,15 @@ public class RunRight implements GameMode {
     }
 
     void checkWin() {
-        if(player.collidesWith(victoryBox)) {
-            //gameObjects.clear();
-            gameObjects.add(new GameObject(-size/2,-size/2,size,size) {
+        if(player.intersects(victoryBox)) {
+            gameObjects.clear();
+            GameObject winObject = new GameObject(-size/2,-size/2,size,size) {
                 @Override
                 Image getImage() {
-                    Image win = new BufferedImage(size/4,size/4, BufferedImage.TYPE_INT_RGB);
+                    Image win = new BufferedImage(size,size, BufferedImage.TYPE_INT_RGB);
                     Graphics g = win.getGraphics();
                     g.setColor(Color.magenta);
-                    //g.fillRect(0,0,size,size);
+                    g.fillRect(0,0,size,size);
                     g.setColor(Color.CYAN);
                     for (int i = 0; i < size; i+=20) {
                         for(int j = 0; j< size; j+=55) {
@@ -42,18 +43,24 @@ public class RunRight implements GameMode {
                     }
                     return win;
                 }
-            });
+            };
+            winObject.setColliding(false);
+            gameObjects.add(winObject);
         }
     }
 
     @Override
     public void update() {
+        player.update(gameObjects);
 //        System.out.println(player.getWidth() +", "+ player.getHeight());
         if(!won) {
             if (keysPressed[3]) {
                 runRight();
             } else if (keysPressed[0]) {
                 runLeft();
+            } else if(jumping) {
+                jump();
+                jumping = false;
             } else {
                 playerStop();
             }
@@ -72,6 +79,7 @@ public class RunRight implements GameMode {
         Ground ground = new Ground(-size/2, 0, size, size/2);
         gameObjects.add(ground);
         player = new Player();
+        player.setHasGravity(true);
         gameObjects.add(player);
 
         int victoryBoxSize = size/8;
@@ -90,6 +98,9 @@ public class RunRight implements GameMode {
 
         @Override
         public void keyPressed(KeyEvent keyEvent) {
+            if(keyEvent.getKeyCode() == KeyEvent.VK_SPACE ) {
+                jumping = true;
+            }
             int keyCode = keyEvent.getKeyCode();
             int letterValue = keyCode - KeyEvent.VK_A;
             if(letterValue < 26 && letterValue >= 0) {
@@ -115,6 +126,15 @@ public class RunRight implements GameMode {
     void runLeft() {
         player.move(-2,0);
     }
+
+    void jump() {
+        player.move(0,-20);
+    }
+
+    void fall() {
+
+    }
+
 
     void playerStop() {
         player.move(0, 0);

@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 abstract class GameObject {
 
@@ -7,20 +8,26 @@ abstract class GameObject {
     private double y;
     private double width;
     private double height;
+    private boolean hasGravity;
+    private boolean colliding = true;
 
-    double getMaxX() {
-        return getX() + (getWidth() / 2);
+    public boolean isColliding() {
+        return colliding;
     }
 
-    double getMinX() {
-        return getX() - (getWidth() / 2);
+    public void setColliding(boolean colliding) {
+        this.colliding = colliding;
     }
-    double getMaxY() {
-        return getY() + getHeight() / 2;
+
+
+    public boolean hasGravity() {
+        return hasGravity;
     }
-    double getMinY() {
-        return getY() -  getWidth() / 2;
+
+    public void setHasGravity(boolean hasGravity) {
+        this.hasGravity = hasGravity;
     }
+
 
     GameObject(double x, double y, double width, double height) {
         this.x = x;
@@ -55,16 +62,18 @@ abstract class GameObject {
     void setHeight(double height) {
         this.height = height;
     }
-
-//    boolean collidesWith(GameObject other) {
-//        boolean xOverlap = this.getMaxX() > other.getMinX() && this.getMaxX() < other.getMaxX() ||
-//                other.getMaxX() > this.getMinX() && other.getMaxX() < this.getMaxX();
-//        boolean yOverlap = this.getMaxY() > other.getMinY() && this.getMaxY() < other.getMaxY() ||
-//                other.getMaxX() > this.getMinY() && other.getMaxY() < this.getMaxY();
-//        return xOverlap && yOverlap;
-//    }
-
+    
     boolean collidesWith(GameObject other) {
+        return colliding && intersects(other);
+    }
+
+    void update(ArrayList<GameObject> gameObjects) {
+        if(hasGravity) {
+            fall(gameObjects);
+        }
+    }
+
+    boolean intersects(GameObject other) {
         if (this.getX() < other.getX() + other.getWidth() &&
                 this.getX() + this.getWidth() > other.getX() &&
                 this.getY() < other.getY() + other.getHeight() &&
@@ -73,6 +82,26 @@ abstract class GameObject {
         }
 
         return false;
+    }
+    
+    void fall(ArrayList<GameObject> others) {
+        if(canMove(0,1, others)) {
+            move(0.0,1.0);
+        }
+    }
+
+    private boolean canMove(double x, double y, ArrayList<GameObject> others) {
+        for(GameObject other : others) {
+            if (other != this && other.isColliding() && this.collidesWith(other)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    void move(double xDelta, double yDelta) {
+        setX(getX() + xDelta);
+        setY(getY() + yDelta);
     }
 
     abstract Image getImage();
