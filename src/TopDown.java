@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class TopDown implements GameMode {
     boolean[] keysPressed = new boolean[26];
     boolean won = false;
     boolean jumping = false;
+    int projectileSpeed = 5;
 
     // for scrolling
     int right_buffer = 30;
@@ -62,19 +64,35 @@ public class TopDown implements GameMode {
 
     @Override
     public void update() {
-        player.update(gameObjects);
-//        System.out.println(player.getWidth() +", "+ player.getHeight());
+        for(int i = 0; i < gameObjects.size(); i++) {
+            GameObject object = gameObjects.get(i);
+            object.update(gameObjects);
+        }
+
         if(!won) {
             if (keysPressed[3]) {
                 runRight();
-            } else if (keysPressed[0]) {
+            }
+            if (keysPressed[0]) {
                 runLeft();
-            } else if(keysPressed[22]) {
+            }
+            if(keysPressed[22]) {
                 runUp();
-            } else if(keysPressed[18]){
+            }
+            if(keysPressed[18]) {
                 runDown();
-            } else {
-                playerStop();
+            }
+            if(keysPressed[9]) {
+                shoot(new Point2D.Double(-projectileSpeed,0));
+            }
+            if(keysPressed[10]) {
+                shoot(new Point2D.Double(0,projectileSpeed));
+            }
+            if(keysPressed[11]) {
+                shoot(new Point2D.Double(projectileSpeed,0));
+            }
+            if(keysPressed[8]) {
+                shoot(new Point2D.Double(0, -projectileSpeed));
             }
             checkWin();
 
@@ -103,7 +121,18 @@ public class TopDown implements GameMode {
 
         int victoryBoxSize = size/8;
         victoryBox = new VictoryBox( -size/7, -victoryBoxSize, victoryBoxSize, victoryBoxSize);
-        gameObjects.add(victoryBox);
+        // Target
+        gameObjects.add(new GameObject(100,100,100,100, 100) {
+                            @Override
+                            Image getImage() {
+                                Image thisImage = new BufferedImage(100,100, BufferedImage.TYPE_INT_RGB);
+                                Graphics g = thisImage.getGraphics();
+                                g.setColor(Color.magenta);
+                                //g.fillRect(0,0,size,size);
+                                g.setColor(Color.CYAN);
+                                return thisImage;                            }
+                        });
+                gameObjects.add(victoryBox);
         gameScene = new Scene(gameObjects, size, size);
         container.add(gameScene);
         container.pack();
@@ -164,6 +193,12 @@ public class TopDown implements GameMode {
         player.move(0,moveSpeed);
     }
 
+    void shoot(Point2D.Double direction) {
+        double projectileX = player.getX() + (player.getWidth()/2 * (direction.getX() != 0 ? (direction.getX()/Math.abs(direction.getX())) : 1));
+        double projectileY = player.getY() + (player.getHeight()/2 * (direction.getY() != 0 ? (direction.getY()/Math.abs(direction.getY())) : 1));
+        Projectile projectile = new Projectile(projectileX, projectileY, direction);
+        gameObjects.add(projectile);
+    }
 
     void playerStop() {
         player.move(0, 0);

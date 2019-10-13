@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -158,6 +159,9 @@ public class RunRight implements GameMode {
     }
 
     void fall() {
+    }
+
+    void shoot(Point2D.Double vector) {
 
     }
 

@@ -10,6 +10,8 @@ abstract class GameObject {
     private double height;
     private boolean hasGravity;
     private boolean colliding = true;
+    private int health;
+    private  boolean destroyable;
 
     public boolean isColliding() {
         return colliding;
@@ -28,12 +30,34 @@ abstract class GameObject {
         this.hasGravity = hasGravity;
     }
 
-
     GameObject(double x, double y, double width, double height) {
+        this(x,y,width,height,-1);
+    }
+    GameObject(double x, double y, double width, double height, int health) {
+        if(health!=-1) {
+            this.health = health;
+            this.destroyable = true;
+        } else{
+            this.destroyable = false;
+        }
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+    }
+
+    /**
+     * @param damage amount of damage to deal to this object
+     * @return if this object is out of health;
+     */
+    boolean damage(int damage) {
+        if(destroyable) {
+            this.health -= damage;
+            if(this.health <= 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     double getX() {
