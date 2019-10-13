@@ -6,6 +6,7 @@ import java.awt.*;
  */
 public class GameContainer {
     JFrame frame;
+    MainMenu mainMenu;
     public static void main(String[] args) {
         GameContainer container = new GameContainer();
     }
@@ -13,15 +14,21 @@ public class GameContainer {
     GameContainer() {
         frame = new JFrame();
         frame.setTitle("Game");
+
+        mainMenu = new MainMenu(this);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
+
+        frame.add(mainMenu);
+
         frame.pack();
         frame.setVisible(true);
+
         // Show Main Menu
         // call this.launchGameMode(gameMode) with a gamemode when it is seletced.
         //Temp
-        launchGameMode(gameMode.TOPDOWN);
+        //launchGameMode(gameMode.RUNRIGHT);
     }
 
     enum gameMode {
