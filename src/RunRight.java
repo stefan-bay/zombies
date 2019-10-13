@@ -26,9 +26,6 @@ public class RunRight implements GameMode {
     }
 
     void checkWin() {
-        if(player.collidesWith(victoryBox)) {
-            gameObjects.clear();
-            gameObjects.add(new GameObject(-size/2,-size/2,size,size) {
         if(player.intersects(victoryBox)) {
             gameObjects.clear();
             GameObject winObject = new GameObject(-size/2,-size/2,size,size) {
