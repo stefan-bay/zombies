@@ -1,8 +1,11 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -12,6 +15,11 @@ public class RunRight implements GameMode {
 
     int size = 500;
     ArrayList<GameObject> gameObjects = new ArrayList<>();
+
+    ArrayList<GameObject> backgroundObjects = new ArrayList<>();
+    ArrayList<GameObject> foregroundObjects = new ArrayList<>();
+
+
     Scene gameScene;
     JFrame container;
     Player player;
@@ -19,6 +27,9 @@ public class RunRight implements GameMode {
     boolean[] keysPressed = new boolean[26];
     boolean won = false;
     boolean jumping = false;
+
+    // for scrolling
+    int right_buffer = 30;
 
     RunRight(JFrame frame) {
         container = frame;
@@ -65,6 +76,7 @@ public class RunRight implements GameMode {
                 playerStop();
             }
             checkWin();
+
             gameScene.repaint();
         }
     }
@@ -83,12 +95,19 @@ public class RunRight implements GameMode {
         gameObjects.add(player);
 
         int victoryBoxSize = size/8;
-        victoryBox = new VictoryBox( size/7, -victoryBoxSize, victoryBoxSize, victoryBoxSize);
+        victoryBox = new VictoryBox( -size/7, -victoryBoxSize, victoryBoxSize, victoryBoxSize);
         gameObjects.add(victoryBox);
         gameScene = new Scene(gameObjects, size, size);
         container.add(gameScene);
         container.pack();
         container.addKeyListener(keyListener);
+
+        foregroundObjects.add(victoryBox);
+
+        Tree tree = new Tree(0, -200);
+        gameObjects.add(tree);
+        backgroundObjects.add(tree);
+
     }
 
     KeyListener keyListener = new KeyListener() {
@@ -120,6 +139,13 @@ public class RunRight implements GameMode {
     };
 
     void runRight() {
+        if (player.getX() > right_buffer) {
+            for (GameObject go : foregroundObjects)
+                go.setX(go.getX() - 2);
+
+            for (GameObject go : backgroundObjects)
+                go.setX(go.getX() - 1);
+        }
         player.move(2,0);
     }
 
