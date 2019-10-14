@@ -140,6 +140,8 @@ public class TopDown implements GameMode {
 
         endScreen = new EndScreen();
 
+        Flashlight flashlight = new Flashlight(player.getX(), player.getY(), size, size);
+        gameObjects.add(flashlight);
         gameScene = new Scene(gameObjects, size, size);
         container.add(gameScene);
         container.pack();
