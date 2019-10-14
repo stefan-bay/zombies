@@ -31,7 +31,7 @@ public class Player extends GameObject {
     Animation idleLeftAnimation;
 
     Player() {
-        super(xInitial, yInitial, widthInitial, heightInitial);
+        super(xInitial, yInitial, widthInitial, heightInitial, 200);
         playerImage = new BufferedImage((int) widthInitial,(int) heightInitial, BufferedImage.TYPE_INT_RGB);
         Graphics g = playerImage.getGraphics();
         g.setColor(Color.CYAN);

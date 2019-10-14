@@ -32,12 +32,8 @@ public class TopDown implements GameMode {
     boolean won = false;
     boolean jumping = false;
     int projectileSpeed = 5;
-    Timer fireCooldown = new Timer();
-    boolean onFireCooldown;
-    int fireCooldownMs = 500;
-    Timer enemySpawnCooldown = new Timer();
-    boolean onEnemySpawnCooldown = false;
-    int enemySpawnCooldownMs = 1000;
+    Cooldown fireCooldown = new Cooldown(500);
+    Cooldown enemySpawnCooldown = new Cooldown(5000);
     int enemySize = 40;
     Random enemyPos = new Random();
     // for scrolling
@@ -82,7 +78,13 @@ public class TopDown implements GameMode {
         }
         for(int i = 0; i < enemies.size(); i++) {
             Enemy enemy = enemies.get(i);
-            gameObjects.add(enemy.update(gameObjects, player.getX(), player.getY()));
+            // Updating an enemy returns the projectile.
+            GameObject projectile = enemy.update(gameObjects, player.getX(), player.getY());
+            if(projectile != null) {
+                gameObjects.add(projectile);
+                foregroundObjects.add(projectile);
+            }
+
         }
 
         if(!won) {
@@ -98,7 +100,7 @@ public class TopDown implements GameMode {
             if(keysPressed[18]) {
                 runDown();
             }
-            if(!onFireCooldown) {
+            if(!fireCooldown.isOnCooldown) {
                 if(keysPressed[9]) {
                     shoot(new Point2D.Double(-projectileSpeed,0));
                 }
@@ -237,44 +239,25 @@ public class TopDown implements GameMode {
     }
 
     void shoot(Point2D.Double direction) {
-        Projectile projectile = player.getProjectile(direction);
-        gameObjects.add(projectile);
-        foregroundObjects.add(projectile);
-        setFireCooldown(true);
-        // Update timer
-        fireCooldown.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                setFireCooldown(false);
-            }
-        }, fireCooldownMs);
+        if(fireCooldown.startCooldown()) {
+            Projectile projectile = player.getProjectile(direction);
+            gameObjects.add(projectile);
+            foregroundObjects.add(projectile);
+        }
+
     }
 
     void spawnEnemy() {
-        if(!onEnemySpawnCooldown) {
-            setEnemySpawnCooldown(true);
-            int enemyX = enemyPos.nextInt(size*2)-size;
-            int enemyY = enemyPos.nextInt(size*2)-size;
+        if(enemySpawnCooldown.startCooldown()) {
+            int enemyX = (int)player.getX() + enemyPos.nextInt(size*2)-size;
+            int enemyY = (int)player.getY() + enemyPos.nextInt(size*2)-size;
             Enemy enemy = new Enemy(enemyX, enemyY, enemySize, enemySize, enemyHealth);
             gameObjects.add(enemy);
             enemies.add(enemy);
             foregroundObjects.add(enemy);
-            enemySpawnCooldown.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    setEnemySpawnCooldown(false);
-                }
-            }, enemySpawnCooldownMs);
         }
     }
 
-    void setEnemySpawnCooldown(boolean isEnemySpawnOnCooldown) {
-        onEnemySpawnCooldown = isEnemySpawnOnCooldown;
-    }
-
-    void setFireCooldown(boolean onCooldown) {
-        onFireCooldown = onCooldown;
-    }
 
     void playerStop() {
         player.move(0, 0, gameObjects);

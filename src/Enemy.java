@@ -5,7 +5,9 @@ import java.util.ArrayList;
 
 public class Enemy extends GameObject {
     Image enemyImage;
-    int enemyProjectileSpeed = 3;
+    int enemyProjectileSpeed = 5;
+    Cooldown fireCooldown = new Cooldown(1000);
+    int enemyMoveSpeed = 3;
 
     public Enemy(double x, double y, double width, double height, int health) {
         super(x, y, width, height, health);
@@ -15,14 +17,21 @@ public class Enemy extends GameObject {
         enemyGraphics.fillRect((int)0,(int)0,(int)width,(int)height);
     }
 
+    boolean canFire() {
+        return fireCooldown.startCooldown();
+    }
+
     Projectile update(ArrayList<GameObject> objects, double playerX, double playerY){
         double xDelta = playerX - getX();
         double yDelta = playerY - getY();
         double length = Math.sqrt(Math.pow(xDelta, 2) + Math.pow(yDelta, 2));
         xDelta /= length;
         yDelta /= length;
-        move(xDelta, yDelta, objects);
-        return getProjectile(new Point2D.Double(xDelta * enemyProjectileSpeed, yDelta * enemyProjectileSpeed));
+        move(xDelta * enemyMoveSpeed, yDelta * enemyMoveSpeed, objects);
+        if(canFire()) {
+            return getProjectile(new Point2D.Double(xDelta * enemyProjectileSpeed, yDelta * enemyProjectileSpeed));
+        }
+        return null;
     }
 
     @Override
