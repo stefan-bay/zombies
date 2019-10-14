@@ -14,13 +14,13 @@ public class GameContainer {
     GameContainer() {
         frame = new JFrame();
         frame.setTitle("Game");
-
         mainMenu = new MainMenu(this);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.add(mainMenu);
         frame.pack();
         frame.setVisible(true);
+        frame.setResizable(false);
 
         // Show Main Menu
         // call this.launchGameMode(gameMode) with a gamemode when it is seletced.
