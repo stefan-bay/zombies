@@ -31,6 +31,10 @@ public class Animation {
         return frames.get(location);
     }
 
+    public void reset() {
+        this.location = 0;
+    }
+
     public static BufferedImage flipImage(BufferedImage image) {
         AffineTransform at = new AffineTransform();
         at.concatenate(AffineTransform.getScaleInstance(-1, 1));

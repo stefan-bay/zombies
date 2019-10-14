@@ -112,6 +112,9 @@ public class TopDown implements GameMode {
         player.setColliding(true);
         gameObjects.add(player);
 
+        HealthBar playerHealthBar = new HealthBar(player, 200);
+        gameObjects.add(playerHealthBar);
+
         gameScene = new Scene(gameObjects, size, size);
         container.add(gameScene);
         container.pack();

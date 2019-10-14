@@ -152,7 +152,7 @@ public class RunRight implements GameMode {
             for (GameObject go : backgroundObjects)
                 go.setX(go.getX() - 1);
         } else
-            player.move(2,0, gameObjects);
+            player.move(2,0, foregroundObjects);
     }
 
     void runLeft() {
@@ -164,11 +164,11 @@ public class RunRight implements GameMode {
             for (GameObject go : backgroundObjects)
                 go.setX(go.getX() + 1);
         } else
-            player.move(-2,0, gameObjects);
+            player.move(-2,0, foregroundObjects);
     }
 
     void jump() {
-        player.move(0,-20, gameObjects);
+        player.move(0,-20, foregroundObjects);
     }
 
     void fall() {

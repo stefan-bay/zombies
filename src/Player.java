@@ -18,7 +18,7 @@ public class Player extends GameObject {
     static double widthInitial = 30;
     static double heightInitial = 30;
     static double xInitial = 0;
-    static double yInitial = -heightInitial;
+    static double yInitial = -heightInitial - 10;
 
     Direction direction;
 
@@ -73,8 +73,8 @@ public class Player extends GameObject {
 
         this.direction = Direction.RIGHT;
 
-        //this.setWidth(idleRight.get(0).getWidth());
-        //this.setHeight(idleRight.get(0).getHeight());
+        this.setWidth(idleRight.get(0).getWidth());
+        this.setHeight(idleRight.get(0).getHeight());
 
         setCurrentAnimation(idleRightAnimation);
     }
