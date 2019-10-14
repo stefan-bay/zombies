@@ -15,11 +15,6 @@ public class MainMenu extends JPanel implements ActionListener {
     ImageIcon select, runRight, topDown, selectLevel,
               level1, level2, level3, level4, level5;
 
-
-
-
-
-
     int numClicksSelect, numClicksLevel;
 
     public MainMenu(GameContainer gc) {
@@ -121,9 +116,6 @@ public class MainMenu extends JPanel implements ActionListener {
                 setVisible(false);
             }
         });
-
-
-
     }
 
     private void sound() {
