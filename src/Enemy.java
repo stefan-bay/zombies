@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Enemy extends GameObject {
     Image enemyImage;
-    int enemyProjectileSpeed = 5;
+    int enemyProjectileSpeed = 15;
     Cooldown fireCooldown = new Cooldown(1000);
     int enemyMoveSpeed = 3;
 
@@ -24,6 +24,7 @@ public class Enemy extends GameObject {
     Projectile update(ArrayList<GameObject> objects, double playerX, double playerY){
         double xDelta = playerX - getX();
         double yDelta = playerY - getY();
+        // Make direction unit vector.
         double length = Math.sqrt(Math.pow(xDelta, 2) + Math.pow(yDelta, 2));
         xDelta /= length;
         yDelta /= length;
