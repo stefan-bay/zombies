@@ -7,7 +7,7 @@ public class HealthBar extends GameObject {
     private static double Width = 50;
     private static double Height = 10;
 
-    private static double yOffset = 15;
+    private static double yOffset = 25;
 
     private GameObject object;
     private int maxHealth;
@@ -37,14 +37,13 @@ public class HealthBar extends GameObject {
 
         double bar_width = (object.getHealth() / (double)maxHealth) * Width;
 
-        if (bar_width <= 0)
-            bar_width = 1;
-
-        BufferedImage bar = new BufferedImage((int)bar_width, (int)Height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bar = new BufferedImage((int)Width, (int)Height, BufferedImage.TYPE_INT_ARGB);
 
         Graphics bar_g = bar.getGraphics();
+        bar_g.setColor(Color.black);
+        bar_g.drawRect(0, 0, (int)Width - 1, (int)Height - 1);
         bar_g.setColor(Color.red);
-        bar_g.fillRect(0, 0, (int)bar_width, (int)Height);
+        bar_g.fillRect(1, 1, (int)bar_width - 2, (int)Height - 2);
         bar_g.dispose();
 
         return bar;
