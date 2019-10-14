@@ -19,7 +19,7 @@ public class TopDown implements GameMode {
     boolean hasLost = false;
 
     // debug
-    boolean straight_to_endscreen = true;
+    boolean straight_to_endscreen = false;
 
     Scene gameScene;
     JFrame container;
