@@ -22,6 +22,21 @@ abstract class GameObject {
         this.colliding = colliding;
     }
 
+    public double getMaxX() {
+        return this.x + this.width;
+    }
+
+    public double getMaxY() {
+        return this.y + this.height;
+    }
+
+    public double getMinX() {
+        return this.x;
+    }
+
+    public double getMinY() {
+        return this.y;
+    }
 
     public boolean hasGravity() {
         return hasGravity;
