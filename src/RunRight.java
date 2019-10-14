@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class RunRight implements GameMode {
 
-    int size = 500;
+    int size = 800;
     ArrayList<GameObject> gameObjects = new ArrayList<>();
 
     ArrayList<GameObject> backgroundObjects = new ArrayList<>();

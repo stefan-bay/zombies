@@ -17,7 +17,7 @@ import java.util.TimerTask;
  */
 public class TopDown implements GameMode {
     int moveSpeed = 5;
-    int size = 500;
+    int size = 800;
     ArrayList<GameObject> gameObjects = new ArrayList<>();
 
     ArrayList<GameObject> backgroundObjects = new ArrayList<>();

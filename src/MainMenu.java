@@ -20,9 +20,9 @@ public class MainMenu extends JPanel implements ActionListener {
     public MainMenu(GameContainer gc) {
         mainMenu = this;
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        setPreferredSize(screenSize);
+        setPreferredSize(new Dimension(800,800));
         Color mainMenuColor = new Color(130, 155, 146);
 
         setBackground(mainMenuColor);
