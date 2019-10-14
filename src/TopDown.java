@@ -203,6 +203,8 @@ public class TopDown implements GameMode {
             int enemyY = (int)player.getY() + enemyPos.nextInt(size*2)-size;
             Enemy enemy = new Enemy(enemyX, enemyY, enemySize, enemySize, enemyHealth);
             gameObjects.add(enemy);
+            HealthBar bar = new HealthBar(enemy, enemyHealth);
+            gameObjects.add(bar);
         }
     }
 }
