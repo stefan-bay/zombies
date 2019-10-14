@@ -22,7 +22,7 @@ public class TopDown implements GameMode {
 
     ArrayList<GameObject> backgroundObjects = new ArrayList<>();
     ArrayList<GameObject> foregroundObjects = new ArrayList<>();
-
+    ArrayList<Enemy> enemies = new ArrayList<>();
 
     Scene gameScene;
     JFrame container;
@@ -79,6 +79,10 @@ public class TopDown implements GameMode {
         for(int i = 0; i < gameObjects.size(); i++) {
             GameObject object = gameObjects.get(i);
             object.update(gameObjects);
+        }
+        for(int i = 0; i < enemies.size(); i++) {
+            Enemy enemy = enemies.get(i);
+            gameObjects.add(enemy.update(gameObjects, player.getX(), player.getY()));
         }
 
         if(!won) {
@@ -253,6 +257,7 @@ public class TopDown implements GameMode {
             int enemyY = enemyPos.nextInt(size*2)-size;
             Enemy enemy = new Enemy(enemyX, enemyY, enemySize, enemySize, enemyHealth);
             gameObjects.add(enemy);
+            enemies.add(enemy);
             foregroundObjects.add(enemy);
             enemySpawnCooldown.schedule(new TimerTask() {
                 @Override
