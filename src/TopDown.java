@@ -33,6 +33,7 @@ public class TopDown implements GameMode {
     // for scrolling
     int right_buffer = 80;
     int enemyHealth = 100;
+    int killCount = 0;
 
     TopDown(JFrame frame) {
         container = frame;
@@ -52,6 +53,10 @@ public class TopDown implements GameMode {
 
             if (object.shouldRemove()) {
                 gameObjects.remove(object);
+                if (object instanceof Enemy) {
+                    killCount++;
+                    System.out.println("kills: " + killCount);
+                }
                 continue;
             }
 
