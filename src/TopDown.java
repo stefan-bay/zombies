@@ -18,6 +18,9 @@ public class TopDown implements GameMode {
 
     boolean hasLost = false;
 
+    // debug
+    boolean straight_to_endscreen = true;
+
     Scene gameScene;
     JFrame container;
     Player player;
@@ -142,6 +145,10 @@ public class TopDown implements GameMode {
         container.pack();
         container.addKeyListener(keyListener);
         container.addMouseListener(mouseListener);
+
+        if (straight_to_endscreen) {
+            player.setHealth(0);
+        }
     }
 
     MouseListener mouseListener = new MouseListener() {
