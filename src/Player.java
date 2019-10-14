@@ -78,7 +78,8 @@ public class Player extends GameObject {
         setCurrentAnimation(idleRightAnimation);
     }
 
-    void move(double x, double y) {
+    void move(double x, double y, ArrayList<GameObject> objects) {
+        super.move(x,y,objects);
         if (x > 0) {
             this.direction = Direction.RIGHT;
             setCurrentAnimation(runRightAnimation);
@@ -90,9 +91,6 @@ public class Player extends GameObject {
                 setCurrentAnimation(idleRightAnimation);
             else
                 setCurrentAnimation(idleLeftAnimation);
-
-        setX(getX() + x);
-        setY(getY() + y);
     }
 
     public void setCurrentAnimation(Animation animation) {

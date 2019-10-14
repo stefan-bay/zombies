@@ -123,6 +123,7 @@ public class TopDown implements GameMode {
                 return playerImage;
             }
         };
+        player.setColliding(true);
         gameObjects.add(player);
 
         int victoryBoxSize = size/8;
@@ -188,7 +189,7 @@ public class TopDown implements GameMode {
             for (GameObject go : backgroundObjects)
                 go.setX(go.getX() - 1);
         } else
-            player.move(moveSpeed,0);
+            player.move(moveSpeed,0, gameObjects);
     }
 
     void runLeft() {
@@ -199,7 +200,7 @@ public class TopDown implements GameMode {
             for (GameObject go : backgroundObjects)
                 go.setX(go.getX() + 1);
         } else
-            player.move(-moveSpeed,0);
+            player.move(-moveSpeed,0, gameObjects);
     }
 
     void runUp() {
@@ -210,7 +211,7 @@ public class TopDown implements GameMode {
             for (GameObject go : backgroundObjects)
                 go.setY(go.getY() + 1);
         } else
-            player.move(0,-moveSpeed);
+            player.move(0,-moveSpeed, gameObjects);
     }
 
     void runDown() {
@@ -221,7 +222,7 @@ public class TopDown implements GameMode {
             for (GameObject go : backgroundObjects)
                 go.setY(go.getY() - 1);
         } else
-            player.move(0,moveSpeed);
+            player.move(0,moveSpeed, gameObjects);
     }
 
     void shoot(Point2D.Double direction) {
@@ -245,7 +246,7 @@ public class TopDown implements GameMode {
     }
 
     void playerStop() {
-        player.move(0, 0);
+        player.move(0, 0, gameObjects);
     }
 
 }

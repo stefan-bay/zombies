@@ -113,9 +113,8 @@ abstract class GameObject {
     }
     
     void fall(ArrayList<GameObject> others) {
-        if(canMove(0,1, others)) {
-            move(0.0,1.0);
-        }
+        move(0.0,1.0, others);
+
     }
 
     boolean canMove(double x, double y, ArrayList<GameObject> others) {
@@ -127,9 +126,11 @@ abstract class GameObject {
         return true;
     }
     
-    void move(double xDelta, double yDelta) {
-        setX(getX() + xDelta);
-        setY(getY() + yDelta);
+    void move(double xDelta, double yDelta, ArrayList<GameObject> objects) {
+        if (canMove(xDelta, yDelta, objects)) {
+            setX(getX() + xDelta);
+            setY(getY() + yDelta);
+        }
     }
 
     abstract Image getImage();

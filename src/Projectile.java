@@ -17,17 +17,18 @@ public class Projectile extends GameObject{
         g.setColor(Color.BLACK);
         g.fillRect((int)x,(int)y,(int)size,(int)size);
         direction = dir;
+        setColliding(false);
     }
 
     @Override
     void update(ArrayList<GameObject> objects) {
         super.update(objects);
         // Update Pos
-        move(direction.getX(), direction.getY());
+        move(direction.getX(), direction.getY(), objects);
         //CheckHit
         for (int i = 0; i < objects.size(); i++) {
             GameObject object = objects.get(i);
-            if (!(this == object) && this.collidesWith(object) && !(object instanceof Player)) {
+            if (!(this == object) && object.isColliding() && this.intersects(object) && !(object instanceof Player)) {
                 if (object.damage(damage)) {
                     objects.remove(object);
                 }
