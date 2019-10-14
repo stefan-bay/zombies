@@ -25,7 +25,6 @@ public class EndScreen extends GameObject{
 
     @Override
     Image getImage() {
-        System.out.println("NEXT IMAGE");
         return bloodAnimation.nextImage();
     }
 }
