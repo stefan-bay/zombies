@@ -18,8 +18,7 @@ public class GameContainer {
         mainMenu = new MainMenu(this);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
-        launchGameMode(gameMode.TOPDOWN);
+        frame.add(mainMenu);
         frame.pack();
         frame.setVisible(true);
 
