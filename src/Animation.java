@@ -2,23 +2,43 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class Animation {
     ArrayList<BufferedImage> frames;
     int count;
     int location;
+    Cooldown animationCooldown;
 
+    Animation (ArrayList<BufferedImage> frames, int refreshRate) {
+        this.frames = frames;
+        location = 0; // first frame
+        count = frames.size();
+
+         animationCooldown = new Cooldown(refreshRate);
+    }
+
+    // @TODO get rid of this because of run right
+    //  TEMP
     Animation (ArrayList<BufferedImage> frames) {
         this.frames = frames;
         location = 0; // first frame
         count = frames.size();
+
+        animationCooldown = new Cooldown(1);
+    }
+
+    boolean shouldUpdateFrame() {
+        return animationCooldown.startCooldown();
     }
 
     public BufferedImage nextImage() {
-        if (location == count - 1) // last frame
-            location = 0;          // back to first frame
-        else
-            location++;
+        if (shouldUpdateFrame()) {
+            if (location == count - 1) // last frame
+                location = 0;          // back to first frame
+            else
+                location++;
+        }
 
         return frames.get(location);
     }

@@ -20,7 +20,7 @@ public class EndScreen extends GameObject{
             }
         }
         this.setColliding(false);
-        bloodAnimation = new Animation(endScreen);
+        bloodAnimation = new Animation(endScreen, 100);
     }
 
     @Override

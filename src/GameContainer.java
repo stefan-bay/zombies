@@ -7,6 +7,9 @@ import java.awt.*;
 public class GameContainer {
     JFrame frame;
     MainMenu mainMenu;
+
+    boolean bypassMainMenu = true;
+
     public static void main(String[] args) {
         GameContainer container = new GameContainer();
     }
@@ -16,14 +19,15 @@ public class GameContainer {
         frame.setTitle("Game");
         mainMenu = new MainMenu(this);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        frame.add(mainMenu);
-        frame.pack();
         frame.setVisible(true);
         frame.setResizable(false); //CHANGE THIS
 
-        // bypass main menu
-        //launchGameMode(gameMode.TOPDOWN);
+        if (bypassMainMenu)
+            launchGameMode(gameMode.TOPDOWN); // bypass main menu
+        else
+            frame.add(mainMenu);
+        frame.pack();
+
 
         // Show Main Menu
         // call this.launchGameMode(gameMode) with a gamemode when it is seletced.
