@@ -122,7 +122,6 @@ public class TopDown implements GameMode {
             double mouseX = -(player.getX() - (mouseEvent.getX() - size/2));
             double mouseY = -(player.getY() - (mouseEvent.getY() - size/2));
             fireCoords = new Point2D.Double(mouseX,mouseY);
-            System.out.println("MouseCoords: " + fireCoords);
             firePressed = true;
         }
 
@@ -216,7 +215,6 @@ public class TopDown implements GameMode {
     }
 
     void shoot(Point2D.Double direction) {
-        System.out.println("Fire:" + direction);
         if(fireCooldown.startCooldown()) {
             Projectile projectile = player.getProjectile(direction);
             gameObjects.add(projectile);
