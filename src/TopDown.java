@@ -7,7 +7,9 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 /**
  *  Basic game to make the player run to the right.
@@ -29,6 +31,9 @@ public class TopDown implements GameMode {
     boolean won = false;
     boolean jumping = false;
     int projectileSpeed = 5;
+    Timer fireCooldown = new Timer();
+    boolean onFireCooldown;
+    int fireCooldownMs = 500;
 
     // for scrolling
     int right_buffer = 30;
@@ -82,20 +87,21 @@ public class TopDown implements GameMode {
             if(keysPressed[18]) {
                 runDown();
             }
-            if(keysPressed[9]) {
-                shoot(new Point2D.Double(-projectileSpeed,0));
+            if(!onFireCooldown) {
+                if(keysPressed[9]) {
+                    shoot(new Point2D.Double(-projectileSpeed,0));
+                }
+                if(keysPressed[10]) {
+                    shoot(new Point2D.Double(0,projectileSpeed));
+                }
+                if(keysPressed[11]) {
+                    shoot(new Point2D.Double(projectileSpeed,0));
+                }
+                if(keysPressed[8]) {
+                    shoot(new Point2D.Double(0, -projectileSpeed));
+                }
+                checkWin();
             }
-            if(keysPressed[10]) {
-                shoot(new Point2D.Double(0,projectileSpeed));
-            }
-            if(keysPressed[11]) {
-                shoot(new Point2D.Double(projectileSpeed,0));
-            }
-            if(keysPressed[8]) {
-                shoot(new Point2D.Double(0, -projectileSpeed));
-            }
-            checkWin();
-
             gameScene.repaint();
         }
     }
@@ -198,6 +204,19 @@ public class TopDown implements GameMode {
         double projectileY = player.getY() + (player.getHeight()/2 * (direction.getY() != 0 ? (direction.getY()/Math.abs(direction.getY())) : 1));
         Projectile projectile = new Projectile(projectileX, projectileY, direction);
         gameObjects.add(projectile);
+
+        setFireCooldown(true);
+        // Update timer
+        fireCooldown.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                setFireCooldown(false);
+            }
+        }, fireCooldownMs);
+    }
+
+    void setFireCooldown(boolean onCooldown) {
+        onFireCooldown = onCooldown;
     }
 
     void playerStop() {
