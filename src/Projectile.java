@@ -25,16 +25,17 @@ public class Projectile extends GameObject{
         // Update Pos
         move(direction.getX(), direction.getY());
         //CheckHit
-        for(int i = 0; i < objects.size(); i++) {
+        for (int i = 0; i < objects.size(); i++) {
             GameObject object = objects.get(i);
-            if(!(this == object) && this.intersects(object) && ! (object instanceof Player)) {
-                if(object.damage(damage)) {
+            if (!(this == object) && this.collidesWith(object) && !(object instanceof Player)) {
+                if (object.damage(damage)) {
                     objects.remove(object);
                 }
                 objects.remove(this);
                 break;
             }
         }
+
 
 
     }

@@ -72,8 +72,8 @@ public class Player extends GameObject {
 
         this.direction = Direction.RIGHT;
 
-        this.setWidth(idleRight.get(0).getWidth());
-        this.setHeight(idleRight.get(0).getHeight());
+        //this.setWidth(idleRight.get(0).getWidth());
+        //this.setHeight(idleRight.get(0).getHeight());
 
         setCurrentAnimation(idleRightAnimation);
     }
