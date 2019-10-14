@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Player extends GameObject {
-
     enum Direction {
         UP,
         DOWN,

@@ -10,7 +10,7 @@ public class EndScreen extends GameObject{
     Animation bloodAnimation;
 
     public EndScreen() {
-        super(0, 0, 0, 0);
+        super(-400, -400, 0, 0);
         endScreen = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
             try {
@@ -19,11 +19,13 @@ public class EndScreen extends GameObject{
                 e.printStackTrace();
             }
         }
+        this.setColliding(false);
         bloodAnimation = new Animation(endScreen);
     }
 
     @Override
     Image getImage() {
+        System.out.println("NEXT IMAGE");
         return bloodAnimation.nextImage();
     }
 }

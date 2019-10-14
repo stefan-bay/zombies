@@ -87,10 +87,10 @@ public class RunRight implements GameMode {
     }
 
 
-    /*void initializeGame() {
+    void initializeGame() {
         Ground ground = new Ground(-size/2, 0, size, size/2);
         foregroundObjects.add(ground);
-        player = new Player();
+        player = new Player(10, 10, 30, 30);
         player.setHasGravity(true);
 
         int victoryBoxSize = size/8;
@@ -112,7 +112,7 @@ public class RunRight implements GameMode {
         gameObjects.addAll(foregroundObjects);
         gameObjects.add(ground);
         gameObjects.add(player);
-    }*/
+    }
 
     KeyListener keyListener = new KeyListener() {
         @Override

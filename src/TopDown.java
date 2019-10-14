@@ -16,6 +16,8 @@ public class TopDown implements GameMode {
     int size = 800;
     ArrayList<GameObject> gameObjects = new ArrayList<>();
 
+    boolean hasLost = false;
+
     Scene gameScene;
     JFrame container;
     Player player;
@@ -41,9 +43,13 @@ public class TopDown implements GameMode {
 
     @Override
     public void update() {
-        spawnEnemy();
+        if (!hasLost) {
+            spawnEnemy();
+            handleKeyPress();
+            checkLose();
+        }
         updateAllGameObjects();
-        handleKeyPress();
+        gameScene.repaint();
     }
 
     void updateAllGameObjects() {
@@ -68,6 +74,15 @@ public class TopDown implements GameMode {
         if (projectile != null) {
             gameObjects.add(projectile);
         }
+
+    }
+
+    void checkLose() {
+        if (player.getHealth() <= 0) {
+            hasLost = true;
+            gameObjects.clear();
+            gameObjects.add(endScreen);
+        }
     }
 
     void handleKeyPress() {
@@ -88,7 +103,6 @@ public class TopDown implements GameMode {
                 shoot(fireCoords);
             }
         }
-        gameScene.repaint();
     }
 
     @Override
@@ -109,6 +123,8 @@ public class TopDown implements GameMode {
 
         HealthBar playerHealthBar = new HealthBar(player, 200);
         gameObjects.add(playerHealthBar);
+
+        endScreen = new EndScreen();
 
         gameScene = new Scene(gameObjects, size, size);
         container.add(gameScene);
