@@ -28,7 +28,7 @@ public class Projectile extends GameObject{
         //CheckHit
         for (int i = 0; i < objects.size(); i++) {
             GameObject object = objects.get(i);
-            if (!(this == object) && object.isColliding() && this.intersects(object) && !(object instanceof Player)) {
+            if (!(this == object) && object.isColliding() && this.intersects(object)) {
                 if (object.damage(damage)) {
                     objects.remove(object);
                 }

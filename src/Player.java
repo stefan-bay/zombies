@@ -15,8 +15,8 @@ public class Player extends GameObject {
     }
 
     Image playerImage;
-    static double widthInitial = 21;
-    static double heightInitial = 34;
+    static double widthInitial = 30;
+    static double heightInitial = 30;
     static double xInitial = 0;
     static double yInitial = -heightInitial;
 

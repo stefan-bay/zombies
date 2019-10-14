@@ -4,8 +4,8 @@ import java.awt.image.BufferedImage;
 public class Enemy extends GameObject {
     Image enemyImage;
 
-    public Enemy(double x, double y, double width, double height) {
-        super(x, y, width, height);
+    public Enemy(double x, double y, double width, double height, int health) {
+        super(x, y, width, height, health);
         enemyImage = new BufferedImage((int) width,(int) height, BufferedImage.TYPE_INT_RGB);
         Graphics enemyGraphics = enemyImage.getGraphics();
         enemyGraphics.setColor(Color.DARK_GRAY);

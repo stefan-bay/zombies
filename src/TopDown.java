@@ -7,6 +7,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Timer;
 import java.util.ArrayList;
 import java.util.TimerTask;
@@ -34,9 +35,14 @@ public class TopDown implements GameMode {
     Timer fireCooldown = new Timer();
     boolean onFireCooldown;
     int fireCooldownMs = 500;
-
+    Timer enemySpawnCooldown = new Timer();
+    boolean onEnemySpawnCooldown = false;
+    int enemySpawnCooldownMs = 1000;
+    int enemySize = 40;
+    Random enemyPos = new Random();
     // for scrolling
     int right_buffer = 80;
+    int enemyHealth = 100;
 
     TopDown(JFrame frame) {
         container = frame;
@@ -69,6 +75,7 @@ public class TopDown implements GameMode {
 
     @Override
     public void update() {
+        spawnEnemy();
         for(int i = 0; i < gameObjects.size(); i++) {
             GameObject object = gameObjects.get(i);
             object.update(gameObjects);
@@ -226,9 +233,7 @@ public class TopDown implements GameMode {
     }
 
     void shoot(Point2D.Double direction) {
-        double projectileX = player.getX() + (player.getWidth()/2 * (direction.getX() != 0 ? (direction.getX()/Math.abs(direction.getX())) : 1));
-        double projectileY = player.getY() + (player.getHeight()/2 * (direction.getY() != 0 ? (direction.getY()/Math.abs(direction.getY())) : 1));
-        Projectile projectile = new Projectile(projectileX, projectileY, direction);
+        Projectile projectile = player.getProjectile(direction);
         gameObjects.add(projectile);
         foregroundObjects.add(projectile);
         setFireCooldown(true);
@@ -239,6 +244,27 @@ public class TopDown implements GameMode {
                 setFireCooldown(false);
             }
         }, fireCooldownMs);
+    }
+
+    void spawnEnemy() {
+        if(!onEnemySpawnCooldown) {
+            setEnemySpawnCooldown(true);
+            int enemyX = enemyPos.nextInt(size*2)-size;
+            int enemyY = enemyPos.nextInt(size*2)-size;
+            Enemy enemy = new Enemy(enemyX, enemyY, enemySize, enemySize, enemyHealth);
+            gameObjects.add(enemy);
+            foregroundObjects.add(enemy);
+            enemySpawnCooldown.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    setEnemySpawnCooldown(false);
+                }
+            }, enemySpawnCooldownMs);
+        }
+    }
+
+    void setEnemySpawnCooldown(boolean isEnemySpawnOnCooldown) {
+        onEnemySpawnCooldown = isEnemySpawnOnCooldown;
     }
 
     void setFireCooldown(boolean onCooldown) {

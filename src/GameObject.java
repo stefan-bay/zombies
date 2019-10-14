@@ -1,6 +1,8 @@
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 abstract class GameObject {
 
@@ -146,6 +148,13 @@ abstract class GameObject {
             setX(getX() + xDelta);
             setY(getY() + yDelta);
         }
+    }
+
+    Projectile getProjectile(Point2D.Double direction) {
+
+        double projectileX = getX() + getWidth()/2 + (getWidth() * (direction.getX() != 0 ? (direction.getX()/Math.abs(direction.getX())) : 1));
+        double projectileY = getY() + getHeight()/2 + (getHeight()* (direction.getY() != 0 ? (direction.getY()/Math.abs(direction.getY())) : 1));
+        return new Projectile(projectileX, projectileY, direction);
     }
 
     abstract Image getImage();

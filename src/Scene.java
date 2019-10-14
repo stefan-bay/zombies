@@ -31,8 +31,6 @@ public class Scene extends JPanel{
 
             g.drawImage(gameObject.getImage(), (int) gameObject.getX(), (int) gameObject.getY(), null );
 
-            // hitbox drawing
-            g2d.draw(new Rectangle2D.Double(gameObject.getX(), gameObject.getY(), gameObject.getWidth(), gameObject.getHeight()));
         }
     }
 
