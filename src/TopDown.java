@@ -105,6 +105,12 @@ public class TopDown implements GameMode {
         }
         if(!fireCooldown.isOnCooldown) {
             if(firePressed) {
+                Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
+                double mouseX = (mouseLoc.getX() - size/2);
+                double mouseY = (mouseLoc.getY() - size/2);
+                mouseX -= player.getX();
+                mouseY -= player.getY();
+                fireCoords = new Point2D.Double(mouseX,mouseY);
                 shoot(fireCoords);
             }
         }
@@ -146,9 +152,6 @@ public class TopDown implements GameMode {
 
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
-            double mouseX = -(player.getX() - (mouseEvent.getX() - size/2));
-            double mouseY = -(player.getY() - (mouseEvent.getY() - size/2));
-            fireCoords = new Point2D.Double(mouseX,mouseY);
             firePressed = true;
         }
 
