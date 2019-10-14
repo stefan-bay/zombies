@@ -11,7 +11,7 @@ abstract class GameObject {
     private boolean hasGravity;
     private boolean colliding = true;
     private int health;
-    private  boolean destroyable;
+    private boolean destroyable;
 
     public boolean isColliding() {
         return colliding;

@@ -17,7 +17,6 @@ public class GameContainer {
 
         mainMenu = new MainMenu(this);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
 
 
         frame.add(mainMenu);
