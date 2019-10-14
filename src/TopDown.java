@@ -2,8 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -27,6 +28,8 @@ public class TopDown implements GameMode {
     Cooldown enemySpawnCooldown = new Cooldown(5000);
     int enemySize = 40;
     Random enemyPos = new Random();
+    boolean firePressed = false;
+    Point2D.Double fireCoords;
     // for scrolling
     int right_buffer = 80;
     int enemyHealth = 100;
@@ -81,17 +84,8 @@ public class TopDown implements GameMode {
             runDown();
         }
         if(!fireCooldown.isOnCooldown) {
-            if(keysPressed[9]) {
-                shoot(new Point2D.Double(-projectileSpeed,0));
-            }
-            if(keysPressed[10]) {
-                shoot(new Point2D.Double(0,projectileSpeed));
-            }
-            if(keysPressed[11]) {
-                shoot(new Point2D.Double(projectileSpeed,0));
-            }
-            if(keysPressed[8]) {
-                shoot(new Point2D.Double(0, -projectileSpeed));
+            if(firePressed) {
+                shoot(fireCoords);
             }
         }
         gameScene.repaint();
@@ -120,7 +114,38 @@ public class TopDown implements GameMode {
         container.add(gameScene);
         container.pack();
         container.addKeyListener(keyListener);
+        container.addMouseListener(mouseListener);
     }
+
+    MouseListener mouseListener = new MouseListener() {
+        @Override
+        public void mouseClicked(MouseEvent mouseEvent) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent mouseEvent) {
+            double mouseX = -(player.getX() - (mouseEvent.getX() - size/2));
+            double mouseY = -(player.getY() - (mouseEvent.getY() - size/2));
+            fireCoords = new Point2D.Double(mouseX,mouseY);
+            firePressed = true;
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent mouseEvent) {
+            firePressed = false;
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent mouseEvent) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent mouseEvent) {
+
+        }
+    };
 
     KeyListener keyListener = new KeyListener() {
         @Override
