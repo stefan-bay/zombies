@@ -41,7 +41,7 @@ public class TopDown implements GameMode {
 
     @Override
     public void update() {
-        //spawnEnemy();
+        spawnEnemy();
         updateAllGameObjects();
         handleKeyPress();
     }
