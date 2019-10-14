@@ -28,7 +28,6 @@ public class Animation {
             location = count - 1;
         else
             location--;
-
         return frames.get(location);
     }
 

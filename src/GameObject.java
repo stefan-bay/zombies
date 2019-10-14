@@ -151,7 +151,6 @@ abstract class GameObject {
     }
 
     Projectile getProjectile(Point2D.Double direction) {
-
         double projectileX = getX() + getWidth()/2 + (getWidth() * (direction.getX() != 0 ? (direction.getX()/Math.abs(direction.getX())) : 1));
         double projectileY = getY() + getHeight()/2 + (getHeight()* (direction.getY() != 0 ? (direction.getY()/Math.abs(direction.getY())) : 1));
         return new Projectile(projectileX, projectileY, direction);

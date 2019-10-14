@@ -18,6 +18,9 @@ public class TopDown implements GameMode {
     Scene gameScene;
     JFrame container;
     Player player;
+    VictoryBox victoryBox;
+    EndScreen endScreen;
+
     boolean[] keysPressed = new boolean[26];
     int projectileSpeed = 15;
     Cooldown fireCooldown = new Cooldown(500);

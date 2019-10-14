@@ -1,6 +1,3 @@
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,11 +17,8 @@ public class MainMenu extends JPanel implements ActionListener {
     public MainMenu(GameContainer gc) {
         mainMenu = this;
 
-        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
         setPreferredSize(new Dimension(800,800));
         Color mainMenuColor = new Color(130, 155, 146);
-
         setBackground(mainMenuColor);
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
@@ -99,7 +93,6 @@ public class MainMenu extends JPanel implements ActionListener {
                 else if (numClicksLevel % 2 == 1) {
                     levelPanel.setVisible(true);
                 }
-
             }
         });
 
@@ -116,19 +109,6 @@ public class MainMenu extends JPanel implements ActionListener {
                 setVisible(false);
             }
         });
-    }
-
-    private void sound() {
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("buttonPressSound.wav"));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-            // If you want the sound to loop infinitely, then put: clip.loop(Clip.LOOP_CONTINUOUSLY);
-            // If you want to stop the sound, then use clip.stop();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     private void playRunRight(GameContainer gc) {

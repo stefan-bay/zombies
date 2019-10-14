@@ -38,6 +38,7 @@ public class Player extends GameObject {
         g.fillRect(0,0,(int)widthInitial,(int)heightInitial);
 
         ArrayList<BufferedImage> runRight = new ArrayList<>();
+
         for (int i = 1; i < 9; i++) {
             try {
                 runRight.add(ImageIO.read(new File("res/robot/Run (" + i + ").png")));

@@ -28,7 +28,6 @@ public class Scene extends JPanel{
             if(!isShown(gameObject))
                 continue;
 
-
             g.drawImage(gameObject.getImage(), (int) gameObject.getX(), (int) gameObject.getY(), null );
 
         }

@@ -21,7 +21,6 @@ public class GameContainer {
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
-
         // Show Main Menu
         // call this.launchGameMode(gameMode) with a gamemode when it is seletced.
         //Temp
