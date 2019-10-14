@@ -21,7 +21,8 @@ public class Scene extends JPanel{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.translate(getWidth()/2,getHeight()/2);
-        for (GameObject gameObject : objectsToDraw) {
+        for (int i = 0; i < objectsToDraw.size(); i++) {
+            GameObject gameObject = objectsToDraw.get(i);
             if(!isShown(gameObject)) {
                 continue;
             }
