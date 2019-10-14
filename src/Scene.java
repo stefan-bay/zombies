@@ -25,8 +25,28 @@ public class Scene extends JPanel{
 
         g.translate(getWidth()/2,getHeight()/2);
         for (GameObject gameObject : objectsToDraw) {
+            if(!isShown(gameObject))
+                continue;
+
+
             g.drawImage(gameObject.getImage(), (int) gameObject.getX(), (int) gameObject.getY(), null );
+
+            // hitbox drawing
             g2d.draw(new Rectangle2D.Double(gameObject.getX(), gameObject.getY(), gameObject.getWidth(), gameObject.getHeight()));
+            System.out.println("drawing: " + gameObject);
         }
+    }
+
+    private boolean isShown(GameObject object) {
+        if (object.getMinX() > width/2)
+            return false;
+        if (object.getMaxX() < -(width/2))
+            return false;
+        if (object.getMinY() > height/2)
+            return false;
+        if (object.getMaxY() < -(height/2))
+            return false;
+
+        return true;
     }
 }
