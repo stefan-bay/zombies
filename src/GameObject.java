@@ -25,6 +25,10 @@ abstract class GameObject {
         this.colliding = colliding;
     }
 
+    public int getHealth() {
+        return this.health;
+    }
+
     public double getMaxX() {
         return this.x + this.width;
     }

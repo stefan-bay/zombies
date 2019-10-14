@@ -28,8 +28,11 @@ public class Animation {
             location = count - 1;
         else
             location--;
-
         return frames.get(location);
+    }
+
+    public void reset() {
+        this.location = 0;
     }
 
     public static BufferedImage flipImage(BufferedImage image) {

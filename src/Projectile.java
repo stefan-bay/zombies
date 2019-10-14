@@ -36,9 +36,6 @@ public class Projectile extends GameObject{
                 break;
             }
         }
-
-
-
     }
 
     @Override
