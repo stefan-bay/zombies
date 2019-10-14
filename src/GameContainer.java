@@ -17,13 +17,13 @@ public class GameContainer {
         mainMenu = new MainMenu(this);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        frame.add(mainMenu);
         frame.pack();
         frame.setVisible(true);
-        frame.setResizable(false);
+        frame.setResizable(false); //CHANGE THIS
 
         // bypass main menu
-        launchGameMode(gameMode.TOPDOWN);
-//        frame.add(mainMenu);
+        //launchGameMode(gameMode.TOPDOWN);
 
         // Show Main Menu
         // call this.launchGameMode(gameMode) with a gamemode when it is seletced.

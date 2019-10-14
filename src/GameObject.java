@@ -31,6 +31,10 @@ abstract class GameObject {
         return this.health;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public double getMaxX() {
         return this.x + this.width;
     }
