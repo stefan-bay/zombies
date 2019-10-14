@@ -35,6 +35,11 @@ public class HealthBar extends GameObject {
     @Override
     Image getImage() {
 
+        if (object.shouldRemove()) {
+            this.setShouldRemove(true);
+            return null;
+        }
+
         double bar_width = (object.getHealth() / (double)maxHealth) * Width;
 
         BufferedImage bar = new BufferedImage((int)Width, (int)Height, BufferedImage.TYPE_INT_ARGB);

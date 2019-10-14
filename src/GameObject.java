@@ -17,6 +17,8 @@ abstract class GameObject {
     private boolean destroyable;
     private int projectileSpeed = 15;
 
+    private boolean shouldRemove;
+
     public boolean isColliding() {
         return colliding;
     }
@@ -67,20 +69,29 @@ abstract class GameObject {
         this.y = y;
         this.width = width;
         this.height = height;
+
+        this.shouldRemove = false;
     }
 
     /**
      * @param damage amount of damage to deal to this object
      * @return if this object is out of health;
      */
-    boolean damage(int damage) {
+    void damage(int damage) {
         if(destroyable) {
             this.health -= damage;
             if(this.health <= 0) {
-                return true;
+                this.shouldRemove = true;
             }
         }
-        return false;
+    }
+
+    void setShouldRemove(boolean shouldRemove) {
+        this.shouldRemove = true;
+    }
+
+    boolean shouldRemove() {
+        return this.shouldRemove;
     }
 
     double getX() {

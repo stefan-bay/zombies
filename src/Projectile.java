@@ -29,10 +29,9 @@ public class Projectile extends GameObject{
         for (int i = 0; i < objects.size(); i++) {
             GameObject object = objects.get(i);
             if (!(this == object) && object.isColliding() && this.intersects(object)) {
-                if (object.damage(damage)) {
-                    objects.remove(object);
-                }
-                objects.remove(this);
+                object.damage(damage);
+
+                this.setShouldRemove(true);
                 break;
             }
         }

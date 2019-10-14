@@ -46,6 +46,12 @@ public class TopDown implements GameMode {
     void updateAllGameObjects() {
         for(int i = 0; i < gameObjects.size(); i++) {
             GameObject object = gameObjects.get(i);
+
+            if (object.shouldRemove()) {
+                gameObjects.remove(object);
+                continue;
+            }
+
             object.update(gameObjects);
             if (object instanceof Enemy) {
                 updateEnemy((Enemy)object);
