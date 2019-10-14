@@ -25,6 +25,12 @@ public class EndScreen extends GameObject{
 
     @Override
     Image getImage() {
-        return bloodAnimation.nextImage();
+        BufferedImage image = bloodAnimation.nextImage();
+        Graphics2D g = (Graphics2D)image.getGraphics();
+        g.setColor(Color.red);
+        g.drawString("YOU LOSE", image.getWidth()/2, image.getHeight()/2);
+        g.dispose();
+
+        return image;
     }
 }
