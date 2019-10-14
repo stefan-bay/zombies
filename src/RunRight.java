@@ -63,7 +63,7 @@ public class RunRight implements GameMode {
 
     @Override
     public void update() {
-        player.update(gameObjects);
+        player.update(foregroundObjects);
 //        System.out.println(player.getWidth() +", "+ player.getHeight());
         if(!won) {
             if (keysPressed[3]) {
@@ -90,10 +90,9 @@ public class RunRight implements GameMode {
 
     void initializeGame() {
         Ground ground = new Ground(-size/2, 0, size, size/2);
-        gameObjects.add(ground);
+        foregroundObjects.add(ground);
         player = new Player();
         player.setHasGravity(true);
-        gameObjects.add(player);
 
         int victoryBoxSize = size/8;
         victoryBox = new VictoryBox( -size/7, -victoryBoxSize, victoryBoxSize, victoryBoxSize);
@@ -106,9 +105,14 @@ public class RunRight implements GameMode {
         foregroundObjects.add(victoryBox);
 
         Tree tree = new Tree(0, -200);
-        gameObjects.add(tree);
+//        gameObjects.add(tree);
         backgroundObjects.add(tree);
 
+        // objects in correct order
+        gameObjects.addAll(backgroundObjects);
+        gameObjects.addAll(foregroundObjects);
+        gameObjects.add(ground);
+        gameObjects.add(player);
     }
 
     KeyListener keyListener = new KeyListener() {
@@ -140,18 +144,27 @@ public class RunRight implements GameMode {
     };
 
     void runRight() {
+        player.setCurrentAnimation(player.runRightAnimation);
         if (player.getX() > right_buffer) {
             for (GameObject go : foregroundObjects)
                 go.setX(go.getX() - 2);
 
             for (GameObject go : backgroundObjects)
                 go.setX(go.getX() - 1);
-        }
-        player.move(2,0);
+        } else
+            player.move(2,0);
     }
 
     void runLeft() {
-        player.move(-2,0);
+        player.setCurrentAnimation(player.runLeftAnimation);
+        if (player.getX() < -right_buffer) {
+            for (GameObject go : foregroundObjects)
+                go.setX(go.getX() + 2);
+
+            for (GameObject go : backgroundObjects)
+                go.setX(go.getX() + 1);
+        } else
+            player.move(-2,0);
     }
 
     void jump() {

@@ -31,7 +31,7 @@ public class TopDown implements GameMode {
     int projectileSpeed = 5;
 
     // for scrolling
-    int right_buffer = 30;
+    int right_buffer = 80;
 
     TopDown(JFrame frame) {
         container = frame;
@@ -177,20 +177,41 @@ public class TopDown implements GameMode {
 
             for (GameObject go : backgroundObjects)
                 go.setX(go.getX() - 1);
-        }
-        player.move(moveSpeed,0);
+        } else
+            player.move(moveSpeed,0);
     }
 
     void runLeft() {
-        player.move(-moveSpeed,0);
+        if (player.getX() < -right_buffer) {
+            for (GameObject go : foregroundObjects)
+                go.setX(go.getX() + moveSpeed);
+
+            for (GameObject go : backgroundObjects)
+                go.setX(go.getX() + 1);
+        } else
+            player.move(-moveSpeed,0);
     }
 
     void runUp() {
-        player.move(0,-moveSpeed);
+        if (player.getY() < -right_buffer) {
+            for (GameObject go : foregroundObjects)
+                go.setY(go.getY() + moveSpeed);
+
+            for (GameObject go : backgroundObjects)
+                go.setY(go.getY() + 1);
+        } else
+            player.move(0,-moveSpeed);
     }
 
     void runDown() {
-        player.move(0,moveSpeed);
+        if (player.getY() > right_buffer) {
+            for (GameObject go : foregroundObjects)
+                go.setY(go.getY() - moveSpeed);
+
+            for (GameObject go : backgroundObjects)
+                go.setY(go.getY() - 1);
+        } else
+            player.move(0,moveSpeed);
     }
 
     void shoot(Point2D.Double direction) {
