@@ -167,7 +167,8 @@ abstract class GameObject {
         cubeRadius/=2;
         double projectileX = getX() + unitDirection.getX() * cubeRadius;
         double projectileY = getY() +  unitDirection.getY() * cubeRadius;
-        return new Projectile( projectileX, projectileY, direction);
+        Point2D.Double newProjectileCoords = new Point2D.Double(unitDirection.getX() * projectileSpeed, unitDirection.getY() * projectileSpeed);
+        return new Projectile( projectileX, projectileY, newProjectileCoords);
     }
 
     abstract Image getImage();
