@@ -128,16 +128,20 @@ public class TopDown implements GameMode {
         int victoryBoxSize = size/8;
         victoryBox = new VictoryBox( -size/7, -victoryBoxSize, victoryBoxSize, victoryBoxSize);
         // Target
-        gameObjects.add(new GameObject(100,100,100,100, 100) {
-                            @Override
-                            Image getImage() {
-                                Image thisImage = new BufferedImage(100,100, BufferedImage.TYPE_INT_RGB);
-                                Graphics g = thisImage.getGraphics();
-                                g.setColor(Color.magenta);
-                                //g.fillRect(0,0,size,size);
-                                g.setColor(Color.CYAN);
-                                return thisImage;                            }
-                        });
+        victoryBox.setColliding(false);
+        GameObject target = new GameObject(100,100,100,100, 100) {
+            @Override
+            Image getImage() {
+                Image thisImage = new BufferedImage(100,100, BufferedImage.TYPE_INT_RGB);
+                Graphics g = thisImage.getGraphics();
+                g.setColor(Color.magenta);
+                //g.fillRect(0,0,size,size);
+                g.setColor(Color.CYAN);
+                return thisImage;                            }
+        };
+        target.setColliding(true);
+        gameObjects.add(target);
+        foregroundObjects.add(target);
                 gameObjects.add(victoryBox);
         gameScene = new Scene(gameObjects, size, size);
         container.add(gameScene);
@@ -225,7 +229,7 @@ public class TopDown implements GameMode {
         double projectileY = player.getY() + (player.getHeight()/2 * (direction.getY() != 0 ? (direction.getY()/Math.abs(direction.getY())) : 1));
         Projectile projectile = new Projectile(projectileX, projectileY, direction);
         gameObjects.add(projectile);
-
+        foregroundObjects.add(projectile);
         setFireCooldown(true);
         // Update timer
         fireCooldown.schedule(new TimerTask() {

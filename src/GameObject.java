@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 abstract class GameObject {
@@ -86,9 +87,9 @@ abstract class GameObject {
     void setHeight(double height) {
         this.height = height;
     }
-    
+
     boolean collidesWith(GameObject other) {
-        return colliding && intersects(other);
+        return colliding && other.isColliding() && intersects(other);
     }
 
     void update(ArrayList<GameObject> gameObjects) {
@@ -98,13 +99,16 @@ abstract class GameObject {
     }
 
     boolean intersects(GameObject other) {
-        if (this.getX() < other.getX() + other.getWidth() &&
-                this.getX() + this.getWidth() > other.getX() &&
-                this.getY() < other.getY() + other.getHeight() &&
-                this.getY() + this.getHeight() > other.getY()) {
+        return intersects(this.getX(), this.getY(), other);
+    }
+
+    boolean intersects(double x, double y, GameObject other) {
+        if (x < other.getX() + other.getWidth() &&
+                x + this.getWidth() > other.getX() &&
+               y < other.getY() + other.getHeight() &&
+                y + this.getHeight() > other.getY()) {
             return true;
         }
-
         return false;
     }
     
@@ -114,9 +118,9 @@ abstract class GameObject {
         }
     }
 
-    private boolean canMove(double x, double y, ArrayList<GameObject> others) {
+    boolean canMove(double x, double y, ArrayList<GameObject> others) {
         for(GameObject other : others) {
-            if (other != this && other.isColliding() && this.collidesWith(other)) {
+            if (other != this && other.isColliding() && isColliding() && this.intersects(getX() + x, getY() + y, other)) {
                 return false;
             }
         }

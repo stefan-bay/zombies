@@ -174,10 +174,6 @@ public class RunRight implements GameMode {
     void fall() {
     }
 
-    void shoot(Point2D.Double vector) {
-
-    }
-
 
     void playerStop() {
         player.move(0, 0);
