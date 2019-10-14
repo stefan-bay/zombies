@@ -15,6 +15,7 @@ abstract class GameObject {
     private boolean colliding = true;
     private int health;
     private boolean destroyable;
+    private int projectileSpeed = 15;
 
     public boolean isColliding() {
         return colliding;
@@ -116,14 +117,16 @@ abstract class GameObject {
     }
 
     boolean intersects(GameObject other) {
-        return intersects(this.getX(), this.getY(), other);
+        return intersects(this.getX() - this.getWidth()/2, this.getY()- this.getHeight()/2, other);
     }
 
     boolean intersects(double x, double y, GameObject other) {
-        if (x < other.getX() + other.getWidth() &&
-                x + this.getWidth() > other.getX() &&
-               y < other.getY() + other.getHeight() &&
-                y + this.getHeight() > other.getY()) {
+        double otherX = other.getX() - other.getWidth()/2;
+        double otherY = other.getY() - other.getHeight()/2;
+        if (x < otherX + other.getWidth()  &&
+                x + this.getWidth() > otherX &&
+               y < otherY + other.getHeight() &&
+                y + this.getHeight() > otherY) {
             return true;
         }
         return false;
@@ -136,7 +139,8 @@ abstract class GameObject {
 
     boolean canMove(double x, double y, ArrayList<GameObject> others) {
         for(GameObject other : others) {
-            if (other != this && other.isColliding() && isColliding() && this.intersects(getX() + x, getY() + y, other)) {
+            // translate intersect to the top left.
+            if (other != this && other.isColliding() && isColliding() && this.intersects(getX() + x - getWidth()/2, getY() + y - getHeight()/2, other)) {
                 return false;
             }
         }
@@ -151,10 +155,15 @@ abstract class GameObject {
     }
 
     Projectile getProjectile(Point2D.Double direction) {
-
-        double projectileX = getX() + getWidth()/2 + (getWidth() * (direction.getX() != 0 ? (direction.getX()/Math.abs(direction.getX())) : 1));
-        double projectileY = getY() + getHeight()/2 + (getHeight()* (direction.getY() != 0 ? (direction.getY()/Math.abs(direction.getY())) : 1));
-        return new Projectile(projectileX, projectileY, direction);
+        double directionLength = Math.sqrt(Math.pow(direction.getX(),2) + Math.pow(direction.getY(),2));
+        // Unit vector of direction
+        Point2D.Double unitDirection = new Point2D.Double(direction.getX()/directionLength, direction.getY()/directionLength);
+        // Length of cube radius
+        double cubeRadius = Math.sqrt(Math.pow(getWidth(),2) + Math.pow(getHeight(),2));
+        cubeRadius/=2;
+        double projectileX = getX() + unitDirection.getX() * cubeRadius;
+        double projectileY = getY() +  unitDirection.getY() * cubeRadius;
+        return new Projectile( projectileX, projectileY, direction);
     }
 
     abstract Image getImage();

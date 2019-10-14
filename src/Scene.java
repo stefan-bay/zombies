@@ -20,16 +20,12 @@ public class Scene extends JPanel{
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        Graphics2D g2d = (Graphics2D)g;
-
         g.translate(getWidth()/2,getHeight()/2);
         for (GameObject gameObject : objectsToDraw) {
-            if(!isShown(gameObject))
+            if(!isShown(gameObject)) {
                 continue;
-
-
-            g.drawImage(gameObject.getImage(), (int) gameObject.getX(), (int) gameObject.getY(), null );
+            }
+            g.drawImage(gameObject.getImage(), (int) (gameObject.getX() - gameObject.getWidth()/2), (int) (gameObject.getY() - gameObject.getHeight()/2), null );
 
         }
     }

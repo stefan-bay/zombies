@@ -38,7 +38,6 @@ public class TopDown implements GameMode {
         spawnEnemy();
         updateAllGameObjects();
         handleKeyPress();
-
     }
 
     void updateAllGameObjects() {
@@ -96,11 +95,7 @@ public class TopDown implements GameMode {
 
 
     void initializeGame() {
-        Image playerImage = new BufferedImage((int) Player.widthInitial,(int) Player.heightInitial, BufferedImage.TYPE_INT_RGB);
-        Graphics g = playerImage.getGraphics();
-        g.setColor(Color.CYAN);
-        g.fillRect(0,0,(int)Player.widthInitial,(int)Player.heightInitial);
-        player = new Player(){
+        player = new Player(0,0,30,30){
             @Override
             Image getImage() {
                 return playerImage;

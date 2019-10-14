@@ -34,7 +34,6 @@ public class RunRight implements GameMode {
 
     RunRight(JFrame frame) {
         container = frame;
-        initializeGame();
     }
 
     void checkWin() {
@@ -88,7 +87,7 @@ public class RunRight implements GameMode {
     }
 
 
-    void initializeGame() {
+    /*void initializeGame() {
         Ground ground = new Ground(-size/2, 0, size, size/2);
         foregroundObjects.add(ground);
         player = new Player();
@@ -113,7 +112,7 @@ public class RunRight implements GameMode {
         gameObjects.addAll(foregroundObjects);
         gameObjects.add(ground);
         gameObjects.add(player);
-    }
+    }*/
 
     KeyListener keyListener = new KeyListener() {
         @Override

@@ -15,10 +15,6 @@ public class Player extends GameObject {
     }
 
     Image playerImage;
-    static double widthInitial = 30;
-    static double heightInitial = 30;
-    static double xInitial = 0;
-    static double yInitial = -heightInitial;
 
     Direction direction;
 
@@ -30,12 +26,12 @@ public class Player extends GameObject {
     Animation idleRightAnimation;
     Animation idleLeftAnimation;
 
-    Player() {
-        super(xInitial, yInitial, widthInitial, heightInitial, 200);
-        playerImage = new BufferedImage((int) widthInitial,(int) heightInitial, BufferedImage.TYPE_INT_RGB);
+    Player(double x, double y, double width, double height) {
+        super(x, y, width, height, 200);
+        playerImage = new BufferedImage((int) width,(int) height, BufferedImage.TYPE_INT_RGB);
         Graphics g = playerImage.getGraphics();
         g.setColor(Color.CYAN);
-        g.fillRect(0,0,(int)widthInitial,(int)heightInitial);
+        g.fillRect(0,0,(int)width,(int)height);
 
         ArrayList<BufferedImage> runRight = new ArrayList<>();
         for (int i = 1; i < 9; i++) {
