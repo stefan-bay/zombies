@@ -113,28 +113,27 @@ public class TopDown implements GameMode {
         if (keysPressed[0]) {
             runLeft();
         }
-        if(keysPressed[22]) {
+        if (keysPressed[22]) {
             runUp();
         }
-        if(keysPressed[18]) {
+        if (keysPressed[18]) {
             runDown();
         }
-        if(!fireCooldown.isOnCooldown) {
-            if(firePressed) {
+        if (!fireCooldown.isOnCooldown) {
+            if (firePressed) {
                 Point2D mouseLoc = getMouseLoc();
-                double mouseX = mouseLoc.getX() - player.getX();
-                double mouseY = mouseLoc.getY() - player.getY();
-                fireCoords = new Point2D.Double(mouseX,mouseY);
+                double mouseX = mouseLoc.getX();
+                double mouseY = mouseLoc.getY();
+                fireCoords = new Point2D.Double(mouseX, mouseY);
                 shoot(fireCoords);
             }
         }
     }
-
     Point2D.Double getMouseLoc() {
         Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
         double mouseX = (mouseLoc.getX() - size/2 - 60 - player.getX());
         double mouseY = (mouseLoc.getY() - size/2 - 60 - player.getY());
-
+        System.out.println(mouseX + " " + mouseY);
         return new Point2D.Double(mouseX, mouseY);
     }
 
@@ -256,6 +255,10 @@ public class TopDown implements GameMode {
             }
         }
     }
+
+//    public static int getKillCount() {
+//        return killCount;
+//    }
 
     void shoot(Point2D.Double direction) {
         if(fireCooldown.startCooldown()) {

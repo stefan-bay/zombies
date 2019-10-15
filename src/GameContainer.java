@@ -8,7 +8,7 @@ public class GameContainer {
     JFrame frame;
     MainMenu mainMenu;
 
-    boolean bypassMainMenu = true;
+    boolean bypassMainMenu = false;
 
     public static void main(String[] args) {
         GameContainer container = new GameContainer();
@@ -18,6 +18,7 @@ public class GameContainer {
         frame = new JFrame();
         frame.setTitle("Game");
         mainMenu = new MainMenu(this);
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setResizable(false); //CHANGE THIS
