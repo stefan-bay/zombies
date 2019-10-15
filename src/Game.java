@@ -68,7 +68,7 @@ public class Game {
 
     public void update() {
         if (!hasLost) {
-            spawnEnemy();
+            //spawnEnemy();
             handleKeyPress();
             redrawFlashlight();
             checkLose();

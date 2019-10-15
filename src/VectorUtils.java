@@ -21,13 +21,10 @@ public class VectorUtils {
         double theta =  Math.acos(((p1.getX()) * (p2.getX()) + (p1.getY())
                 * (p2.getY())) / (p1.distance(origin) * p2.distance(origin)));
         if(p2.getY() < origin.getY() && p2.getX() < origin.getX()) {
-            theta +=Math.PI;
+            theta = 2*Math.PI - theta;
         } else if (p2.getY() < origin.getY() && p2.getX() > origin.getX()){
             theta = Math.PI/2 - theta;
             theta +=  Math.PI*3/2;
-        } else if (p2.getY() > origin.getY() && p2.getX() < origin.getX()) {
-            theta = Math.PI/2 - theta;
-            theta += Math.PI/2;
         }
         return theta;
     }
