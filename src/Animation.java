@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Timer;
 
 public class Animation {
     ArrayList<BufferedImage> frames;
@@ -16,16 +15,6 @@ public class Animation {
         count = frames.size();
 
          animationCooldown = new Cooldown(refreshRate);
-    }
-
-    // @TODO get rid of this because of run right
-    //  TEMP
-    Animation (ArrayList<BufferedImage> frames) {
-        this.frames = frames;
-        location = 0; // first frame
-        count = frames.size();
-
-        animationCooldown = new Cooldown(1);
     }
 
     boolean shouldUpdateFrame() {
@@ -62,7 +51,7 @@ public class Animation {
         return createTransformed(image, at);
     }
 
-    private static BufferedImage createTransformed(
+    public static BufferedImage createTransformed(
             BufferedImage image, AffineTransform at)
     {
         BufferedImage newImage = new BufferedImage(

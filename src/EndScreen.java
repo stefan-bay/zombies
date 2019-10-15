@@ -24,13 +24,11 @@ public class EndScreen extends GameObject{
         bloodAnimation = new Animation(endScreenList, 100);
 
         youLoseList = new ArrayList<>();
-        for (int i = 45; i < 50; i+=2) {
             try {
-                youLoseList.add(ImageIO.read(new File("res/YouLose_animation/YouLose" + i + ".png")));
+                youLoseList.add(ImageIO.read(new File("res/YouLose_animation/YouLose45.png")));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
         youLoseAnimation = new Animation(youLoseList, 100);
 
         killCountList = new ArrayList<>();

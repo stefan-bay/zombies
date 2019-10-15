@@ -21,7 +21,7 @@ public class GameContainer {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        frame.setResizable(false); //CHANGE THIS
+        frame.setResizable(false);
 
         if (bypassMainMenu)
             launchGameMode(); // bypass main menu
