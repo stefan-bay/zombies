@@ -133,7 +133,7 @@ public class MainMenu extends JPanel implements ActionListener {
 //    }
 
     private void playButton(GameContainer gc) {
-        gc.launchGameMode(GameContainer.gameMode.TOPDOWN);
+        gc.launchGameMode();
     }
 
     @Override

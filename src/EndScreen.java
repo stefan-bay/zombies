@@ -46,6 +46,9 @@ public class EndScreen extends GameObject{
 
 
     @Override
+    void update(ArrayList<GameObject> gameObjects) {}
+
+    @Override
     Image getImage() {
         BufferedImage image = bloodAnimation.nextImage();
         BufferedImage youLoseImage = youLoseAnimation.nextImage();

@@ -120,11 +120,7 @@ abstract class GameObject {
         return colliding && other.isColliding() && intersects(other);
     }
 
-    void update(ArrayList<GameObject> gameObjects) {
-        if(hasGravity) {
-            fall(gameObjects);
-        }
-    }
+    void update(ArrayList<GameObject> gameObjects){}
 
     boolean intersects(GameObject other) {
         return intersects(this.getX() - this.getWidth()/2, this.getY()- this.getHeight()/2, other);
