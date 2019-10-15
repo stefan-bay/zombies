@@ -96,13 +96,6 @@ public class MainMenu extends JPanel implements ActionListener {
             }
         });
 
-        runRightLabel.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent me) {
-                playRunRight(gc);
-                setVisible(false);
-            }
-        });
-
         topDownLabel.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
                 playTopDown(gc);
@@ -111,12 +104,8 @@ public class MainMenu extends JPanel implements ActionListener {
         });
     }
 
-    private void playRunRight(GameContainer gc) {
-        gc.launchGameMode(GameContainer.gameMode.RUNRIGHT);
-    }
-
     private void playTopDown(GameContainer gc) {
-        gc.launchGameMode(GameContainer.gameMode.TOPDOWN);
+        gc.launchGameMode();
     }
 
     @Override

@@ -23,7 +23,7 @@ public class GameContainer {
         frame.setResizable(false); //CHANGE THIS
 
         if (bypassMainMenu)
-            launchGameMode(gameMode.TOPDOWN); // bypass main menu
+            launchGameMode(); // bypass main menu
         else
             frame.add(mainMenu);
         frame.pack();
@@ -36,25 +36,7 @@ public class GameContainer {
 
     }
 
-    enum gameMode {
-        RUNRIGHT,
-        TOPDOWN,
-    }
-
-    void launchGameMode(gameMode mode) {
-        GameMode gameModeInstance;
-        switch (mode) {
-            case RUNRIGHT:
-                gameModeInstance = new RunRight(frame);
-                break;
-            case TOPDOWN:
-                gameModeInstance = new TopDown(frame);
-                break;
-            default:
-                gameModeInstance = new RunRight(frame);
-                break;
-        }
-        Game game = new Game(gameModeInstance);
-        game.startGame();
+    void launchGameMode() {
+        Game game = new Game(frame);
     }
 }

@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- *  Basic game to make the player run to the right.
+ *  Legacy code. Deprecated GameMode. TopDown is now the one true GameMode and ascends to its rightful place in
+ *  Game.java Commented out to avoid compiling.
  */
+/*
 public class RunRight implements GameMode {
 
     int size = 800;
@@ -179,3 +181,5 @@ public class RunRight implements GameMode {
     }
 
 }
+*/
+
