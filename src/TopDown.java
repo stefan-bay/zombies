@@ -132,12 +132,8 @@ public class TopDown implements GameMode {
 
 
     void initializeGame() {
-        player = new Player(0,0,30,30){
-            @Override
-            Image getImage() {
-                return playerImage;
-            }
-        };
+        player = new Player(0,0,30,30);
+
         player.setColliding(true);
         gameObjects.add(player);
 

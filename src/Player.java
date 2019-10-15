@@ -1,5 +1,8 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,95 +13,127 @@ public class Player extends GameObject {
         UP,
         DOWN,
         LEFT,
-        RIGHT
+        RIGHT,
     }
 
-    Image playerImage;
+    BufferedImage playerImage;
 
     Direction direction;
 
     Animation currentAnimation;
 
-    Animation runRightAnimation;
-    Animation runLeftAnimation;
-
-    Animation idleRightAnimation;
-    Animation idleLeftAnimation;
+    Point2D pointFacing;
+    Point2D frontFace;
 
     Player(double x, double y, double width, double height) {
         super(x, y, width, height, 200);
         playerImage = new BufferedImage((int) width,(int) height, BufferedImage.TYPE_INT_RGB);
         Graphics g = playerImage.getGraphics();
+
+//        try {
+//            playerImage = ImageIO.read(new File("res/robot/Idle (1).png"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
         g.setColor(Color.CYAN);
         g.fillRect(0,0,(int)width,(int)height);
+        g.fillOval(0, 0, (int)width, (int)height);
 
-        ArrayList<BufferedImage> runRight = new ArrayList<>();
-
-        for (int i = 1; i < 9; i++) {
-            try {
-                runRight.add(ImageIO.read(new File("res/robot/Run (" + i + ").png")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        runRightAnimation = new Animation(runRight);
-
-        ArrayList<BufferedImage> runLeft = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            runLeft.add(Animation.flipImage(runRight.get(i)));
-        }
-        runLeftAnimation = new Animation(runLeft);
-
-        ArrayList<BufferedImage> idleRight = new ArrayList<>();
-        for (int i = 1; i < 11; i++) {
-            try {
-                idleRight.add(ImageIO.read(new File("res/robot/Idle (" + i + ").png")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        idleRightAnimation = new Animation(idleRight);
-
-        ArrayList<BufferedImage> idleLeft = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            idleLeft.add(Animation.flipImage(idleRight.get(i)));
-        }
-        idleLeftAnimation = new Animation(idleLeft);
-
+        this.pointFacing = new Point2D.Double(1, 1);
+        this.frontFace   = new Point2D.Double(getX(), getY() - (getHeight()/2.0));
 
         this.direction = Direction.RIGHT;
-
-        //this.setWidth(idleRight.get(0).getWidth());
-        //this.setHeight(idleRight.get(0).getHeight());
-
-        setCurrentAnimation(idleRightAnimation);
     }
 
     void move(double x, double y, ArrayList<GameObject> objects) {
         super.move(x,y,objects);
-        if (x > 0) {
+
+        if (x > 0)
             this.direction = Direction.RIGHT;
-            setCurrentAnimation(runRightAnimation);
-        } else if (x < 0) {
+
+        else if (x < 0)
             this.direction = Direction.LEFT;
-            setCurrentAnimation(runLeftAnimation);
-        } else if (x == 0 && y == 0)
-            if (this.direction == Direction.RIGHT)
-                setCurrentAnimation(idleRightAnimation);
-            else
-                setCurrentAnimation(idleLeftAnimation);
+
+        else if (y > 0)
+            this.direction = Direction.DOWN;
+
+        else if (y < 0)
+            this.direction = Direction.UP;
+    }
+
+    public void setPointFacing(Point2D pointFacing) {
+        this.pointFacing = pointFacing;
     }
 
     public void setCurrentAnimation(Animation animation) {
         this.currentAnimation = animation;
     }
 
-    public void setPlayerImage(Image image) {
-        this.playerImage = image;
+    double imageRotationAngle() {
+//        return Math.toRadians(10);
+//         P0 object center
+        double p0x = getX();
+        double p0y = getY();
+
+        // P1 object front
+        double p1x = frontFace.getX();
+        double p1y = frontFace.getY();
+
+        // P2 point facing (mouse location)
+        double p2x = pointFacing.getX();
+        double p2y = pointFacing.getY();
+
+        // PA vector P1 - P0
+        double pax = p1x - p0x;
+        double pay = p1y - p0y;
+
+        // PB vector P2 - P0
+        double pbx = p2x - p0x;
+        double pby = p2y - p0y;
+
+        double pa_dot_pb = (pax * pbx) + (pbx + pby);
+        double mag_pa    = Math.sqrt(Math.pow(pax, 2) + Math.pow(pay, 2));
+        double mag_pb    = Math.sqrt(Math.pow(pbx, 2) + Math.pow(pby, 2));
+
+        double mags = mag_pa * mag_pb;
+
+        double dot_over_mags = pa_dot_pb / mags;
+
+        double theta = Math.toDegrees(Math.acos(dot_over_mags));
+
+        return theta;
+    }
+
+
+    public BufferedImage rotateImageByDegrees(BufferedImage img, double angle) {
+
+        double rads = Math.toRadians(angle);
+        double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
+        int w = img.getWidth();
+        int h = img.getHeight();
+        int newWidth = (int) Math.floor(w * cos + h * sin);
+        int newHeight = (int) Math.floor(h * cos + w * sin);
+
+        BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = rotated.createGraphics();
+        AffineTransform at = new AffineTransform();
+        at.translate((newWidth - w) / 2, (newHeight - h) / 2);
+
+        int x = w / 2;
+        int y = h / 2;
+
+        at.rotate(rads, x, y);
+
+        g2d.setTransform(at);
+        g2d.drawImage(img, 0, 0, null);
+        g2d.dispose();
+
+        return rotated;
     }
 
     @Override
     Image getImage() {
-        return currentAnimation.nextImage();
+        return playerImage;
     }
 }
