@@ -11,11 +11,18 @@ public class Flashlight extends GameObject {
     int flashlightRadius = 300;
     double flashLightTheta = Math.toRadians(60);
     int ambientLight = 250;
+    static int maxAmbientLight = 250;
+    boolean dayTime = false;
     int ambientDim = 50;
     Flashlight(double playerX, double playerY, double width, double height, Point2D.Double mouseLoc) {
         super(0,0,width,height);
         createFlashLight(playerX,playerY, width, height, mouseLoc);
         setColliding(false);
+    }
+
+    void setAmbientLight(int ambientLight, boolean isDayTime) {
+        this.ambientLight = ambientLight;
+        this.dayTime = isDayTime;
     }
 
     void createFlashLight(double playerX, double playerY, double width, double height, Point2D.Double mouseLoc) {
@@ -30,20 +37,22 @@ public class Flashlight extends GameObject {
         g.fillRect(0,0,(int)width,(int)height);
         // for r in range(radius)
         // for theta in range(mousetheta-mouseTheta/2 : mouseTheta+mouseTheta/2)
-        double mouseTheta = VectorUtils.getThetaBetweenVectors(posX, mouseLoc, playerPoint);
-        double thetaInc = Math.toRadians(1);
-        for(double r = 0; r < flashlightRadius; r++) {
-            for(double theta = mouseTheta - flashLightTheta/2; theta < mouseTheta + flashLightTheta/2; theta += thetaInc){
-                int x = (int) (width/2 + r * Math.cos(theta));
-                int y = (int) (height/2 + r * Math.sin(theta));
-                double radiusRatio = r/flashlightRadius;
-                int alpha = (int)((radiusRatio * ambientLight));
-                int redGreenToYellow = (int)(ambientLight - alpha);
-                Color flashlightColor = new Color(redGreenToYellow, redGreenToYellow, 0, alpha);
-                int[] colorArray = new int[25];
-                Arrays.fill(colorArray, flashlightColor.getRGB());
-                flashLightCone.setRGB((int)(x)-2,(int)(y)-2, 5,5,colorArray, 0,0);
+        if(!dayTime) {
+            double mouseTheta = VectorUtils.getThetaBetweenVectors(posX, mouseLoc, playerPoint);
+            double thetaInc = Math.toRadians(1);
+            for (double r = 0; r < flashlightRadius; r++) {
+                for (double theta = mouseTheta - flashLightTheta / 2; theta < mouseTheta + flashLightTheta / 2; theta += thetaInc) {
+                    int x = (int) (width / 2 + r * Math.cos(theta));
+                    int y = (int) (height / 2 + r * Math.sin(theta));
+                    double radiusRatio = r / flashlightRadius;
+                    int alpha = (int) ((radiusRatio * ambientLight));
+                    int redGreenToYellow = (int) (ambientLight - alpha);
+                    Color flashlightColor = new Color(redGreenToYellow, redGreenToYellow, 0, alpha);
+                    int[] colorArray = new int[25];
+                    Arrays.fill(colorArray, flashlightColor.getRGB());
+                    flashLightCone.setRGB((int) (x) - 2, (int) (y) - 2, 5, 5, colorArray, 0, 0);
 
+                }
             }
         }
     }

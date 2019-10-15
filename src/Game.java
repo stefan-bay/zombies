@@ -30,6 +30,10 @@ public class Game {
     VictoryBox victoryBox;
     EndScreen endScreen;
     Flashlight flashlight;
+    Cooldown daylightCooldown = new Cooldown(5);
+    boolean isDayTime = true;
+    int ambientLight = 0;
+    int lightMod = 1;
 
     boolean[] keysPressed = new boolean[26];
     int projectileSpeed = 15;
@@ -44,7 +48,6 @@ public class Game {
     int enemyHealth = 100;
     int killCount = 0;
     int tickTime = 50;
-
 
     java.util.Timer gameTimer = new Timer();
 
@@ -78,6 +81,7 @@ public class Game {
     }
 
     void redrawFlashlight() {
+        setAmbientLight();
         flashlight.createFlashLight(player.getX(), player.getY(), size, size, getMouseLoc());
         gameObjects.remove(player);
         gameObjects.remove(flashlight);
@@ -85,6 +89,18 @@ public class Game {
         gameObjects.add(flashlight);
         gameObjects.add(player);
         gameObjects.add(playerHealthBar);
+    }
+
+    void setAmbientLight() {
+        if(daylightCooldown.startCooldown()) {
+            ambientLight += lightMod;
+            if(ambientLight>=Flashlight.maxAmbientLight || ambientLight <=0) {
+                lightMod *= -1;
+            }
+            isDayTime = ambientLight < 180;
+            flashlight.setAmbientLight(ambientLight, isDayTime);
+        }
+
     }
 
     void updateAllGameObjects() {
