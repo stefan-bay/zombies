@@ -29,9 +29,12 @@ public class Enemy extends GameObject {
         xDelta /= length;
         yDelta /= length;
         move(xDelta * enemyMoveSpeed, yDelta * enemyMoveSpeed, objects);
-        if(canFire()) {
-            return getProjectile(new Point2D.Double(xDelta * enemyProjectileSpeed, yDelta * enemyProjectileSpeed));
-        }
+
+        // enemy only fires within 400 pixels of player
+        if (length < 400)
+            if(canFire()) {
+                return getProjectile(new Point2D.Double(xDelta * enemyProjectileSpeed, yDelta * enemyProjectileSpeed));
+            }
         return null;
     }
 

@@ -28,7 +28,6 @@ public class Game {
     Player player;
     HealthBar playerHealthBar;
     VictoryBox victoryBox;
-    EndScreen endScreen;
     Flashlight flashlight;
     Cooldown daylightCooldown = new Cooldown(5);
     boolean isDayTime = true;
@@ -37,12 +36,13 @@ public class Game {
 
     boolean[] keysPressed = new boolean[26];
     int projectileSpeed = 15;
-    Cooldown fireCooldown = new Cooldown(500);
+    Cooldown fireCooldown = new Cooldown(100);
     Cooldown enemySpawnCooldown = new Cooldown(5000);
     int enemySize = 40;
     Random enemyPos = new Random();
     boolean firePressed = false;
     Point2D.Double fireCoords;
+
     // for scrolling
     int right_buffer = 80;
     int enemyHealth = 100;
@@ -136,7 +136,7 @@ public class Game {
         if (player.getHealth() <= 0) {
             hasLost = true;
             gameObjects.clear();
-            gameObjects.add(endScreen);
+            gameObjects.add(new EndScreen(killCount));
         }
     }
 
@@ -190,8 +190,6 @@ public class Game {
         playerHealthBar = new HealthBar(player, 200);
         gameObjects.add(playerHealthBar);
 
-        endScreen = new EndScreen();
-
         flashlight = new Flashlight(player.getX(), player.getY(), size, size, getMouseLoc());
         gameObjects.add(flashlight);
         gameScene = new Scene(gameObjects, size, size);
@@ -202,13 +200,14 @@ public class Game {
 
         if (straight_to_endscreen) {
             player.setHealth(0);
+            killCount = 1100;
         }
     }
 
     void runRight() {
         for (GameObject go : gameObjects) {
             if (!(go instanceof Player)) {
-                go.setX(go.getX() - moveSpeed);
+                go.setX(go.getX() - player.getMoveSpeed());
             }
         }
 
@@ -217,7 +216,7 @@ public class Game {
     void runLeft() {
         for (GameObject go : gameObjects) {
             if (!(go instanceof Player)) {
-                go.setX(go.getX() + moveSpeed);
+                go.setX(go.getX() + player.getMoveSpeed());
             }
         }
     }
@@ -225,7 +224,7 @@ public class Game {
     void runUp() {
         for (GameObject go : gameObjects) {
             if (!(go instanceof Player)) {
-                go.setY(go.getY() + moveSpeed);
+                go.setY(go.getY() + player.getMoveSpeed());
             }
         }
     }
@@ -233,7 +232,7 @@ public class Game {
     void runDown() {
         for (GameObject go : gameObjects) {
             if (!(go instanceof Player)) {
-                go.setY(go.getY() - moveSpeed);
+                go.setY(go.getY() - player.getMoveSpeed());
             }
         }
     }
@@ -296,6 +295,9 @@ public class Game {
             if(letterValue < 26 && letterValue >= 0) {
                 keysPressed[letterValue] = true;
             }
+
+            if (keyCode == KeyEvent.VK_SHIFT)
+                player.setMoveSpeed(player.getMoveSpeed() + player.sprintModifier);
         }
 
         @Override
@@ -306,6 +308,8 @@ public class Game {
                 keysPressed[letterValue] = false;
             }
 
+            if (keyCode == KeyEvent.VK_SHIFT)
+                player.setMoveSpeed(player.getMoveSpeed() - player.sprintModifier);
         }
     };
 }

@@ -6,40 +6,86 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class EndScreen extends GameObject{
-    ArrayList<BufferedImage> endScreenList, youLoseList, killCountList;
-    Animation bloodAnimation, youLoseAnimation, killsAnimation;
+    private Animation bloodAnimation;
 
-    public EndScreen() {
+    private BufferedImage youLoseImage;
+    private BufferedImage killsImage;
+
+    private BufferedImage killCountImage;
+
+    /**
+     * Holds widths of each number png
+     */
+    private static int [] numberwidth = {
+            15, 14, 19, 21, 19, 22, 19, 20, 17, 17
+    };
+
+    private int killCount;
+
+    EndScreen(int killCount) {
         super(-400, -400, 0, 0);
-        endScreenList = new ArrayList<>();
-        for (int i = 0; i < 16; i++) {
-            try {
-                endScreenList.add(ImageIO.read(new File("res/blood_gif/frame_" + i + ".png")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
         this.setColliding(false);
+        this.killCount = killCount;
+
+        ArrayList<BufferedImage> endScreenList = getListForPath("res/blood_gif/frame_", 0, 15);
         bloodAnimation = new Animation(endScreenList, 100);
 
-        youLoseList = new ArrayList<>();
-            try {
-                youLoseList.add(ImageIO.read(new File("res/YouLose_animation/YouLose45.png")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        youLoseAnimation = new Animation(youLoseList, 100);
+        try {
+            youLoseImage = ImageIO.read(new File("res/UI/YouLose.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        killCountList = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
+        try {
+            killsImage = ImageIO.read(new File("res/UI/kills.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        generateKillCountImage();
+    }
+
+    private void generateKillCountImage() {
+        ArrayList<BufferedImage> killCountList = getListForPath("res/numbers/", 0, 9);
+        String killString = Integer.toString(killCount);
+        int number_of_digits = killString.length();
+        int [] numbers_to_display = new int[number_of_digits];
+        int img_width = 0; // total width of image (depends on which numbers are shown)
+
+        // fill numbers to display with correlating digits
+        for (int i = 0; i < number_of_digits; i++) {
+            int digit = Character.getNumericValue(killString.charAt(i));
+            System.out.println(digit);
+            numbers_to_display[i] = digit;
+            img_width += numberwidth[digit];
+        }
+
+        //
+        killCountImage = new BufferedImage(img_width, 22, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D numbers_g = (Graphics2D) killCountImage.createGraphics();
+
+        // draw
+        int loc = 0; // location in image
+        for (int i = 0; i < number_of_digits; i++) {
+            int digit = numbers_to_display[i];
+            numbers_g.drawImage(killCountList.get(digit), null, loc, 0);
+            loc += numberwidth[digit]; // update location in image
+        }
+
+        numbers_g.dispose();
+    }
+
+    ArrayList<BufferedImage> getListForPath(String path, int start, int stop) {
+        ArrayList<BufferedImage> list = new ArrayList<>();
+        for (int i = start; i < stop + 1; i++) {
             try {
-                killCountList.add(ImageIO.read(new File("res/UI/kills.png")));
+                list.add(ImageIO.read(new File(path + i + ".png")));
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
         }
-        killsAnimation = new Animation(killCountList, 100);
+        return list;
     }
 
 
@@ -48,20 +94,18 @@ public class EndScreen extends GameObject{
 
     @Override
     Image getImage() {
-        BufferedImage image = bloodAnimation.nextImage();
-        BufferedImage youLoseImage = youLoseAnimation.nextImage();
-        BufferedImage killsImage = killsAnimation.nextImage();
+        BufferedImage image = bloodAnimation.nextImage(); // dripping blood
+        BufferedImage youLoseImage = this.youLoseImage;
+        BufferedImage killsImage = this.killsImage;
+
         Color transparent = new Color(50, 50,50,0);
 
+        // draw over blood animation
         Graphics2D g = (Graphics2D)image.getGraphics();
-        //g.setColor(Color.red);
-
         g.setColor(transparent);
-        g.drawRect(300, 500, killsImage.getWidth(), killsImage.getHeight());
+
         g.drawImage(killsImage, null, 300, 500);
-
-        g.setColor(transparent);
-        g.drawRect(300,400, youLoseImage.getWidth(), youLoseImage.getHeight());
+        g.drawImage(killCountImage, null, 300 + killsImage.getWidth() + 10, 500);
         g.drawImage(youLoseImage, null, 250, 400);
 
         g.dispose();

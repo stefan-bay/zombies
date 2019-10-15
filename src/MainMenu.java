@@ -40,7 +40,7 @@ public class MainMenu extends JPanel implements ActionListener {
 //        selectLevel = new ImageIcon("buttons/SelectLevel.png");
 //        selectLevelLabel = new JLabel(selectLevel);
 //
-//        level1 = new ImageIcon("buttons/level1.png");
+//        level1 = new ImageIcon("buttons/1.png");
 //        level1Label = new JLabel(level1);
 //
 //        level2 = new ImageIcon("buttons/level2.png");
