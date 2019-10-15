@@ -11,7 +11,6 @@ abstract class GameObject {
     private double y;
     private double width;
     private double height;
-    private boolean hasGravity;
     private boolean colliding = true;
     private int health;
     private boolean destroyable;
@@ -49,14 +48,6 @@ abstract class GameObject {
 
     public double getMinY() {
         return this.y;
-    }
-
-    public boolean hasGravity() {
-        return hasGravity;
-    }
-
-    public void setHasGravity(boolean hasGravity) {
-        this.hasGravity = hasGravity;
     }
 
     GameObject(double x, double y, double width, double height) {
