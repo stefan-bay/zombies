@@ -25,6 +25,9 @@ public class Player extends GameObject {
     Point2D pointFacing;
     Point2D frontFace;
 
+    int moveSpeed = 5;
+    int sprintModifier = 5;
+
     Player(double x, double y, double width, double height) {
         super(x, y, width, height, 200);
         playerImage = new BufferedImage((int) width,(int) height, BufferedImage.TYPE_INT_RGB);
@@ -44,6 +47,7 @@ public class Player extends GameObject {
         this.frontFace   = new Point2D.Double(getX(), getY() - (getHeight()/2.0));
 
         this.direction = Direction.RIGHT;
+
     }
 
     void move(double x, double y, ArrayList<GameObject> objects) {
@@ -105,6 +109,13 @@ public class Player extends GameObject {
         return theta;
     }
 
+    void setMoveSpeed(int moveSpeed) {
+        this.moveSpeed = moveSpeed;
+    }
+
+    int getMoveSpeed() {
+        return this.moveSpeed;
+    }
 
     public BufferedImage rotateImageByDegrees(BufferedImage img, double angle) {
 

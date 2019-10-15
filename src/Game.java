@@ -28,7 +28,6 @@ public class Game {
     Player player;
     HealthBar playerHealthBar;
     VictoryBox victoryBox;
-    EndScreen endScreen;
     Flashlight flashlight;
     Cooldown daylightCooldown = new Cooldown(5);
     boolean isDayTime = true;
@@ -37,12 +36,13 @@ public class Game {
 
     boolean[] keysPressed = new boolean[26];
     int projectileSpeed = 15;
-    Cooldown fireCooldown = new Cooldown(500);
+    Cooldown fireCooldown = new Cooldown(100);
     Cooldown enemySpawnCooldown = new Cooldown(5000);
     int enemySize = 40;
     Random enemyPos = new Random();
     boolean firePressed = false;
     Point2D.Double fireCoords;
+
     // for scrolling
     int right_buffer = 80;
     int enemyHealth = 100;
@@ -51,6 +51,43 @@ public class Game {
 
     java.util.Timer gameTimer = new Timer();
 
+    Game(JFrame frame) {
+        container = frame;
+        initializeGame();
+        start();
+        mainLoop();
+    }
+
+    void initializeGame() {
+        player = new Player(0,0,30,30){
+            @Override
+            Image getImage() {
+                return playerImage;
+            }
+        };
+        player.setColliding(true);
+        gameObjects.add(player);
+
+        playerHealthBar = new HealthBar(player, 200);
+        gameObjects.add(playerHealthBar);
+
+        flashlight = new Flashlight(player.getX(), player.getY(), size, size, getMouseLoc());
+        gameObjects.add(flashlight);
+        gameScene = new Scene(gameObjects, size, size);
+        container.add(gameScene);
+        container.pack();
+        container.addKeyListener(keyListener);
+        container.addMouseListener(mouseListener);
+
+        if (straight_to_endscreen) {
+            player.setHealth(0);
+            killCount = 1100;
+        }
+    }
+
+    public void start() {
+        container.add(gameScene, BorderLayout.EAST);
+    }
 
     private void mainLoop() {
         update();
@@ -62,45 +99,15 @@ public class Game {
         }, tickTime );
     }
 
-    Game(JFrame frame) {
-        container = frame;
-        initializeGame();
-        start();
-        mainLoop();
-    }
-
     public void update() {
+        updateAllGameObjects();
         if (!hasLost) {
-            spawnEnemy();
             handleKeyPress();
+            spawnEnemy();
             redrawFlashlight();
             checkLose();
         }
-        updateAllGameObjects();
         gameScene.repaint();
-    }
-
-    void redrawFlashlight() {
-        setAmbientLight();
-        flashlight.createFlashLight(player.getX(), player.getY(), size, size, getMouseLoc());
-        gameObjects.remove(player);
-        gameObjects.remove(flashlight);
-        gameObjects.remove(playerHealthBar);
-        gameObjects.add(flashlight);
-        gameObjects.add(player);
-        gameObjects.add(playerHealthBar);
-    }
-
-    void setAmbientLight() {
-        if(daylightCooldown.startCooldown()) {
-            ambientLight += lightMod;
-            if(ambientLight>=Flashlight.maxAmbientLight || ambientLight <=0) {
-                lightMod *= -1;
-            }
-            isDayTime = ambientLight < 180;
-            flashlight.setAmbientLight(ambientLight, isDayTime);
-        }
-
     }
 
     void updateAllGameObjects() {
@@ -120,23 +127,6 @@ public class Game {
             if (object instanceof Enemy) {
                 updateEnemy((Enemy)object);
             }
-        }
-    }
-
-    void updateEnemy(Enemy enemy) {
-        // Updating an enemy returns the projectile.
-        GameObject projectile = enemy.update(gameObjects, player.getX(), player.getY());
-        if (projectile != null) {
-            gameObjects.add(projectile);
-        }
-
-    }
-
-    void checkLose() {
-        if (player.getHealth() <= 0) {
-            hasLost = true;
-            gameObjects.clear();
-            gameObjects.add(endScreen);
         }
     }
 
@@ -160,6 +150,36 @@ public class Game {
         }
     }
 
+    void redrawFlashlight() {
+        setAmbientLight();
+        flashlight.createFlashLight(player.getX(), player.getY(), size, size, getMouseLoc());
+        gameObjects.remove(player);
+        gameObjects.remove(flashlight);
+        gameObjects.remove(playerHealthBar);
+        gameObjects.add(flashlight);
+        gameObjects.add(player);
+        gameObjects.add(playerHealthBar);
+    }
+
+
+
+    void updateEnemy(Enemy enemy) {
+        // Updating an enemy returns the projectile.
+        GameObject projectile = enemy.update(gameObjects, player.getX(), player.getY());
+        if (projectile != null) {
+            gameObjects.add(projectile);
+        }
+
+    }
+
+    void checkLose() {
+        if (player.getHealth() <= 0) {
+            hasLost = true;
+            gameObjects.clear();
+            gameObjects.add(new EndScreen(killCount));
+        }
+    }
+
     Point2D.Double getMouseLoc() {
         Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
         double mouseX = (mouseLoc.getX() - size/2 - 60 - player.getX());
@@ -168,37 +188,16 @@ public class Game {
         return new Point2D.Double(mouseX, mouseY);
     }
 
-    public void start() {
-        container.add(gameScene, BorderLayout.EAST);
-    }
-
-
-    void initializeGame() {
-        player = new Player(0,0,30,30){
-            @Override
-            Image getImage() {
-                return playerImage;
+    void setAmbientLight() {
+        if(daylightCooldown.startCooldown()) {
+            ambientLight += lightMod;
+            if(ambientLight>=Flashlight.maxAmbientLight || ambientLight <=0) {
+                lightMod *= -1;
             }
-        };
-        player.setColliding(true);
-        gameObjects.add(player);
-
-        playerHealthBar = new HealthBar(player, 200);
-        gameObjects.add(playerHealthBar);
-
-        endScreen = new EndScreen();
-
-        flashlight = new Flashlight(player.getX(), player.getY(), size, size, getMouseLoc());
-        gameObjects.add(flashlight);
-        gameScene = new Scene(gameObjects, size, size);
-        container.add(gameScene);
-        container.pack();
-        container.addKeyListener(keyListener);
-        container.addMouseListener(mouseListener);
-
-        if (straight_to_endscreen) {
-            player.setHealth(0);
+            isDayTime = ambientLight < 180;
+            flashlight.setAmbientLight(ambientLight, isDayTime);
         }
+
     }
 
     void runRight() {
@@ -270,9 +269,7 @@ public class Game {
 
     MouseListener mouseListener = new MouseListener() {
         @Override
-        public void mouseClicked(MouseEvent mouseEvent) {
-
-        }
+        public void mouseClicked(MouseEvent mouseEvent) { }
 
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
@@ -285,14 +282,10 @@ public class Game {
         }
 
         @Override
-        public void mouseEntered(MouseEvent mouseEvent) {
-
-        }
+        public void mouseEntered(MouseEvent mouseEvent) { }
 
         @Override
-        public void mouseExited(MouseEvent mouseEvent) {
-
-        }
+        public void mouseExited(MouseEvent mouseEvent) { }
     };
 
     KeyListener keyListener = new KeyListener() {
@@ -307,6 +300,9 @@ public class Game {
             if(letterValue < 26 && letterValue >= 0) {
                 keysPressed[letterValue] = true;
             }
+
+            if (keyCode == KeyEvent.VK_SHIFT)
+                player.setMoveSpeed(player.getMoveSpeed() + player.sprintModifier);
         }
 
         @Override
@@ -317,6 +313,8 @@ public class Game {
                 keysPressed[letterValue] = false;
             }
 
+            if (keyCode == KeyEvent.VK_SHIFT)
+                player.setMoveSpeed(player.getMoveSpeed() - player.sprintModifier);
         }
     };
 }
