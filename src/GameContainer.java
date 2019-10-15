@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Main class for game.
@@ -24,20 +23,14 @@ public class GameContainer {
         frame.setResizable(false);
 
         if (bypassMainMenu)
-            launchGameMode(); // bypass main menu
+            launchGame(); // bypass main menu
         else
             frame.add(mainMenu);
+
         frame.pack();
-
-
-        // Show Main Menu
-        // call this.launchGameMode(gameMode) with a gamemode when it is seletced.
-        //Temp
-        //launchGameMode(gameMode.RUNRIGHT);
-
     }
 
-    void launchGameMode() {
+    void launchGame() {
         Game game = new Game(frame);
     }
 }
