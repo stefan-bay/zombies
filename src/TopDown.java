@@ -24,8 +24,10 @@ public class TopDown implements GameMode {
     Scene gameScene;
     JFrame container;
     Player player;
+    HealthBar playerHealthBar;
     VictoryBox victoryBox;
     EndScreen endScreen;
+    Flashlight flashlight;
 
     boolean[] keysPressed = new boolean[26];
     int projectileSpeed = 15;
@@ -50,10 +52,21 @@ public class TopDown implements GameMode {
         if (!hasLost) {
             spawnEnemy();
             handleKeyPress();
+            redrawFlashlight();
             checkLose();
         }
         updateAllGameObjects();
         gameScene.repaint();
+    }
+
+    void redrawFlashlight() {
+        flashlight.createFlashLight(player.getX(), player.getY(), size, size, getMouseLoc());
+        gameObjects.remove(player);
+        gameObjects.remove(flashlight);
+        gameObjects.remove(playerHealthBar);
+        gameObjects.add(flashlight);
+        gameObjects.add(player);
+        gameObjects.add(playerHealthBar);
     }
 
     void updateAllGameObjects() {
@@ -117,10 +130,10 @@ public class TopDown implements GameMode {
         }
     }
 
-    Point2D getMouseLoc() {
+    Point2D.Double getMouseLoc() {
         Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
-        double mouseX = (mouseLoc.getX() - size/2);
-        double mouseY = (mouseLoc.getY() - size/2);
+        double mouseX = (mouseLoc.getX() - size/2 - 60 - player.getX());
+        double mouseY = (mouseLoc.getY() - size/2 - 60 - player.getY());
 
         return new Point2D.Double(mouseX, mouseY);
     }
@@ -141,12 +154,12 @@ public class TopDown implements GameMode {
         player.setColliding(true);
         gameObjects.add(player);
 
-        HealthBar playerHealthBar = new HealthBar(player, 200);
+        playerHealthBar = new HealthBar(player, 200);
         gameObjects.add(playerHealthBar);
 
         endScreen = new EndScreen();
 
-        Flashlight flashlight = new Flashlight(player.getX(), player.getY(), size, size);
+        flashlight = new Flashlight(player.getX(), player.getY(), size, size, getMouseLoc());
         gameObjects.add(flashlight);
         gameScene = new Scene(gameObjects, size, size);
         container.add(gameScene);
@@ -212,50 +225,35 @@ public class TopDown implements GameMode {
     };
 
     void runRight() {
-        if (player.getX() > right_buffer) {
-            for (GameObject go : gameObjects) {
-                if (!(go instanceof Player)) {
-                    go.setX(go.getX() - moveSpeed);
-                }
+        for (GameObject go : gameObjects) {
+            if (!(go instanceof Player)) {
+                go.setX(go.getX() - moveSpeed);
             }
-        } else {
-            player.move(moveSpeed, 0, gameObjects);
         }
+
     }
 
     void runLeft() {
-        if (player.getX() < -right_buffer) {
-            for (GameObject go : gameObjects) {
-                if (!(go instanceof Player)) {
-                    go.setX(go.getX() + moveSpeed);
-                }
+        for (GameObject go : gameObjects) {
+            if (!(go instanceof Player)) {
+                go.setX(go.getX() + moveSpeed);
             }
-        } else {
-            player.move(-moveSpeed, 0, gameObjects);
         }
     }
 
     void runUp() {
-        if (player.getY() < -right_buffer) {
-            for (GameObject go : gameObjects) {
-                if (!(go instanceof Player)) {
-                    go.setY(go.getY() + moveSpeed);
-                }
+        for (GameObject go : gameObjects) {
+            if (!(go instanceof Player)) {
+                go.setY(go.getY() + moveSpeed);
             }
-        } else {
-            player.move(0, -moveSpeed, gameObjects);
         }
     }
 
     void runDown() {
-        if (player.getY() > right_buffer) {
-            for (GameObject go : gameObjects) {
-                if (!(go instanceof Player)) {
-                    go.setY(go.getY() - moveSpeed);
-                }
+        for (GameObject go : gameObjects) {
+            if (!(go instanceof Player)) {
+                go.setY(go.getY() - moveSpeed);
             }
-        } else {
-            player.move(0, moveSpeed, gameObjects);
         }
     }
 
