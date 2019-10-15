@@ -50,9 +50,6 @@ public class Flashlight extends GameObject {
         ((Graphics2D) g).fill(totalArea);
         g.setColor(flashlight);
         ((Graphics2D) g).fill(flashLightArea);
-
-
-
     }
 
     @Override
