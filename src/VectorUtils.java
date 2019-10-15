@@ -23,7 +23,6 @@ public class VectorUtils {
         Point2D.Double zero = new Point2D.Double(0,0);
         double theta =  Math.acos(((horizontalLine.getX()) * (toVector.getX()) + (horizontalLine.getY())
                 * (toVector.getY())) / (zero.distance(horizontalLine) * zero.distance(toVector)));
-        System.out.println("theta= " + Math.toDegrees(theta));
         if(toVector.getY() < 0 && toVector.getX() < 0) {
             theta = 2*Math.PI - theta;
         } else if (toVector.getY() < 0 && toVector.getX() > 0){

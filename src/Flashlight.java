@@ -39,7 +39,6 @@ public class Flashlight extends GameObject {
         // for theta in range(mousetheta-mouseTheta/2 : mouseTheta+mouseTheta/2)
         if(!dayTime) {
             double mouseTheta = VectorUtils.getThetaBetweenVectors(posX, mouseLoc, playerPoint);
-            System.out.println("MouseTheta= " + Math.toDegrees(mouseTheta));
             double thetaInc = Math.toRadians(1);
             for (double r = 0; r < flashlightRadius; r++) {
                 for (double theta = mouseTheta - (flashLightTheta / 2); theta < mouseTheta + (flashLightTheta / 2); theta += thetaInc) {
