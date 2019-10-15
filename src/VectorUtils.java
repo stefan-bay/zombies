@@ -18,11 +18,15 @@ public class VectorUtils {
     }
 
     public static double getThetaBetweenVectors(Point2D.Double p1, Point2D.Double p2, Point2D.Double origin) {
-        double theta =  Math.acos(((p1.getX()) * (p2.getX()) + (p1.getY())
-                * (p2.getY())) / (p1.distance(origin) * p2.distance(origin)));
-        if(p2.getY() < origin.getY() && p2.getX() < origin.getX()) {
+        Point2D.Double horizontalLine = new Point2D.Double(p1.getX()-origin.getX(), p1.getY());
+        Point2D.Double toVector = p2;
+        Point2D.Double zero = new Point2D.Double(0,0);
+        double theta =  Math.acos(((horizontalLine.getX()) * (toVector.getX()) + (horizontalLine.getY())
+                * (toVector.getY())) / (zero.distance(horizontalLine) * zero.distance(toVector)));
+        System.out.println("theta= " + Math.toDegrees(theta));
+        if(toVector.getY() < 0 && toVector.getX() < 0) {
             theta = 2*Math.PI - theta;
-        } else if (p2.getY() < origin.getY() && p2.getX() > origin.getX()){
+        } else if (toVector.getY() < 0 && toVector.getX() > 0){
             theta = Math.PI/2 - theta;
             theta +=  Math.PI*3/2;
         }

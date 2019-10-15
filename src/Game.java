@@ -155,11 +155,7 @@ public class Game {
         }
         if(!fireCooldown.isOnCooldown) {
             if(firePressed) {
-                Point2D mouseLoc = getMouseLoc();
-                double mouseX = mouseLoc.getX();
-                double mouseY = mouseLoc.getY();
-                fireCoords = new Point2D.Double(mouseX,mouseY);
-                shoot(fireCoords);
+                shoot(getMouseLoc());
             }
         }
     }
@@ -206,35 +202,50 @@ public class Game {
     }
 
     void runRight() {
-        for (GameObject go : gameObjects) {
-            if (!(go instanceof Player)) {
-                go.setX(go.getX() - moveSpeed);
+        if (player.getX() > right_buffer) {
+            for (GameObject go : gameObjects) {
+                if (!(go instanceof Player)) {
+                    go.setX(go.getX() - moveSpeed);
+                }
             }
+        } else {
+            player.move(moveSpeed, 0, gameObjects);
         }
-
     }
 
     void runLeft() {
-        for (GameObject go : gameObjects) {
-            if (!(go instanceof Player)) {
-                go.setX(go.getX() + moveSpeed);
+        if (player.getX() < -right_buffer) {
+            for (GameObject go : gameObjects) {
+                if (!(go instanceof Player)) {
+                    go.setX(go.getX() + moveSpeed);
+                }
             }
+        } else {
+            player.move(-moveSpeed, 0, gameObjects);
         }
     }
 
     void runUp() {
-        for (GameObject go : gameObjects) {
-            if (!(go instanceof Player)) {
-                go.setY(go.getY() + moveSpeed);
+        if (player.getY() < -right_buffer) {
+            for (GameObject go : gameObjects) {
+                if (!(go instanceof Player)) {
+                    go.setY(go.getY() + moveSpeed);
+                }
             }
+        } else {
+            player.move(0, -moveSpeed, gameObjects);
         }
     }
 
     void runDown() {
-        for (GameObject go : gameObjects) {
-            if (!(go instanceof Player)) {
-                go.setY(go.getY() - moveSpeed);
+        if (player.getY() > right_buffer) {
+            for (GameObject go : gameObjects) {
+                if (!(go instanceof Player)) {
+                    go.setY(go.getY() - moveSpeed);
+                }
             }
+        } else {
+            player.move(0, moveSpeed, gameObjects);
         }
     }
 

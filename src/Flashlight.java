@@ -27,7 +27,7 @@ public class Flashlight extends GameObject {
 
     void createFlashLight(double playerX, double playerY, double width, double height, Point2D.Double mouseLoc) {
         Point2D.Double playerPoint = new Point2D.Double(playerX, playerY);
-        Point2D.Double posX = new Point2D.Double(playerX + flashlightRadius, playerY);
+        Point2D.Double posX = new Point2D.Double(flashlightRadius, 0 );
         flashLightCone = new BufferedImage((int)width,(int)height, BufferedImage.TYPE_INT_ARGB);
 
         // Draw the dimness of the screen
@@ -39,18 +39,19 @@ public class Flashlight extends GameObject {
         // for theta in range(mousetheta-mouseTheta/2 : mouseTheta+mouseTheta/2)
         if(!dayTime) {
             double mouseTheta = VectorUtils.getThetaBetweenVectors(posX, mouseLoc, playerPoint);
+            System.out.println("MouseTheta= " + Math.toDegrees(mouseTheta));
             double thetaInc = Math.toRadians(1);
             for (double r = 0; r < flashlightRadius; r++) {
-                for (double theta = mouseTheta - flashLightTheta / 2; theta < mouseTheta + flashLightTheta / 2; theta += thetaInc) {
-                    int x = (int) (width / 2 + r * Math.cos(theta));
-                    int y = (int) (height / 2 + r * Math.sin(theta));
+                for (double theta = mouseTheta - (flashLightTheta / 2); theta < mouseTheta + (flashLightTheta / 2); theta += thetaInc) {
+                    int x = (int) (width / 2 + r * Math.cos(theta) + playerX);
+                    int y = (int) (height / 2 + r * Math.sin(theta) + playerY);
                     double radiusRatio = r / flashlightRadius;
                     int alpha = (int) ((radiusRatio * ambientLight));
                     int redGreenToYellow = (int) (ambientLight - alpha);
                     Color flashlightColor = new Color(redGreenToYellow, redGreenToYellow, 0, alpha);
                     int[] colorArray = new int[25];
                     Arrays.fill(colorArray, flashlightColor.getRGB());
-                    flashLightCone.setRGB((int) (x) - 2, (int) (y) - 2, 5, 5, colorArray, 0, 0);
+                    flashLightCone.setRGB((int) (x) - 5, (int) (y) - 5, 5, 5, colorArray, 0, 0);
 
                 }
             }
