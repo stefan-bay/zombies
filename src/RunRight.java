@@ -157,7 +157,7 @@ public class RunRight implements GameMode {
     }
 
     void runLeft() {
-        player.setCurrentAnimation(player.runLeftAnimation);
+//        player.setCurrentAnimation(player.runLeftAnimation);
         if (player.getX() < -right_buffer) {
             for (GameObject go : foregroundObjects)
                 go.setX(go.getX() + 2);
