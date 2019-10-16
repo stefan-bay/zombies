@@ -52,7 +52,10 @@ public class Game {
     // The cooldown between fires by the player.
     Cooldown fireCooldown = new Cooldown(100);
     // The cooldown between enemies spawning.
-    Cooldown enemySpawnCooldown = new Cooldown(5000);
+    Cooldown enemySpawnCooldown = new Cooldown(2000);
+    // The cooldown for nighttime and daytime before the direction of ambientlight increase/decrease switches.
+    Cooldown nightTimeCooldown = new Cooldown(10000);
+
     // The size of an enemy.
     int enemySize = 40;
     // The position generator for new enemies.
@@ -277,10 +280,10 @@ public class Game {
      * Updates the ambient light in the scene. Darkens or lightens the display regularly, make it oscilate.
      */
     void setAmbientLight() {
-        if(daylightCooldown.startCooldown()) {
+        if(daylightCooldown.startCooldown() && !nightTimeCooldown.isOnCooldown) {
             ambientLight += lightMod;
             // Check if we need to reverse the direction we are increasing or decreasing the light by.
-            if(ambientLight>=Flashlight.maxAmbientLight || ambientLight <=0) {
+            if((ambientLight>=Flashlight.maxAmbientLight || ambientLight <=0) && nightTimeCooldown.startCooldown()) {
                 lightMod *= -1;
             }
             // Set the light to daytime if there is less than 180 ambient light (darkness)
