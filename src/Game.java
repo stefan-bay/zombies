@@ -114,14 +114,15 @@ public class Game {
             if (test_enemy_healthbar)
                 spawnEnemy();
 
-        if (straight_to_endscreen) {
-            player.setHealth(0);
-            killCount = 1100;
-        }
-
         // seconds counter with default width and height
         secondsCounter = new SecondsCounter(-size/2, -size/2, 15, 22);
         gameObjects.add(secondsCounter);
+
+        if (straight_to_endscreen) {
+            player.setHealth(0);
+            secondsCounter.setSeconds(12);
+            killCount = 1100;
+        }
     }
 
     /**
@@ -257,7 +258,7 @@ public class Game {
         if (player.getHealth() <= 0) {
             hasLost = true;
             gameObjects.clear();
-            gameObjects.add(new EndScreen(killCount));
+            gameObjects.add(new EndScreen(killCount, secondsCounter.getSeconds()));
         }
     }
 
