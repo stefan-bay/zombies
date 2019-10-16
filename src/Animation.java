@@ -1,4 +1,7 @@
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 //import java.awt.*;
 //import java.awt.geom.AffineTransform;
@@ -46,6 +49,19 @@ public class Animation {
 
     public int getLocation() {
         return location;
+    }
+
+    public static ArrayList<BufferedImage> getListForPath(String path, int start, int stop) {
+        ArrayList<BufferedImage> list = new ArrayList<>();
+        for (int i = start; i < stop + 1; i++) {
+            try {
+                list.add(ImageIO.read(new File(path + i + ".png")));
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return list;
     }
 
     //    public static BufferedImage flipImage(BufferedImage image) {

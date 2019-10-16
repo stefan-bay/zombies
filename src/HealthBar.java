@@ -34,7 +34,6 @@ public class HealthBar extends GameObject {
 
     @Override
     Image getImage() {
-
         if (object.shouldRemove()) {
             this.setShouldRemove(true);
             return null;
@@ -44,7 +43,7 @@ public class HealthBar extends GameObject {
 
         BufferedImage bar = new BufferedImage((int)Width, (int)Height, BufferedImage.TYPE_INT_ARGB);
 
-        Graphics bar_g = bar.getGraphics();
+        Graphics2D bar_g = (Graphics2D)bar.getGraphics();
         bar_g.setColor(Color.black);
         bar_g.drawRect(0, 0, (int)Width - 1, (int)Height - 1);
         bar_g.setColor(Color.red);

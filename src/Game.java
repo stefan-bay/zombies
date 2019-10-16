@@ -21,9 +21,10 @@ public class Game {
     boolean hasLost = false;
 
     // debug
-    boolean straight_to_endscreen = false;
+    boolean straight_to_endscreen = true;
     boolean test_hit_explosion = false;
     boolean explosion_on = false;
+    boolean test_enemy_healthbar = false;
 
     Scene gameScene;
     JFrame container;
@@ -83,6 +84,8 @@ public class Game {
             container.addKeyListener(keyListener);
             container.addMouseListener(mouseListener);
 
+            if (test_enemy_healthbar)
+                spawnEnemy();
 
         if (straight_to_endscreen) {
             player.setHealth(0);
@@ -273,6 +276,10 @@ public class Game {
         if(enemySpawnCooldown.startCooldown()) {
             int enemyX = (int)player.getX() + enemyPos.nextInt(size*2)-size;
             int enemyY = (int)player.getY() + enemyPos.nextInt(size*2)-size;
+            if (test_enemy_healthbar) {
+                enemyX = -900;
+                enemyY = -900;
+            }
             Enemy enemy = new Enemy(enemyX, enemyY, enemySize, enemySize, enemyHealth);
             gameObjects.add(enemy);
             HealthBar bar = new HealthBar(enemy, enemyHealth);
