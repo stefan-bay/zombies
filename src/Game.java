@@ -276,6 +276,7 @@ public class Game {
     void shoot(Point2D.Double direction) {
         if(fireCooldown.startCooldown()) {
             Projectile projectile = player.getProjectile(direction);
+            gameObjects.add(projectile);
         }
 
     }
