@@ -31,13 +31,13 @@ public class Scene extends JPanel{
     }
 
     private boolean isShown(GameObject object) {
-        if (object.getMinX() > width/2)
+        if (object.getMinX() > width)
             return false;
-        if (object.getMaxX() < -(width/2))
+        if (object.getMaxX() < -(width))
             return false;
-        if (object.getMinY() > height/2)
+        if (object.getMinY() > height)
             return false;
-        if (object.getMaxY() < -(height/2))
+        if (object.getMaxY() < -(height))
             return false;
 
         return true;

@@ -28,6 +28,15 @@ public class Game {
     boolean explosion_on = false;
     boolean test_enemy_healthbar = false;
 
+    int floorArraySize = 7;
+    Floor[][] floorArray = new Floor[floorArraySize][floorArraySize];
+
+    //Floor dimens.
+    double floorWidth;
+    double floorHeight;
+    double truePlayerX = 0;
+    double truePlayerY = 0;
+
     // The scene used to draw all the game objects
     Scene gameScene;
     // The container to draw the scene in.
@@ -92,6 +101,7 @@ public class Game {
      * Initializes the game with a player, flashight and scene
      */
     void initializeGame() {
+        setupFloor();
         Sprite playerSprite = new Sprite(Sprite.SpriteType.PLAYER);
         player = new Player(0,0,34,33);
 
@@ -239,6 +249,101 @@ public class Game {
         gameObjects.add(secondsCounter);
     }
 
+    void setupFloor() {
+        Image floorImage = Floor.floor;
+        floorWidth = floorImage.getWidth(null);
+        floorHeight = floorImage.getHeight(null);
+        for(int i = 0; i < 7; i++) {
+            for(int j = 0; j < 7; j++) {
+                double x = -(3*floorWidth) + i * floorWidth;
+                double y = -(3*floorWidth) + j * floorWidth;
+                floorArray[i][j] = new Floor(x,y,floorWidth,floorHeight);
+                floorArray[i][j].setColliding(false);
+                gameObjects.add(floorArray[i][j]);
+            }
+        }
+    }
+
+    void moveFloorLeft() {
+        Floor[][] hold = new Floor[floorArraySize][floorArraySize];
+        // Move all the rightMost tiles to the left of the left most tiles
+        for(int i = 0; i < floorArraySize; i++) {
+            floorArray[6][i].setX(floorArray[0][i].getX() - floorWidth);
+        }
+        for(int i = 0; i < floorArraySize; i++) {
+            hold[0][i] = floorArray[6][i];
+            hold[1][i] = floorArray[0][i];
+            hold[2][i] = floorArray[1][i];
+            hold[3][i] = floorArray[2][i];
+            hold[4][i] = floorArray[3][i];
+            hold[5][i] = floorArray[4][i];
+            hold[6][i] = floorArray[5][i];
+
+        }
+        floorArray = hold;
+
+    }
+    void moveFloorRight() {
+        Floor[][] hold = new Floor[floorArraySize][floorArraySize];
+        // Move all the rightMost tiles to the left of the left most tiles
+        for(int i = 0; i < floorArraySize; i++) {
+            floorArray[0][i].setX(floorArray[6][i].getX() + floorWidth);
+        }
+        for(int i = 0; i < floorArraySize; i++) {
+            hold[6][i] = floorArray[0][i];
+            hold[0][i] = floorArray[1][i];
+            hold[1][i] = floorArray[2][i];
+            hold[2][i] = floorArray[3][i];
+            hold[3][i] = floorArray[4][i];
+            hold[4][i] = floorArray[5][i];
+            hold[5][i] = floorArray[6][i];
+        }
+        floorArray = hold;
+
+    }
+
+    void moveFloorUp() {
+        Floor[][] hold = new Floor[floorArraySize][floorArraySize];
+        // Move all the rightMost tiles to the left of the left most tiles
+        for(int i = 0; i < floorArraySize; i++) {
+            floorArray[i][6].setY(floorArray[i][0].getY() - floorHeight);
+        }
+        for(int i = 0; i < floorArraySize; i++) {
+            hold[i][0] = floorArray[i][6];
+            hold[i][1] = floorArray[i][0];
+            hold[i][2] = floorArray[i][1];
+            hold[i][3] = floorArray[i][2];
+            hold[i][4] = floorArray[i][3];
+            hold[i][5] = floorArray[i][4];
+            hold[i][6] = floorArray[i][5];
+        }
+        floorArray = hold;
+
+    }
+
+    void moveFloorDown() {
+        Floor[][] hold = new Floor[floorArraySize][floorArraySize];
+        // Move all the rightMost tiles to the left of the left most tiles
+        for(int i = 0; i < floorArraySize; i++) {
+            floorArray[i][0].setY(floorArray[i][6].getY() + floorHeight);
+        }
+        for(int i = 0; i < floorArraySize; i++) {
+            hold[i][6] = floorArray[i][0];
+            hold[i][0] = floorArray[i][1];
+            hold[i][1] = floorArray[i][2];
+            hold[i][2] = floorArray[i][3];
+            hold[i][3] = floorArray[i][4];
+            hold[i][4] = floorArray[i][5];
+            hold[i][5] = floorArray[i][6];
+        }
+        floorArray = hold;
+
+    }
+
+
+
+
+
     /**
      * Update an enemy to make it shoot if it can and move it.
      * @param enemy the enemy to update.
@@ -299,6 +404,11 @@ public class Game {
      */
     void runRight() {
         if (player.getX() > size/2 - buffer) {
+            truePlayerX += player.getMoveSpeed();
+            if(truePlayerX + 3*floorWidth > (floorArray[6][0].getX())) {
+                truePlayerX -= floorWidth;
+                moveFloorRight();
+            }
             for (GameObject go : gameObjects) {
                 if (go instanceof SecondsCounter) continue; // seconds counter does not move
                 if (!(go instanceof Player)) {
@@ -315,6 +425,11 @@ public class Game {
      */
     void runLeft() {
         if (player.getX() < -size/2 + buffer) {
+            truePlayerX -= player.getMoveSpeed();
+            if(truePlayerX - 3*floorWidth < (floorArray[0][0].getX())) {
+                truePlayerX += floorWidth;
+                moveFloorLeft();
+            }
             for (GameObject go : gameObjects) {
                 if (go instanceof SecondsCounter) continue; // seconds counter does not move
                 if (!(go instanceof Player)) {
@@ -331,6 +446,11 @@ public class Game {
      */
     void runUp() {
         if (player.getY() < -size/2 + buffer) {
+            truePlayerY -= player.getMoveSpeed();
+            if(truePlayerY - 3*floorHeight < (floorArray[0][0].getY())) {
+                truePlayerY += floorHeight;
+                moveFloorUp();
+            }
             for (GameObject go : gameObjects) {
                 if (go instanceof SecondsCounter) continue; // seconds counter does not move
                 if (!(go instanceof Player)) {
@@ -347,6 +467,11 @@ public class Game {
      */
     void runDown() {
         if (player.getY() > size/2 - buffer) {
+            truePlayerY += player.getMoveSpeed();
+            if(truePlayerY + 3*floorHeight > (floorArray[0][6].getY())) {
+                truePlayerY -= floorHeight;
+                moveFloorDown();
+            }
             for (GameObject go : gameObjects) {
                 if (go instanceof SecondsCounter) continue; // seconds counter does not move
                 if (!(go instanceof Player)) {

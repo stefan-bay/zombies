@@ -6,31 +6,29 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Floor {
-    BufferedImage floor;
-    AffineTransform tx;
+public class Floor extends GameObject{
+    static BufferedImage floor;
     AffineTransformOp op;
 
-    public Floor() throws IOException {
-        floor = readFile(new File("floor/dirtfloor.png"));
-//        tesselateFloor();
-//        writeFile("floor/tesselated.png");
-    }
-
-    public static void main(String[] args) {
+    static {
         try {
-            Floor test = new Floor();
+            floor = readFile(new File("floor/tesselated.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    Floor(double x, double y, double width, double height) {
+        super(x, y, width, height);
+    }
+
 
     /**
      * @param fileName
      * @return
      * @throws IOException Takes in a fileName and reads that file
      */
-    private BufferedImage readFile(File fileName) throws IOException {
+    private static BufferedImage readFile(File fileName) throws IOException {
         floor = ImageIO.read(fileName);
         return floor;
     }
@@ -76,4 +74,8 @@ public class Floor {
         return tess;
     }
 
+    @Override
+    Image getImage() {
+        return floor;
+    }
 }

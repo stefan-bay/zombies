@@ -16,7 +16,7 @@ public class Projectile extends GameObject{
         Graphics g = thisImage.getGraphics();
         g.setColor(new Color(0,0,0,0));
         g.fillRect(0,0,size,size);
-        g.setColor(Color.BLACK);
+        g.setColor(Color.magenta);
         g.fillOval(size/4,size/4,size/2,size/2);
         g.dispose();
         direction = dir;
