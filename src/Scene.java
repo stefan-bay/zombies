@@ -40,9 +40,9 @@ public class Scene extends JPanel{
                 continue;
             }
             if (gameObject instanceof EndScreen)
-                setBackground(Color.black);
+                setBackground(Color.black); // background is black when displaying endscreen
             if(gameObject instanceof Player)
-                player = (Player)gameObject;
+                player = (Player)gameObject; // if a player object is present, update our player field (for determining distance and despawn)
 
             g.drawImage(gameObject.getImage(), (int) (gameObject.getX() - gameObject.getWidth()/2), (int) (gameObject.getY() - gameObject.getHeight()/2), null );
         }
@@ -57,11 +57,14 @@ public class Scene extends JPanel{
         return (int)objectPoint.distance(playerPoint);
     }
 
+    /**
+     * Determine if a game object is to be rendered
+     * @param object object in question
+     */
     private boolean isShown(GameObject object) {
         // if object is too far away, despawn
         if (distanceToPlayer(object) > 2500) {
             object.setShouldRemove(true);
-            System.out.println("DESPAWN");
             return false;
         }
 

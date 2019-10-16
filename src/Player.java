@@ -1,10 +1,16 @@
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+
+/**
+ * GameObject representing user charachter
+ */
 public class Player extends GameObject {
 
+    // player sprite
     Sprite sprite;
 
+    // used to find direction of player
     Point2D pointFacing;
 
     int moveSpeed = 5;
@@ -16,6 +22,7 @@ public class Player extends GameObject {
 
         this.sprite = new Sprite(Sprite.SpriteType.PLAYER);
 
+        // default point facing
         this.pointFacing = new Point2D.Double(1, 1);
     }
 
@@ -23,6 +30,9 @@ public class Player extends GameObject {
         this.playerDirection = direction;
     }
 
+    /**
+     * @return angle between player and direction vector
+     */
     double getPlayerAngle() {
         Point2D.Double playerLoc = new Point2D.Double(getX(), getY());
         Point2D.Double toTheRight = new Point2D.Double(getX() + 1, 0);
@@ -37,6 +47,10 @@ public class Player extends GameObject {
         return this.moveSpeed;
     }
 
+    /**
+     * Check for collisions
+     * @return true if the player can move, false if not
+     */
     @Override
     boolean canMove(double x, double y, ArrayList<GameObject> others) {
         for(GameObject other : others) {
@@ -48,6 +62,9 @@ public class Player extends GameObject {
         return true;
     }
 
+    /**
+     * Get player image after rotation
+     */
     @Override
     Image getImage() {
         sprite.rotate(getPlayerAngle());
