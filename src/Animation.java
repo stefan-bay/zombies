@@ -63,24 +63,4 @@ public class Animation {
         }
         return list;
     }
-
-    //    public static BufferedImage flipImage(BufferedImage image) {
-//        AffineTransform at = new AffineTransform();
-//        at.concatenate(AffineTransform.getScaleInstance(-1, 1));
-//        at.concatenate(AffineTransform.getTranslateInstance(-image.getWidth(), 0));
-//        return createTransformed(image, at);
-//    }
-//
-//    public static BufferedImage createTransformed(
-//            BufferedImage image, AffineTransform at)
-//    {
-//        BufferedImage newImage = new BufferedImage(
-//                image.getWidth(), image.getHeight(),
-//                BufferedImage.TYPE_INT_ARGB);
-//        Graphics2D g = newImage.createGraphics();
-//        g.transform(at);
-//        g.drawImage(image, 0, 0, null);
-//        g.dispose();
-//        return newImage;
-//    }
 }

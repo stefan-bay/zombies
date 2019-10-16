@@ -11,6 +11,9 @@ public class Floor extends GameObject {
     AffineTransform tx;
     AffineTransformOp op;
 
+    /**
+     * Static block to run at compile time.
+     */
     static {
         try {
             floor = readFile(new File("floor/tesselated.png"));
@@ -18,25 +21,15 @@ public class Floor extends GameObject {
             e.printStackTrace();
         }
     }
+
     /**
-     * Constructor. Creates a new png, which is dirtfloor.png tesselated in a 2x2 grid.
+     * Constructor. Creates a new png, which is dirtfloor.png tesselated in a 2x2 grid reflected horizontally, vertically,
+     * and horizontally and vertically at the same time.
      * @throws IOException
      */
     public Floor(int x, int y, int width, int height) {
         super(x, y, width, height);
     }
-
-//    /**
-//     * Runs the class to create the image.
-//     * @param args
-//     */
-//    public static void main(String[] args) {
-//        try {
-//            Floor test = new Floor();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     /**
      * @param fileName
