@@ -34,6 +34,10 @@ public class Game {
     //Floor dimens.
     double floorWidth;
     double floorHeight;
+
+    // The player does not move when it nears the screen, instead we move objects around it. To account for this keep
+    // track of how much we have moved the player without moving the player in any one direction. This is used to render
+    // the floor and move it correctly.
     double truePlayerX = 0;
     double truePlayerY = 0;
 
@@ -249,6 +253,9 @@ public class Game {
         gameObjects.add(secondsCounter);
     }
 
+    /**
+     * Initialize the floor arrray around the player.
+     */
     void setupFloor() {
         Image floorImage = Floor.floor;
         floorWidth = floorImage.getWidth(null);
@@ -264,6 +271,9 @@ public class Game {
         }
     }
 
+    /**
+     * Move the floor to the left.
+     */
     void moveFloorLeft() {
         Floor[][] hold = new Floor[floorArraySize][floorArraySize];
         // Move all the rightMost tiles to the left of the left most tiles
@@ -283,6 +293,10 @@ public class Game {
         floorArray = hold;
 
     }
+
+    /**
+     * Move the floor to the right.
+     */
     void moveFloorRight() {
         Floor[][] hold = new Floor[floorArraySize][floorArraySize];
         // Move all the rightMost tiles to the left of the left most tiles
@@ -302,6 +316,9 @@ public class Game {
 
     }
 
+    /**
+     * Move the floor upward.
+     */
     void moveFloorUp() {
         Floor[][] hold = new Floor[floorArraySize][floorArraySize];
         // Move all the rightMost tiles to the left of the left most tiles
@@ -321,6 +338,9 @@ public class Game {
 
     }
 
+    /**
+     * Move the floor downward.
+     */
     void moveFloorDown() {
         Floor[][] hold = new Floor[floorArraySize][floorArraySize];
         // Move all the rightMost tiles to the left of the left most tiles
@@ -406,6 +426,7 @@ public class Game {
         if (player.getX() > size/2 - buffer) {
             truePlayerX += player.getMoveSpeed();
             if(truePlayerX + 3*floorWidth > (floorArray[6][0].getX())) {
+                // Account for the fact that the whole ground has shifted by floorwidth.
                 truePlayerX -= floorWidth;
                 moveFloorRight();
             }
@@ -427,6 +448,7 @@ public class Game {
         if (player.getX() < -size/2 + buffer) {
             truePlayerX -= player.getMoveSpeed();
             if(truePlayerX - 3*floorWidth < (floorArray[0][0].getX())) {
+                // Account for the fact that the whole ground has shifted by floorwidth.
                 truePlayerX += floorWidth;
                 moveFloorLeft();
             }
@@ -448,6 +470,7 @@ public class Game {
         if (player.getY() < -size/2 + buffer) {
             truePlayerY -= player.getMoveSpeed();
             if(truePlayerY - 3*floorHeight < (floorArray[0][0].getY())) {
+                // Account for the fact that the whole ground has shifted by floorHeight..
                 truePlayerY += floorHeight;
                 moveFloorUp();
             }
@@ -469,6 +492,7 @@ public class Game {
         if (player.getY() > size/2 - buffer) {
             truePlayerY += player.getMoveSpeed();
             if(truePlayerY + 3*floorHeight > (floorArray[0][6].getY())) {
+                // Account for the fact that the whole ground has shifted by floorHeight.
                 truePlayerY -= floorHeight;
                 moveFloorDown();
             }
