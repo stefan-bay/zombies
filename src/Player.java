@@ -17,7 +17,6 @@ public class Player extends GameObject {
     Direction direction;
 
     Point2D pointFacing;
-    Point2D frontFace;
 
     int moveSpeed = 5;
     int sprintModifier = 5;
@@ -28,7 +27,6 @@ public class Player extends GameObject {
         this.sprite = new Sprite(Sprite.SpriteType.PLAYER);
 
         this.pointFacing = new Point2D.Double(1, 1);
-        this.frontFace   = new Point2D.Double(getX(), getY() - (getHeight()/2.0));
 
         this.direction = Direction.RIGHT;
 
@@ -48,6 +46,13 @@ public class Player extends GameObject {
             this.direction = Direction.UP;
     }
 
+    Point2D getFrontFace() {
+        // this is the gun
+        Shape gun = sprite.spriteShapes[4];
+
+        return new Point2D.Double(gun.getBounds2D().getCenterX(), gun.getBounds2D().getCenterY());
+    }
+
     public void setPointFacing(Point2D pointFacing) {
         this.pointFacing = pointFacing;
     }
@@ -63,8 +68,8 @@ public class Player extends GameObject {
         double p0y = getY();
 
         // P1 object front
-        double p1x = frontFace.getX();
-        double p1y = frontFace.getY();
+        double p1x = getFrontFace().getX();
+        double p1y = getFrontFace().getY();
 
         // P2 point facing (mouse location)
         double p2x = pointFacing.getX();
@@ -138,6 +143,7 @@ public class Player extends GameObject {
 
     @Override
     Image getImage() {
+//        sprite.rotate(imageRotationAngle());
         return sprite.getImage();
     }
 }

@@ -106,6 +106,14 @@ public class Sprite {
 //        }
     }
 
+    void rotate(double theta) {
+        AffineTransform at = new AffineTransform();
+        at.rotate(theta, spriteWidth/2, spriteHeight/2);
+
+        for (int i = 0; i < spriteShapes.length; i++)
+            spriteShapes[i] = at.createTransformedShape(spriteShapes[i]);
+    }
+
     void translateRangedEnemyShapes(Shape [] shapes) {
         AffineTransform at = new AffineTransform();
         at.translate(-100, -95);
