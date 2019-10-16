@@ -79,7 +79,7 @@ public class Enemy extends GameObject {
 
     /**
      * Get a new projectile if this enemy can fire and move the enemy
-     * @param objects the gameobjects of thsi game so the enemy can move
+     * @param objects the gameobjects of this game so the enemy can move
      * @param player the player to calculate the melee range.
      * @return a new projectile if this enemy is firing.
      */
