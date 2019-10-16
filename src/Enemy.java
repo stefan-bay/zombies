@@ -121,7 +121,8 @@ public class Enemy extends GameObject {
 
     @Override
     Image getImage() {
-        sprite.rotate(getEnemyAngle());
+        if (playerDirection != null)
+            sprite.rotate(getEnemyAngle());
         return sprite.getImage();
     }
 }

@@ -185,7 +185,6 @@ public class Game {
                 gameObjects.remove(object);
                 if (object instanceof Enemy) {
                     killCount++;
-                    System.out.println("kills: " + killCount);
                 }
                 continue;
             }
