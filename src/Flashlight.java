@@ -22,7 +22,7 @@ public class Flashlight extends GameObject {
 
     void setAmbientLight(int ambientLight, boolean isDayTime) {
         this.ambientLight = ambientLight;
-        this.dayTime = false;
+        this.dayTime = isDayTime;
     }
 
     void createFlashLight(double playerX, double playerY, double width, double height, Point2D.Double mouseLoc) {
