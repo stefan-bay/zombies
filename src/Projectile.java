@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Projectile extends GameObject{
     Image thisImage;
-    static int size = 10;
+    static int size = 15;
     Point2D.Double direction;
     int damage = 10;
 
@@ -16,7 +16,9 @@ public class Projectile extends GameObject{
         Graphics g = thisImage.getGraphics();
         g.setColor(new Color(0,0,0,0));
         g.fillRect(0,0,size,size);
-        g.setColor(Color.magenta);
+        g.setColor(Color.white);
+        g.drawOval(size/4,size/4,size/2,size/2);
+        g.setColor(Color.RED);
         g.fillOval(size/4,size/4,size/2,size/2);
         g.dispose();
         direction = dir;
