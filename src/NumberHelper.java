@@ -2,6 +2,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * Helper method to convert an int to an image using our selected font
+ */
 public class NumberHelper {
     /**
      * Holds widths of each number png
@@ -10,6 +13,10 @@ public class NumberHelper {
             15, 14, 19, 21, 19, 22, 19, 20, 17, 17
     };
 
+    /**
+     * Creates image of to display number in our font
+     * @param number number to display
+     */
     public static BufferedImage imageForNumber(int number) {
         ArrayList<BufferedImage> numberList = Animation.getListForPath("res/numbers/", 0, 9);
         String numString = Integer.toString(number);
@@ -41,6 +48,9 @@ public class NumberHelper {
         return image;
     }
 
+    /**
+     * Finds potential width if image with number were to be created
+     */
     public static int imageWidthForNumber(int num) {
         String numString = Integer.toString(num);
         int number_of_digits = numString.length();

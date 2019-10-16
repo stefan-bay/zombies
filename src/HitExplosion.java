@@ -3,22 +3,25 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * GameObject representing the explosion of blood from an enemy or player
+ */
 public class HitExplosion extends GameObject {
 
     Random random = new Random();
 
-    private static int buffer = 30;
     private static int frames = 5;
 
-    private static int upperDripBound = 6;
-    private static int lowerDripBound = 1;
+    private static final int upperDripBound = 6;
+    private static final int lowerDripBound = 1;
 
-    private static int upperOffsetBound = 5;
-    private static int lowerOffsetBound = -5;
+    private static final int upperOffsetBound = 5;
+    private static final int lowerOffsetBound = -5;
 
-    private static int size = 40;
+    // size of explosion
+    private static final int size = 40;
 
-    static int [] color_codes = {
+    private static final int [] color_codes = {
             0xEB0905,
             0x690402,
             0xD9423F,
@@ -26,7 +29,7 @@ public class HitExplosion extends GameObject {
             0x4F2C2B
     };
 
-    Animation splatterAnimation;
+    private Animation splatterAnimation;
 
     HitExplosion(double x, double y) {
         super(x, y, size, size);
@@ -39,11 +42,18 @@ public class HitExplosion extends GameObject {
         splatterAnimation = new Animation(splatterFrames, 170);
     }
 
+    /**
+     * Random color from color palette
+     */
     private Color randomColor() {
         return new Color(color_codes[random.nextInt(5)]);
     }
 
-    BufferedImage createRandomSplatter(int n) {
+    /**
+     * Create iteration of splatter
+     * @param n iteration
+     */
+    private BufferedImage createRandomSplatter(int n) {
         int width = (int)this.getWidth();
         int height = (int)this.getHeight();
 
@@ -78,8 +88,12 @@ public class HitExplosion extends GameObject {
         return image;
     }
 
+    /**
+     * @return Animated explosion
+     */
     @Override
     Image getImage() {
+        // remove once animation has played through
         if (splatterAnimation.getLocation() == frames - 1)
             this.setShouldRemove(true);
 

@@ -92,7 +92,6 @@ public class Game {
      * Initializes the game with a player, flashight and scene
      */
     void initializeGame() {
-        Sprite playerSprite = new Sprite(Sprite.SpriteType.PLAYER);
         player = new Player(0,0,34,33);
 
         player.setColliding(true);
@@ -404,6 +403,8 @@ public class Game {
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
             firePressed = true;
+
+            // reset mouse offset so that the direction angle is correct
             Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
             Point2D.Double md = new Point2D.Double(mouseEvent.getX() - mouseLoc.getX(), mouseEvent.getY() - mouseLoc.getY());
             mouseDiff = md;

@@ -3,9 +3,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.util.ArrayList;
 
+/**
+ * GameObject to handle ending screen
+ */
 public class EndScreen extends GameObject{
     private Animation bloodAnimation;
 
@@ -18,23 +20,14 @@ public class EndScreen extends GameObject{
     private BufferedImage secondsImage;
     private BufferedImage secondsSurvivedImage;
 
-    private int secondsSurvived;
-
-    /**
-     * Holds widths of each number png
-     */
-    private static int [] numberwidth = {
-            15, 14, 19, 21, 19, 22, 19, 20, 17, 17
-    };
-
     EndScreen(int killCount, int secondsSurvived) {
         super(-400, -400, 0, 0);
         this.setColliding(false);
 
-        this.secondsSurvived = secondsSurvived;
-
         ArrayList<BufferedImage> endScreenList = Animation.getListForPath("res/blood_gif/frame_", 0, 15);
         bloodAnimation = new Animation(endScreenList, 100);
+
+        // load images
 
         try {
             youLoseImage = ImageIO.read(new File("res/UI/YouLose.png"));
@@ -60,15 +53,14 @@ public class EndScreen extends GameObject{
             e.printStackTrace();
         }
 
-
-
+        // create images that rely on numbers
         this.killCountImage = NumberHelper.imageForNumber(killCount);
         this.secondsSurvivedImage = NumberHelper.imageForNumber(secondsSurvived);
     }
 
-    @Override
-    void update(ArrayList<GameObject> gameObjects) {}
-
+    /**
+     * Draw end screen with animation
+     */
     @Override
     Image getImage() {
         BufferedImage image = bloodAnimation.nextImage(); // dripping blood
@@ -88,8 +80,6 @@ public class EndScreen extends GameObject{
         int cy = ih / 2;
 
         g.drawImage(youLoseImage, null, cx - youLoseImage.getWidth()/2, cy - ih/3 );
-
-        int kills_total_width = killsImage.getWidth() + killCountImage.getWidth();
 
         g.drawImage(killsImage, null, cx - killCountImage.getWidth()/2 - killsImage.getWidth() - 15, cy - killsImage.getHeight()/2);
         g.drawImage(killCountImage, null, cx - killCountImage.getWidth()/2, cy - killCountImage.getHeight()/2);

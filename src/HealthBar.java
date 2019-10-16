@@ -3,12 +3,15 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * GameObject representing a health bar over a player or enemy
+ */
 public class HealthBar extends GameObject {
 
-    private static double Width = 50;
-    private static double Height = 10;
+    private static final double Width = 50;
+    private static final double Height = 10;
 
-    private static double yOffset = 25;
+    private static final double yOffset = 25;
 
     private GameObject object;
     private int maxHealth;
@@ -23,24 +26,38 @@ public class HealthBar extends GameObject {
         setColliding(false);
     }
 
+    /**
+     * Link coordinates to object it hovers above
+     */
     @Override
     double getX() {
         return object.getX();
     }
 
+    /**
+     * Link coordinates to object it hovers above
+     */
     @Override
     double getY() {
         return object.getY() - yOffset;
     }
 
+    /**
+     * Move with object linked to
+     * @param objects
+     */
     @Override
     void update(ArrayList<GameObject> objects) {
         this.setX(getX());
         this.setY(getY());
     }
 
+    /**
+     * Image showing percent health
+     */
     @Override
     Image getImage() {
+        // remove self if linked object is removed
         if (object.shouldRemove()) {
             this.setShouldRemove(true);
             return null;
