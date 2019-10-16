@@ -31,7 +31,7 @@ public class Floor extends GameObject {
      * and horizontally and vertically at the same time.
      * @throws IOException
      */
-    public Floor(int x, int y, int width, int height) {
+    public Floor(double x, double y, double width, double height) {
         super(x, y, width, height);
     }
 
