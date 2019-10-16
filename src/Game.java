@@ -404,6 +404,9 @@ public class Game {
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
             firePressed = true;
+            Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
+            Point2D.Double md = new Point2D.Double(mouseEvent.getX() - mouseLoc.getX(), mouseEvent.getY() - mouseLoc.getY());
+            mouseDiff = md;
         }
 
         @Override
