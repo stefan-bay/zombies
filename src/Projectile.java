@@ -12,12 +12,12 @@ public class Projectile extends GameObject{
 
     Projectile(double x,double y, Point2D.Double dir) {
         super(x,y,size,size);
-        thisImage = new BufferedImage(size, size,BufferedImage.TYPE_INT_RGB);
+        thisImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
         Graphics g = thisImage.getGraphics();
         g.setColor(new Color(0,0,0,0));
         g.fillRect(0,0,size,size);
-        g.setColor(Color.BLUE);
-        g.fillOval(size/3,size/3,size/3,size/3);
+        g.setColor(Color.BLACK);
+        g.fillOval(size/4,size/4,size/2,size/2);
         g.dispose();
         direction = dir;
         setColliding(false);
