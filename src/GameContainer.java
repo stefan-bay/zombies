@@ -24,7 +24,7 @@ public class GameContainer {
         frame.setVisible(true);
         frame.setResizable(false);
 
-        if (bypassMainMenu)
+        if (bypassMainMenu) //for faster debugging
             launchGame(new Point2D.Double(0,0)); // bypass main menu
         else
             frame.add(mainMenu);

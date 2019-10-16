@@ -6,6 +6,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Makes a tile of the floor. A tile is a GameObject. Made into a grid of tiles
+ * within Game.
+ */
 public class Floor extends GameObject {
     static BufferedImage floor;
     AffineTransform tx;
