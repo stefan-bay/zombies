@@ -169,7 +169,7 @@ public class Game {
     public void update() {
         updatePlayerDirection();
         updateAllGameObjects();
-        if (!test_hit_explosion) {
+        if (!test_hit_explosion) { // debug
             if (!hasLost) {
                 // Perform player actions.
                 handleKeyPress();
@@ -178,7 +178,7 @@ public class Game {
                 checkLose();
             }
         }
-        if (test_hit_explosion) {
+        if (test_hit_explosion) { // debug
             if (!explosion_on) {
                 gameObjects.add(new HitExplosion(0, 0));
                 explosion_on = true;

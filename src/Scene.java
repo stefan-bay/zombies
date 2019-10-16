@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 /**
@@ -10,6 +11,8 @@ public class Scene extends JPanel{
     ArrayList<GameObject> objectsToDraw;
     double width;
     double height;
+
+    Player player = null;
 
     /**
      * Construct scene
@@ -38,12 +41,30 @@ public class Scene extends JPanel{
             }
             if (gameObject instanceof EndScreen)
                 setBackground(Color.black);
+            if(gameObject instanceof Player)
+                player = (Player)gameObject;
 
             g.drawImage(gameObject.getImage(), (int) (gameObject.getX() - gameObject.getWidth()/2), (int) (gameObject.getY() - gameObject.getHeight()/2), null );
         }
     }
 
+    private int distanceToPlayer(GameObject object) {
+        if (player == null)
+            return 0;
+        Point2D objectPoint = new Point2D.Double(object.getX(), object.getY());
+        Point2D playerPoint = new Point2D.Double(player.getX(), player.getY());
+
+        return (int)objectPoint.distance(playerPoint);
+    }
+
     private boolean isShown(GameObject object) {
+        // if object is too far away, despawn
+        if (distanceToPlayer(object) > 2500) {
+            object.setShouldRemove(true);
+            System.out.println("DESPAWN");
+            return false;
+        }
+
         if (object.getMinX() > width)
             return false;
         if (object.getMaxX() < -(width))
