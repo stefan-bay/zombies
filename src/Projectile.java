@@ -30,6 +30,7 @@ public class Projectile extends GameObject{
             GameObject object = objects.get(i);
             if (!(this == object) && object.isColliding() && this.intersects(object)) {
                 object.damage(damage);
+                objects.add(new HitExplosion(this.getX(), this.getY()));
 
                 this.setShouldRemove(true);
                 break;

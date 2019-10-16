@@ -22,6 +22,8 @@ public class Game {
 
     // debug
     boolean straight_to_endscreen = false;
+    boolean test_hit_explosion = false;
+    boolean explosion_on = false;
 
     Scene gameScene;
     JFrame container;
@@ -71,13 +73,16 @@ public class Game {
         playerHealthBar = new HealthBar(player, 200);
         gameObjects.add(playerHealthBar);
 
-        flashlight = new Flashlight(player.getX(), player.getY(), size, size, getMouseLoc());
-        gameObjects.add(flashlight);
-        gameScene = new Scene(gameObjects, size, size);
-        container.add(gameScene);
-        container.pack();
-        container.addKeyListener(keyListener);
-        container.addMouseListener(mouseListener);
+        if (!test_hit_explosion) {
+            flashlight = new Flashlight(player.getX(), player.getY(), size, size, getMouseLoc());
+            gameObjects.add(flashlight);
+        }
+            gameScene = new Scene(gameObjects, size, size);
+            container.add(gameScene);
+            container.pack();
+            container.addKeyListener(keyListener);
+            container.addMouseListener(mouseListener);
+
 
         if (straight_to_endscreen) {
             player.setHealth(0);
@@ -101,11 +106,19 @@ public class Game {
 
     public void update() {
         updateAllGameObjects();
-        if (!hasLost) {
-            handleKeyPress();
-            spawnEnemy();
-            redrawFlashlight();
-            checkLose();
+        if (!test_hit_explosion) {
+            if (!hasLost) {
+                handleKeyPress();
+                spawnEnemy();
+                redrawFlashlight();
+                checkLose();
+            }
+        }
+        if (test_hit_explosion) {
+            if (!explosion_on) {
+                gameObjects.add(new HitExplosion(0, 0));
+                explosion_on = true;
+            }
         }
         gameScene.repaint();
     }
