@@ -12,7 +12,6 @@ import java.io.IOException;
  */
 public class Floor extends GameObject {
     static BufferedImage floor;
-    AffineTransform tx;
 
     /**
      * Static block to run at compile time.
