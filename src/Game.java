@@ -68,8 +68,6 @@ public class Game {
 
     // for scrolling
     int buffer = 50;
-    // The health of enemies.
-    int enemyHealth = 100;
     // The amount of kills the player has gotten, also tracks enemy friendly fire deaths.
     int killCount = 0;
     // The time in MS between updates of this game.
@@ -118,14 +116,15 @@ public class Game {
             if (test_enemy_healthbar)
                 spawnEnemy();
 
-        if (straight_to_endscreen) {
-            player.setHealth(0);
-            killCount = 1100;
-        }
-
         // seconds counter with default width and height
         secondsCounter = new SecondsCounter(-size/2, -size/2, 15, 22);
         gameObjects.add(secondsCounter);
+
+        if (straight_to_endscreen) {
+            player.setHealth(0);
+            secondsCounter.setSeconds(12);
+            killCount = 1100;
+        }
     }
 
     /**
@@ -188,7 +187,6 @@ public class Game {
                 gameObjects.remove(object);
                 if (object instanceof Enemy) {
                     killCount++;
-                    System.out.println("kills: " + killCount);
                 }
                 continue;
             }
@@ -261,7 +259,7 @@ public class Game {
         if (player.getHealth() <= 0) {
             hasLost = true;
             gameObjects.clear();
-            gameObjects.add(new EndScreen(killCount));
+            gameObjects.add(new EndScreen(killCount, secondsCounter.getSeconds()));
         }
     }
 
@@ -318,6 +316,7 @@ public class Game {
     void runLeft() {
         if (player.getX() < -size/2 + buffer) {
             for (GameObject go : gameObjects) {
+                if (go instanceof SecondsCounter) continue; // seconds counter does not move
                 if (!(go instanceof Player)) {
                     go.setX(go.getX() + player.getMoveSpeed());
                 }
@@ -333,6 +332,7 @@ public class Game {
     void runUp() {
         if (player.getY() < -size/2 + buffer) {
             for (GameObject go : gameObjects) {
+                if (go instanceof SecondsCounter) continue; // seconds counter does not move
                 if (!(go instanceof Player)) {
                     go.setY(go.getY() + player.getMoveSpeed());
                 }
@@ -348,6 +348,7 @@ public class Game {
     void runDown() {
         if (player.getY() > size/2 - buffer) {
             for (GameObject go : gameObjects) {
+                if (go instanceof SecondsCounter) continue; // seconds counter does not move
                 if (!(go instanceof Player)) {
                     go.setY(go.getY() - player.getMoveSpeed());
                 }
@@ -383,15 +384,13 @@ public class Game {
                 enemyX = -900;
                 enemyY = -900;
             }
-            Enemy enemy = new Enemy(enemyX, enemyY, enemySize, enemySize, enemyHealth);
+
+
+
+            Enemy enemy = new Enemy(enemyX, enemyY);
             gameObjects.add(enemy);
-            HealthBar bar = new HealthBar(enemy, enemyHealth);
+            HealthBar bar = new HealthBar(enemy, enemy.getHealth());
             gameObjects.add(bar);
-            // Set the class of the enemy, either it can fire and is slow or can only melee and is fast.
-            if(random.nextInt(10) < 5) {
-                enemy.setCanFire(false);
-                enemy.setEnemyMoveSpeed(player.getMoveSpeed() *2);
-            }
         }
     }
 

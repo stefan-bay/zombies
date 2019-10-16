@@ -18,6 +18,15 @@ public class SecondsCounter extends GameObject {
         this.buffer = buf;
     }
 
+    // debug
+    void setSeconds(int seconds) {
+        this.seconds = seconds;
+    }
+
+    int getSeconds() {
+        return this.seconds;
+    }
+
     @Override
     double getX() {
         return super.getX() + this.getWidth()/2 + buffer;
