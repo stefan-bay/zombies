@@ -7,7 +7,7 @@ public class GameContainer {
     JFrame frame;
     MainMenu mainMenu;
 
-    boolean bypassMainMenu = false;
+    boolean bypassMainMenu = true;
 
     public static void main(String[] args) {
         GameContainer container = new GameContainer();

@@ -44,7 +44,11 @@ public class Animation {
         this.location = 0;
     }
 
-//    public static BufferedImage flipImage(BufferedImage image) {
+    public int getLocation() {
+        return location;
+    }
+
+    //    public static BufferedImage flipImage(BufferedImage image) {
 //        AffineTransform at = new AffineTransform();
 //        at.concatenate(AffineTransform.getScaleInstance(-1, 1));
 //        at.concatenate(AffineTransform.getTranslateInstance(-image.getWidth(), 0));
