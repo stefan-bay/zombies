@@ -430,6 +430,23 @@ public class Game {
     KeyListener keyListener = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent keyEvent) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent keyEvent) {
+            int keyCode = keyEvent.getKeyCode();
+            int letterValue = keyCode - KeyEvent.VK_A;
+            // Set the appropriate key in the array to be pressed if it is available.
+            if(letterValue < 26 && letterValue >= 0) {
+                keysPressed[letterValue] = true;
+            }
+
+            // sprint on shift hold
+            if (keyCode == KeyEvent.VK_SHIFT)
+                player.setMoveSpeed(player.getMoveSpeed() + player.sprintModifier);
+
+            // restart if user presses enter
             if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
                 if (!hasLost) return;
 
@@ -446,21 +463,6 @@ public class Game {
         }
 
         @Override
-        public void keyPressed(KeyEvent keyEvent) {
-            int keyCode = keyEvent.getKeyCode();
-            int letterValue = keyCode - KeyEvent.VK_A;
-            // Set the appropriate key in the array to be pressed if it is available.
-            if(letterValue < 26 && letterValue >= 0) {
-                keysPressed[letterValue] = true;
-            }
-
-            if (keyCode == KeyEvent.VK_SHIFT)
-                player.setMoveSpeed(player.getMoveSpeed() + player.sprintModifier);
-
-
-        }
-
-        @Override
         public void keyReleased(KeyEvent keyEvent) {
             int keyCode = keyEvent.getKeyCode();
             int letterValue = keyCode - KeyEvent.VK_A;
@@ -468,6 +470,7 @@ public class Game {
                 keysPressed[letterValue] = false;
             }
 
+            // stop sprinting
             if (keyCode == KeyEvent.VK_SHIFT)
                 player.setMoveSpeed(player.getMoveSpeed() - player.sprintModifier);
         }
