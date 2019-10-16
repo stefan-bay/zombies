@@ -13,21 +13,21 @@ import java.io.IOException;
 public class Floor extends GameObject {
     static BufferedImage floor;
     AffineTransform tx;
-    AffineTransformOp op;
 
     /**
      * Static block to run at compile time.
      */
     static {
         try {
-            floor = readFile(new File("floor/tesselated.png"));
+            floor = readFile(new File("floor/quad.png"));
+            floor = tesselateFloor();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Constructor. Creates a new png, which is dirtfloor.png tesselated in a 2x2 grid reflected horizontally, vertically,
+     * Constructor. Creates a new png, which is quad.png tesselated in a 2x2 grid reflected horizontally, vertically,
      * and horizontally and vertically at the same time.
      * @throws IOException
      */
@@ -94,7 +94,9 @@ public class Floor extends GameObject {
      * affine transforms.
      * @return tess (the tesselated dirt png)
      */
-    public BufferedImage tesselateFloor() {
+    public static BufferedImage tesselateFloor() {
+        AffineTransformOp op;
+
         BufferedImage flippedHorizontally;
         AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
         tx.translate(-floor.getWidth(null), 0);
@@ -105,7 +107,7 @@ public class Floor extends GameObject {
         // Flip the image vertically
         AffineTransform ty = AffineTransform.getScaleInstance(1, -1);
         ty.translate(0, -flippedHorizontally.getHeight(null));
-        AffineTransformOp op = new AffineTransformOp(ty, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        op = new AffineTransformOp(ty, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
         flippedVertically = op.filter(flippedHorizontally, null);
 
         BufferedImage lastOne;
