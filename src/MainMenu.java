@@ -19,7 +19,7 @@ public class MainMenu extends JPanel implements ActionListener {
         setBackground(mainMenuColor);
         setLayout(new FlowLayout());
 
-        playImage = new ImageIcon("buttons/Play.png");
+        playImage = new ImageIcon("res/buttons/Play.png");
         playLabel = new JLabel(playImage);
         add(playLabel);
 
