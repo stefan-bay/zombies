@@ -61,7 +61,6 @@ public class Scene extends JPanel{
         // if object is too far away, despawn
         if (distanceToPlayer(object) > 2500) {
             object.setShouldRemove(true);
-            System.out.println("DESPAWN");
             return false;
         }
 
