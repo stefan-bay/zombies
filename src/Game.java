@@ -44,7 +44,7 @@ public class Game {
     Point2D.Double fireCoords;
 
     // for scrolling
-    int right_buffer = 80;
+    int buffer = 50;
     int enemyHealth = 100;
     int killCount = 0;
     int tickTime = 50;
@@ -201,50 +201,50 @@ public class Game {
     }
 
     void runRight() {
-        if (player.getX() > right_buffer) {
+        if (player.getX() > size/2 - buffer) {
             for (GameObject go : gameObjects) {
                 if (!(go instanceof Player)) {
-                    go.setX(go.getX() - moveSpeed);
+                    go.setX(go.getX() - player.getMoveSpeed());
                 }
             }
         } else {
-            player.move(moveSpeed, 0, gameObjects);
+            player.move(player.getMoveSpeed(), 0, gameObjects);
         }
     }
 
     void runLeft() {
-        if (player.getX() < -right_buffer) {
+        if (player.getX() < -size/2 + buffer) {
             for (GameObject go : gameObjects) {
                 if (!(go instanceof Player)) {
-                    go.setX(go.getX() + moveSpeed);
+                    go.setX(go.getX() + player.getMoveSpeed());
                 }
             }
         } else {
-            player.move(-moveSpeed, 0, gameObjects);
+            player.move(-player.getMoveSpeed(), 0, gameObjects);
         }
     }
 
     void runUp() {
-        if (player.getY() < -right_buffer) {
+        if (player.getY() < -size/2 + buffer) {
             for (GameObject go : gameObjects) {
                 if (!(go instanceof Player)) {
-                    go.setY(go.getY() + moveSpeed);
+                    go.setY(go.getY() + player.getMoveSpeed());
                 }
             }
         } else {
-            player.move(0, -moveSpeed, gameObjects);
+            player.move(0, -player.getMoveSpeed(), gameObjects);
         }
     }
 
     void runDown() {
-        if (player.getY() > right_buffer) {
+        if (player.getY() > size/2 - buffer) {
             for (GameObject go : gameObjects) {
                 if (!(go instanceof Player)) {
-                    go.setY(go.getY() - moveSpeed);
+                    go.setY(go.getY() - player.getMoveSpeed());
                 }
             }
         } else {
-            player.move(0, moveSpeed, gameObjects);
+            player.move(0, player.getMoveSpeed(), gameObjects);
         }
     }
 

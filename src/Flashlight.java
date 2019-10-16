@@ -22,12 +22,12 @@ public class Flashlight extends GameObject {
 
     void setAmbientLight(int ambientLight, boolean isDayTime) {
         this.ambientLight = ambientLight;
-        this.dayTime = isDayTime;
+        this.dayTime = false;
     }
 
     void createFlashLight(double playerX, double playerY, double width, double height, Point2D.Double mouseLoc) {
         Point2D.Double playerPoint = new Point2D.Double(playerX, playerY);
-        Point2D.Double posX = new Point2D.Double(flashlightRadius, 0 );
+        Point2D.Double posX = new Point2D.Double(playerX+1, 0 );
         flashLightCone = new BufferedImage((int)width,(int)height, BufferedImage.TYPE_INT_ARGB);
 
         // Draw the dimness of the screen
@@ -48,10 +48,13 @@ public class Flashlight extends GameObject {
                     int alpha = (int) ((radiusRatio * ambientLight));
                     int redGreenToYellow = (int) (ambientLight - alpha);
                     Color flashlightColor = new Color(redGreenToYellow, redGreenToYellow, 0, alpha);
-                    int[] colorArray = new int[25];
+                    int arraySize = 5;
+                    int[] colorArray = new int[(int)Math.pow(arraySize,2)];
                     Arrays.fill(colorArray, flashlightColor.getRGB());
-                    flashLightCone.setRGB((int) (x) - 5, (int) (y) - 5, 5, 5, colorArray, 0, 0);
-
+                    if(x+arraySize < flashLightCone.getWidth() && x - arraySize > 0
+                        && y+arraySize < flashLightCone.getHeight() && y-arraySize > 0) {
+                        flashLightCone.setRGB((int) (x) - 5, (int) (y) - 5, 5, 5, colorArray, 0, 0);
+                    }
                 }
             }
         }
