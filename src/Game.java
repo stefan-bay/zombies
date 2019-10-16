@@ -21,7 +21,7 @@ public class Game {
     boolean hasLost = false;
 
     // debug
-    boolean straight_to_endscreen = true;
+    boolean straight_to_endscreen = false;
     boolean test_hit_explosion = false;
     boolean explosion_on = false;
     boolean test_enemy_healthbar = false;
@@ -45,6 +45,8 @@ public class Game {
     Random enemyPos = new Random();
     boolean firePressed = false;
     Point2D.Double fireCoords;
+
+    SecondsCounter secondsCounter;
 
     // for scrolling
     int buffer = 50;
@@ -91,6 +93,10 @@ public class Game {
             player.setHealth(0);
             killCount = 1100;
         }
+
+        // seconds counter with default width and height
+        secondsCounter = new SecondsCounter(-size/2, -size/2, 15, 22);
+        gameObjects.add(secondsCounter);
     }
 
     public void start() {
@@ -169,12 +175,14 @@ public class Game {
     void redrawFlashlight() {
         setAmbientLight();
         flashlight.createFlashLight(player.getX(), player.getY(), size, size, getMouseLoc());
+        gameObjects.remove(secondsCounter);
         gameObjects.remove(player);
         gameObjects.remove(flashlight);
         gameObjects.remove(playerHealthBar);
         gameObjects.add(flashlight);
         gameObjects.add(player);
         gameObjects.add(playerHealthBar);
+        gameObjects.add(secondsCounter);
     }
 
 
@@ -219,6 +227,7 @@ public class Game {
     void runRight() {
         if (player.getX() > size/2 - buffer) {
             for (GameObject go : gameObjects) {
+                if (go instanceof SecondsCounter) continue; // seconds counter does not move
                 if (!(go instanceof Player)) {
                     go.setX(go.getX() - player.getMoveSpeed());
                 }
@@ -267,7 +276,6 @@ public class Game {
     void shoot(Point2D.Double direction) {
         if(fireCooldown.startCooldown()) {
             Projectile projectile = player.getProjectile(direction);
-            gameObjects.add(projectile);
         }
 
     }

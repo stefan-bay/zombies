@@ -12,15 +12,14 @@ public class NumberHelper {
 
     public static BufferedImage imageForNumber(int number) {
         ArrayList<BufferedImage> numberList = Animation.getListForPath("res/numbers/", 0, 9);
-        String killString = Integer.toString(number);
-        int number_of_digits = killString.length();
+        String numString = Integer.toString(number);
+        int number_of_digits = numString.length();
         int [] numbers_to_display = new int[number_of_digits];
         int img_width = 0; // total width of image (depends on which numbers are shown)
 
         // fill numbers to display with correlating digits
         for (int i = 0; i < number_of_digits; i++) {
-            int digit = Character.getNumericValue(killString.charAt(i));
-            System.out.println(digit);
+            int digit = Character.getNumericValue(numString.charAt(i));
             numbers_to_display[i] = digit;
             img_width += numberwidth[digit];
         }
@@ -41,4 +40,20 @@ public class NumberHelper {
 
         return image;
     }
+
+    public static int imageWidthForNumber(int num) {
+        String numString = Integer.toString(num);
+        int number_of_digits = numString.length();
+        int [] numbers_to_display = new int[number_of_digits];
+        int img_width = 0; // total width of image (depends on which numbers are shown)
+
+        // fill numbers to display with correlating digits
+        for (int i = 0; i < number_of_digits; i++) {
+            int digit = Character.getNumericValue(numString.charAt(i));
+            img_width += numberwidth[digit];
+        }
+
+        return img_width;
+    }
+
 }
