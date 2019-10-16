@@ -150,6 +150,7 @@ public class Game {
      * Updates the game state on an interval.
      */
     public void update() {
+        updatePlayerDirection();
         updateAllGameObjects();
         if (!test_hit_explosion) {
             if (!hasLost) {
@@ -168,6 +169,10 @@ public class Game {
         }
         // gameScene has a pointer to the list of objects, it draws all of them.
         gameScene.repaint();
+    }
+
+    void updatePlayerDirection() {
+        player.setDirection(getMouseLoc());
     }
 
     /**

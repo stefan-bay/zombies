@@ -20,6 +20,7 @@ public class Player extends GameObject {
 
     int moveSpeed = 5;
     int sprintModifier = 5;
+    Point2D.Double playerDirection;
 
     Player(double x, double y, double width, double height) {
         super(x, y, width, height, 200);
@@ -44,6 +45,16 @@ public class Player extends GameObject {
 
         else if (y < 0)
             this.direction = Direction.UP;
+    }
+
+    void setDirection(Point2D.Double direction) {
+        this.playerDirection = direction;
+    }
+
+    double getPlayerAngle() {
+        Point2D.Double playerLoc = new Point2D.Double(getX(), getY());
+        Point2D.Double toTheRight = new Point2D.Double(getX() + 1, 0);
+        return VectorUtils.getThetaBetweenVectors(toTheRight, playerDirection, playerLoc);
     }
 
     Point2D getFrontFace() {
@@ -143,7 +154,7 @@ public class Player extends GameObject {
 
     @Override
     Image getImage() {
-//        sprite.rotate(imageRotationAngle());
+        sprite.rotate(getPlayerAngle());
         return sprite.getImage();
     }
 }
