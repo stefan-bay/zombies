@@ -153,7 +153,6 @@ public class Game {
      * The main game loop that reruns the update method. Should use cooldown.
      */
     private void mainLoop() {
-        gameTimer = new Timer();
         update();
         gameTimer.schedule(new TimerTask() {
             @Override
@@ -608,6 +607,7 @@ public class Game {
                 container.removeMouseListener(mouseListener);
                 initializeGame();
                 start();
+                gameTimer = new Timer();
                 mainLoop();
             }
         }
