@@ -4,11 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 
 public class MainMenu extends JPanel implements ActionListener {
     JLabel playLabel;
     MainMenu mainMenu;
     ImageIcon playImage;
+    MouseAdapter mouse;
 
     public MainMenu(GameContainer gc) {
         mainMenu = this;
@@ -21,16 +23,24 @@ public class MainMenu extends JPanel implements ActionListener {
         playLabel = new JLabel(playImage);
         add(playLabel);
 
-        playLabel.addMouseListener(new MouseAdapter() {
+       mouse = new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
-                playGame(gc);
+                Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
+                Point2D.Double mouseDiff = new Point2D.Double(me.getX() - mouseLoc.getX(), me.getY() - mouseLoc.getY());
+                playGame(gc, mouseDiff);
                 playLabel.setVisible(false);
+                removeTheMouseListener();
             }
-        });
+        };
+       addMouseListener(mouse);
     }
 
-    private void playGame(GameContainer gc) {
-        gc.launchGame();
+    void removeTheMouseListener() {
+        removeMouseListener(mouse);
+    }
+
+    private void playGame(GameContainer gc, Point2D.Double mouseDiff) {
+        gc.launchGame(mouseDiff);
     }
 
     @Override

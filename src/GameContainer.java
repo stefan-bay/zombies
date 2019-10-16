@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.geom.Point2D;
 import java.io.IOException;
 
 /**
@@ -8,7 +9,7 @@ public class GameContainer {
     JFrame frame;
     MainMenu mainMenu;
 
-    boolean bypassMainMenu = true;
+    boolean bypassMainMenu = false;
 
     public static void main(String[] args) {
         new GameContainer();
@@ -24,14 +25,14 @@ public class GameContainer {
         frame.setResizable(false);
 
         if (bypassMainMenu)
-            launchGame(); // bypass main menu
+            launchGame(new Point2D.Double(0,0)); // bypass main menu
         else
             frame.add(mainMenu);
 
         frame.pack();
     }
 
-    void launchGame() {
-        new Game(frame);
+    void launchGame(Point2D.Double mouseDiff) {
+        new Game(frame, mouseDiff);
     }
 }

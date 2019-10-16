@@ -74,15 +74,17 @@ public class Game {
     int killCount = 0;
     // The time in MS between updates of this game.
     int tickTime = 50;
-
+    // Difference between window mouse coordinates and monitor mouse coordinates.
+    Point2D.Double mouseDiff;
     // The timer to use between updates to this game,
     java.util.Timer gameTimer = new Timer();
 
     /**
      *  Creates a game instance with the provided JFrame
     */
-     Game(JFrame frame) {
+     Game(JFrame frame, Point2D.Double mouseOffset) {
         container = frame;
+        mouseDiff = mouseOffset;
         initializeGame();
         start();
         mainLoop();
@@ -271,8 +273,8 @@ public class Game {
         Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
         // Translate the mouse coordinates by the offset between the window and the display.
         // Make the mouse coordinates relative to the player.
-        double mouseX = (mouseLoc.getX() - size/2 - 60 - player.getX());
-        double mouseY = (mouseLoc.getY() - size/2 - 60 - player.getY());
+        double mouseX = (mouseLoc.getX() - size/2 + mouseDiff.getX() - player.getX());
+        double mouseY = (mouseLoc.getY() - size/2 + mouseDiff.getY() - player.getY());
 
         return new Point2D.Double(mouseX, mouseY);
     }
