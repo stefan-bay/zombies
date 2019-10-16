@@ -173,5 +173,12 @@ abstract class GameObject {
         return new Projectile( projectileX, projectileY, newProjectileCoords);
     }
 
+    double distanceTo(GameObject other) {
+        double x = this.getX() - other.getX();
+        double y = this.getY() - other.getY();
+        double distance = Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+        return distance;
+    }
+
     abstract Image getImage();
 }
