@@ -6,6 +6,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
+/**
+ * JPanel that appears when first launched. Has a MouseListener attached to a JLabel which contains
+ * a png of a font that, once clicked, launches the game.
+ */
 public class MainMenu extends JPanel implements ActionListener {
     JLabel playLabel;
     MainMenu mainMenu;
@@ -19,7 +23,8 @@ public class MainMenu extends JPanel implements ActionListener {
         setBackground(mainMenuColor);
         setLayout(new FlowLayout());
 
-        playImage = new ImageIcon("buttons/Play.png");
+
+        playImage = new ImageIcon("buttons/Play.png"); //adding the png to the JLabel
         playLabel = new JLabel(playImage);
         add(playLabel);
 

@@ -6,34 +6,49 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Floor {
-    BufferedImage floor;
+public class Floor extends GameObject {
+    static BufferedImage floor;
     AffineTransform tx;
     AffineTransformOp op;
 
-    public Floor() throws IOException {
-        floor = readFile(new File("floor/dirtfloor.png"));
-//        tesselateFloor();
-//        writeFile("floor/tesselated.png");
-    }
-
-    public static void main(String[] args) {
+    static {
         try {
-            Floor test = new Floor();
+            floor = readFile(new File("floor/tesselated.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    /**
+     * Constructor. Creates a new png, which is dirtfloor.png tesselated in a 2x2 grid.
+     * @throws IOException
+     */
+    public Floor(int x, int y, int width, int height) {
+        super(x, y, width, height);
+    }
+
+//    /**
+//     * Runs the class to create the image.
+//     * @param args
+//     */
+//    public static void main(String[] args) {
+//        try {
+//            Floor test = new Floor();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
      * @param fileName
      * @return
      * @throws IOException Takes in a fileName and reads that file
      */
-    private BufferedImage readFile(File fileName) throws IOException {
+    private static BufferedImage readFile(File fileName) throws IOException {
         floor = ImageIO.read(fileName);
         return floor;
     }
+
+
     /**
      * Takes in a name and creates a new file with that name
      * @param name
@@ -47,6 +62,41 @@ public class Floor {
         }
     }
 
+
+
+
+//    public BufferedImage[][] makeFloorAroundPlayer() {
+//        BufferedImage[][] floorGrid = new BufferedImage[4][4];
+//        BufferedImage currentFloor = new BufferedImage(1040, 1040, BufferedImage.TYPE_INT_ARGB);
+//
+//
+//        Graphics2D g2d = currentFloor.createGraphics();
+//
+//        for (int r = 0; r < 4; r++) { //filling 2D array with tiles
+//            for (int c = 0; c < 4; c++) {
+//                floorGrid[r][c] = tesselateFloor();
+//            }
+//        }
+//        //AffineTransform at = new AffineTransform();
+//        int multiplier = 0;
+//        for (BufferedImage[] bi : floorGrid) { //drawing each tile on BufferedImage
+//            for (BufferedImage b : bi) {
+//                multiplier++;
+//                if (multiplier <= 4) {
+//                    g2d.drawImage(b, b.getWidth() * multiplier, 0, null);
+//                    multiplier = 0;
+//                }
+//            }
+//        }
+//        return floorGrid;
+//    }
+
+    /**
+     * Gets the original dirt image (0,0 in the grid). Flips it horizontally (1,0 in the grid).
+     * Flips that product vertically (1,-1 in the grid). Then flips that product horizontally (-1,-1 in the grid) using
+     * affine transforms.
+     * @return tess (the tesselated dirt png)
+     */
     public BufferedImage tesselateFloor() {
         BufferedImage flippedHorizontally;
         AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
@@ -76,4 +126,8 @@ public class Floor {
         return tess;
     }
 
+    @Override
+    Image getImage() {
+       return floor;
+    }
 }
