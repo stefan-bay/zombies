@@ -2,13 +2,14 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Represents an enemy to the player.
  */
 public class Enemy extends GameObject {
     // The image of this enemy.
-    Image enemyImage;
+    Sprite sprite;
     // The cooldown on when this enemy can fire.
     Cooldown fireCooldown = new Cooldown(1000);
     // The movement speed of this enemy
@@ -19,6 +20,10 @@ public class Enemy extends GameObject {
     int enemyProjectileSpeed = 15;
     // The melee damage of this enemy.
     int meleeDamage = 5;
+
+    Point2D.Double playerDirection;
+
+    private static final int health = 100;
 
     // Sets the movement speed of this enemy.
     public void setEnemyMoveSpeed(int enemyMoveSpeed) {
@@ -42,19 +47,27 @@ public class Enemy extends GameObject {
     }
 
     /**
-     * Construct an new enemy.
+     * Construct a new random enemy either ranged or melee
      * @param x the x coordinate of this enemy.
      * @param y the y coordinate of this enemy.
-     * @param width the width of this enemy
-     * @param height the height of this enemy.
-     * @param health the health of this enemy.
      */
-    public Enemy(double x, double y, double width, double height, int health) {
-        super(x, y, width, height, health);
-        enemyImage = new BufferedImage((int) width,(int) height, BufferedImage.TYPE_INT_RGB);
-        Graphics enemyGraphics = enemyImage.getGraphics();
-        enemyGraphics.setColor(Color.DARK_GRAY);
-        enemyGraphics.fillRect((int)0,(int)0,(int)width,(int)height);
+    public Enemy(double x, double y) {
+        super(x, y, 40, 40, health);
+        if ((new Random()).nextInt(10) < 5) { //
+            this.sprite = new Sprite(Sprite.SpriteType.ENEMY_MELEE);
+            this.canFire = false;
+            this.setEnemyMoveSpeed(enemyMoveSpeed * 2);
+        } else {
+            this.sprite = new Sprite(Sprite.SpriteType.ENEMY_RANGED);
+        }
+        setWidth(sprite.spriteWidth);
+        setWidth(sprite.spriteWidth);
+    }
+
+    double getEnemyAngle() {
+        Point2D.Double playerLoc = new Point2D.Double(getX(), getY());
+        Point2D.Double toTheRight = new Point2D.Double(getX() + 1, 0);
+        return VectorUtils.getThetaBetweenVectors(toTheRight, playerDirection, playerLoc);
     }
 
     /**
@@ -74,6 +87,8 @@ public class Enemy extends GameObject {
         // Compute the difference between this enemys position and the players.
         double xDelta = player.getX() - getX();
         double yDelta = player.getY() - getY();
+
+        this.playerDirection = new Point2D.Double(xDelta, yDelta);
         // Make direction unit vector.
         double length = Math.sqrt(Math.pow(xDelta, 2) + Math.pow(yDelta, 2));
         xDelta /= length;
@@ -106,6 +121,7 @@ public class Enemy extends GameObject {
 
     @Override
     Image getImage() {
-        return enemyImage;
+        sprite.rotate(getEnemyAngle());
+        return sprite.getImage();
     }
 }

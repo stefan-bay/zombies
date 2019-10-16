@@ -14,7 +14,7 @@ public class Floor {
     public Floor() throws IOException {
         floor = readFile(new File("floor/dirtfloor.png"));
 //        tesselateFloor();
-        writeFile("floor/tesselated.png");
+//        writeFile("floor/tesselated.png");
     }
 
     public static void main(String[] args) {
