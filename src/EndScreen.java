@@ -81,15 +81,22 @@ public class EndScreen extends GameObject{
         Graphics2D g = (Graphics2D)image.getGraphics();
         g.setColor(transparent);
 
-        g.drawImage(youLoseImage, null, 250, 400);
-        g.drawImage(killsImage, null, 300, 500);
-        g.drawImage(killCountImage, null, 300 + killsImage.getWidth() + 10, 500);
+        int iw = image.getWidth();
+        int ih = image.getHeight();
 
-        int you_lasted_total_seconds = youLastedImage.getWidth() + secondsSurvivedImage.getWidth() + NumberHelper.imageWidthForNumber(secondsSurvived);
+        int cx = iw / 2;
+        int cy = ih / 2;
 
-        g.drawImage(youLastedImage, null, 200, 550);
-        g.drawImage(secondsSurvivedImage, null, 200 + youLastedImage.getWidth() + 10 , 550);
-        g.drawImage(secondsImage, null, 200 + youLastedImage.getWidth() + 10 + secondsSurvivedImage.getWidth() + 10, 550);
+        g.drawImage(youLoseImage, null, cx - youLoseImage.getWidth()/2, cy - ih/3 );
+
+        int kills_total_width = killsImage.getWidth() + killCountImage.getWidth();
+
+        g.drawImage(killsImage, null, cx - killCountImage.getWidth()/2 - killsImage.getWidth() - 15, cy - killsImage.getHeight()/2);
+        g.drawImage(killCountImage, null, cx - killCountImage.getWidth()/2, cy - killCountImage.getHeight()/2);
+
+        g.drawImage(youLastedImage, null, cx - youLastedImage.getWidth() - secondsSurvivedImage.getWidth()/2 - 15, cy + ih/3);
+        g.drawImage(secondsSurvivedImage, null, cx - secondsSurvivedImage.getWidth()/2, cy + ih/3);
+        g.drawImage(secondsImage, null, cx + secondsSurvivedImage.getWidth()/2 + 15, cy + ih/3);
 
         g.dispose();
         return image;

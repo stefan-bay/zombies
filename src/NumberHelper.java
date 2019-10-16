@@ -25,7 +25,7 @@ public class NumberHelper {
         }
 
         //
-        BufferedImage image = new BufferedImage(img_width, 22, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(img_width, 32, BufferedImage.TYPE_INT_ARGB);
         Graphics2D numbers_g = (Graphics2D) image.createGraphics();
 
         // draw

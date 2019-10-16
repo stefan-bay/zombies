@@ -122,8 +122,8 @@ public class Game {
 
         if (straight_to_endscreen) {
             player.setHealth(0);
-            secondsCounter.setSeconds(12);
-            killCount = 1100;
+            secondsCounter.setSeconds(7000);
+            killCount = 8212;
         }
     }
 
