@@ -26,6 +26,7 @@ public class Game {
     boolean straight_to_endscreen = false;
     boolean test_hit_explosion = false;
     boolean explosion_on = false;
+    boolean test_enemy_healthbar = false;
 
     // The scene used to draw all the game objects
     Scene gameScene;
@@ -60,6 +61,9 @@ public class Game {
     boolean firePressed = false;
 
     // the buffer between the edge of the screen and the player.
+    SecondsCounter secondsCounter;
+
+    // for scrolling
     int buffer = 50;
     // The health of enemies.
     int enemyHealth = 100;
@@ -110,10 +114,17 @@ public class Game {
         container.addMouseListener(mouseListener);
 
         // Debug
+            if (test_enemy_healthbar)
+                spawnEnemy();
+
         if (straight_to_endscreen) {
             player.setHealth(0);
             killCount = 1100;
         }
+
+        // seconds counter with default width and height
+        secondsCounter = new SecondsCounter(-size/2, -size/2, 15, 22);
+        gameObjects.add(secondsCounter);
     }
 
     /**
@@ -214,12 +225,14 @@ public class Game {
     void redrawFlashlight() {
         setAmbientLight();
         flashlight.createFlashLight(player.getX(), player.getY(), size, size, getMouseLoc());
+        gameObjects.remove(secondsCounter);
         gameObjects.remove(player);
         gameObjects.remove(flashlight);
         gameObjects.remove(playerHealthBar);
         gameObjects.add(flashlight);
         gameObjects.add(player);
         gameObjects.add(playerHealthBar);
+        gameObjects.add(secondsCounter);
     }
 
     /**
@@ -283,6 +296,7 @@ public class Game {
     void runRight() {
         if (player.getX() > size/2 - buffer) {
             for (GameObject go : gameObjects) {
+                if (go instanceof SecondsCounter) continue; // seconds counter does not move
                 if (!(go instanceof Player)) {
                     go.setX(go.getX() - player.getMoveSpeed());
                 }
@@ -359,6 +373,10 @@ public class Game {
             // The position of the new enemy relative to the player, within two screen sizes.
             int enemyX = (int)player.getX() + enemyPos.nextInt(size*2)-size;
             int enemyY = (int)player.getY() + enemyPos.nextInt(size*2)-size;
+            if (test_enemy_healthbar) {
+                enemyX = -900;
+                enemyY = -900;
+            }
             Enemy enemy = new Enemy(enemyX, enemyY, enemySize, enemySize, enemyHealth);
             gameObjects.add(enemy);
             HealthBar bar = new HealthBar(enemy, enemyHealth);
