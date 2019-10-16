@@ -54,7 +54,11 @@ public class Sprite {
 
     double oldTheta  = 0;
 
-
+    /**
+     * Constructor for a sprite using enum. Based off of which Sprite trying to create,
+     * creates sprite. i.e. SpriteType sprite = PLAYER, makes player.
+     * @param sprite
+     */
     public Sprite(SpriteType sprite) {
 
         switch (sprite) {
@@ -91,23 +95,12 @@ public class Sprite {
             default:
                 System.out.println("No sprite"); //?
         }
-
-
-
-
-//        Shape [] playershapes = drawRangedEnemy();
-//        translateRangedEnemyShapes(playershapes);
-//
-//        spriteImage = drawOnBufferedImage(playershapes , rangedEnemyColors);
-//
-//
-//        try {
-//            ImageIO.write(spriteImage, "png", new File("res/sprite.png"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
+    /**
+     * Method to rotate a sprite.
+     * @param theta
+     */
     void rotate(double theta) {
         AffineTransform back = new AffineTransform();
         back.rotate(-oldTheta, spriteWidth/2, spriteHeight/2);
@@ -122,6 +115,10 @@ public class Sprite {
         oldTheta = theta;
     }
 
+    /**
+     * Needed to translate each sprite to (0,0) separately because they each had different dimensions.
+     * @param shapes
+     */
     void translateRangedEnemyShapes(Shape [] shapes) {
         AffineTransform at = new AffineTransform();
         at.translate(-100, -95);
@@ -129,7 +126,6 @@ public class Sprite {
         for (int i = 0; i < shapes.length; i++)
             shapes[i] = at.createTransformedShape(shapes[i]);
     }
-
     void translateMeleeEnemyShapes(Shape [] shapes) {
         AffineTransform at = new AffineTransform();
         at.translate(0, 10);
@@ -137,7 +133,6 @@ public class Sprite {
         for (int i = 0; i < shapes.length; i++)
             shapes[i] = at.createTransformedShape(shapes[i]);
     }
-
     void translatePlayerShapes(Shape [] shapes) {
         AffineTransform at = new AffineTransform();
         at.translate(29, 13 +10);
@@ -338,64 +333,6 @@ public class Sprite {
 
         return playerShapes;
     }
-
-
-//    @Override
-//    public void paintComponent(Graphics g) {
-//        super.paintComponent(g);
-//        Graphics2D g2d = (Graphics2D)g;
-//
-//        g2d.drawImage(getImage(), 0,0,null);
-//
-//
-//        g2d.translate(getWidth()/2, getHeight()/2);
-//        // g2d.draw(drawHitbox());
-//
-//        if (drawPlayer() == null) { //DRAWING PLAYER
-//            return;
-//        } else {
-//            for (int i = 0; i < drawPlayer().length; i++) {
-//                for (int c = 0; c < playerColors.length; c++) {
-//                    g2d.setColor(Color.black);
-//                    g2d.draw(drawPlayer()[i]);
-//                    g2d.setColor(playerColors[i]);
-//                    g2d.fill(drawPlayer()[i]);
-//
-//
-//                }
-//            }
-//        }
-//        if (drawRangedEnemy() == null) { //DRAWING RANGED ENEMY
-//            return;
-//        } else {
-//            for (int i = 0; i < rangedEnemyShapes.length; i++) {
-//                for (int c = 0; c < rangedEnemyColors.length; c++) {
-//                    g2d.setColor(Color.black);
-//                    g2d.draw(drawRangedEnemy()[i]);
-//                    g2d.setColor(rangedEnemyColors[i]);
-//                    g2d.fill(drawRangedEnemy()[i]);
-//                }
-//            }
-//        }
-//
-//        if (drawMeleeEnemy() == null) { //DRAWING MELEE ENEMY
-//            return;
-//        } else {
-//            for (int i = 0; i < meleeEnemyShapes.length; i++) {
-//                for (int c = 0; c < meleeEnemyColors.length; c++) {
-//                    g2d.setColor(Color.black);
-//                    g2d.draw(drawMeleeEnemy()[i]);
-//                    g2d.setColor(meleeEnemyColors[i]);
-//                    g2d.fill(drawMeleeEnemy()[i]);
-//                }
-//
-//            }
-//        }
-//
-//        g2d.draw(drawProjectile());     //DRAWING PROJECTILE
-//
-//    }
-
 
     public BufferedImage getImage() {
         return createSpriteImage(this.spriteShapes, this.spriteColors);
