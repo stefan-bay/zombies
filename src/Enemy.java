@@ -106,9 +106,10 @@ public class Enemy extends GameObject {
     @Override
     boolean canMove(double x, double y, ArrayList<GameObject> others) {
         for(GameObject other : others) {
-            // Melee the player if this enemy is within 50px
+            // Melee the player if this enemy is within 50px and is of melee type
             if(other instanceof Player && this.distanceTo(other) <= 50) {
-                other.damage(meleeDamage);
+                if (!canFire())
+                    other.damage(meleeDamage);
             }
             // Don't let this enemy move if it would hit another colliding object.
             if (other != this && other.isColliding() && isColliding() && this.intersects(getX() + x - getWidth()/2, getY() + y - getHeight()/2, other)) {
@@ -122,7 +123,7 @@ public class Enemy extends GameObject {
     @Override
     Image getImage() {
         if (playerDirection != null)
-            sprite.rotate(getEnemyAngle());
+            sprite.rotate(getEnemyAngle()); // rotate so that enemy is facing player
         return sprite.getImage();
     }
 }

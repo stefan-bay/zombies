@@ -107,6 +107,7 @@ public class Game {
     void initializeGame() {
         setupFloor();
         Sprite playerSprite = new Sprite(Sprite.SpriteType.PLAYER);
+        hasLost = false;
         player = new Player(0,0,34,33);
 
         player.setColliding(true);
@@ -136,8 +137,8 @@ public class Game {
 
         if (straight_to_endscreen) {
             player.setHealth(0);
-            secondsCounter.setSeconds(12);
-            killCount = 1100;
+            secondsCounter.setSeconds(7000);
+            killCount = 8212;
         }
     }
 
@@ -152,6 +153,7 @@ public class Game {
      * The main game loop that reruns the update method. Should use cooldown.
      */
     private void mainLoop() {
+        gameTimer = new Timer();
         update();
         gameTimer.schedule(new TimerTask() {
             @Override
@@ -553,6 +555,11 @@ public class Game {
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
             firePressed = true;
+
+            // reset mouse offset so that the direction angle is correct
+            Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
+            Point2D.Double md = new Point2D.Double(mouseEvent.getX() - mouseLoc.getX(), mouseEvent.getY() - mouseLoc.getY());
+            mouseDiff = md;
         }
 
         @Override
@@ -573,6 +580,7 @@ public class Game {
     KeyListener keyListener = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent keyEvent) {
+
         }
 
         @Override
@@ -584,8 +592,24 @@ public class Game {
                 keysPressed[letterValue] = true;
             }
 
+            // sprint on shift hold
             if (keyCode == KeyEvent.VK_SHIFT)
                 player.setMoveSpeed(player.getMoveSpeed() + player.sprintModifier);
+
+            // restart if user presses enter
+            if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (!hasLost) return;
+
+                gameTimer.cancel();
+                gameTimer.purge();
+                gameObjects.clear();
+                container.remove(gameScene);
+                container.removeKeyListener(keyListener);
+                container.removeMouseListener(mouseListener);
+                initializeGame();
+                start();
+                mainLoop();
+            }
         }
 
         @Override
@@ -596,6 +620,7 @@ public class Game {
                 keysPressed[letterValue] = false;
             }
 
+            // stop sprinting
             if (keyCode == KeyEvent.VK_SHIFT)
                 player.setMoveSpeed(player.getMoveSpeed() - player.sprintModifier);
         }
