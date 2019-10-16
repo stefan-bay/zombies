@@ -387,7 +387,7 @@ public class Game {
             // Set the class of the enemy, either it can fire and is slow or can only melee and is fast.
             if(random.nextInt(10) < 5) {
                 enemy.setCanFire(false);
-                enemy.setEnemyMoveSpeed(enemy.enemyMoveSpeed *2);
+                enemy.setEnemyMoveSpeed(player.getMoveSpeed() *2);
             }
         }
     }

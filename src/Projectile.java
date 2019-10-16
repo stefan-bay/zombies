@@ -6,16 +6,19 @@ import java.util.ArrayList;
 
 public class Projectile extends GameObject{
     Image thisImage;
-    static double size = 10;
+    static int size = 10;
     Point2D.Double direction;
     int damage = 10;
 
     Projectile(double x,double y, Point2D.Double dir) {
         super(x,y,size,size);
-        thisImage = new BufferedImage((int) size,(int) size,BufferedImage.TYPE_INT_RGB);
+        thisImage = new BufferedImage(size, size,BufferedImage.TYPE_INT_RGB);
         Graphics g = thisImage.getGraphics();
-        g.setColor(Color.BLACK);
-        g.fillRect((int)x,(int)y,(int)size,(int)size);
+        g.setColor(new Color(0,0,0,0));
+        g.fillRect(0,0,size,size);
+        g.setColor(Color.BLUE);
+        g.fillOval(size/3,size/3,size/3,size/3);
+        g.dispose();
         direction = dir;
         setColliding(false);
     }
