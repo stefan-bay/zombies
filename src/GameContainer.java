@@ -11,7 +11,7 @@ public class GameContainer {
     boolean bypassMainMenu = true;
 
     public static void main(String[] args) {
-        GameContainer container = new GameContainer();
+        new GameContainer();
     }
 
     GameContainer(){
@@ -32,6 +32,6 @@ public class GameContainer {
     }
 
     void launchGame() {
-        Game game = new Game(frame);
+        new Game(frame);
     }
 }
