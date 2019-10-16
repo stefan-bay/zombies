@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class HealthBar extends GameObject {
 
@@ -30,6 +31,12 @@ public class HealthBar extends GameObject {
     @Override
     double getY() {
         return object.getY() - yOffset;
+    }
+
+    @Override
+    void update(ArrayList<GameObject> objects) {
+        this.setX(getX());
+        this.setY(getY());
     }
 
     @Override
