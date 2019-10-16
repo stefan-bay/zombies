@@ -92,6 +92,7 @@ public class Game {
      * Initializes the game with a player, flashight and scene
      */
     void initializeGame() {
+        hasLost = false;
         player = new Player(0,0,34,33);
 
         player.setColliding(true);
@@ -137,6 +138,7 @@ public class Game {
      * The main game loop that reruns the update method. Should use cooldown.
      */
     private void mainLoop() {
+        gameTimer = new Timer();
         update();
         gameTimer.schedule(new TimerTask() {
             @Override
@@ -428,6 +430,19 @@ public class Game {
     KeyListener keyListener = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent keyEvent) {
+            if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (!hasLost) return;
+
+                gameTimer.cancel();
+                gameTimer.purge();
+                gameObjects.clear();
+                container.remove(gameScene);
+                container.removeKeyListener(keyListener);
+                container.removeMouseListener(mouseListener);
+                initializeGame();
+                start();
+                mainLoop();
+            }
         }
 
         @Override
@@ -441,6 +456,8 @@ public class Game {
 
             if (keyCode == KeyEvent.VK_SHIFT)
                 player.setMoveSpeed(player.getMoveSpeed() + player.sprintModifier);
+
+
         }
 
         @Override

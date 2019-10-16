@@ -22,13 +22,13 @@ public class MainMenu extends JPanel implements ActionListener {
     public MainMenu(GameContainer gc) {
         mainMenu = this;
         setPreferredSize(new Dimension(800,800));
-        Color mainMenuColor = new Color(130, 155, 146);
+        Color mainMenuColor = Color.black;
         setBackground(mainMenuColor);
-        setLayout(new FlowLayout());
+        setLayout(new BorderLayout());
 
         playImage = new ImageIcon("res/buttons/Play.png");
         playLabel = new JLabel(playImage); //Puts the Play.png image in the JLabel
-        add(playLabel);
+        add(playLabel, BorderLayout.CENTER);
 
        mouse = new MouseAdapter() { //Clicking anywhere on the main menu starts the game.
             public void mousePressed(MouseEvent me) {
