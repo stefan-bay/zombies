@@ -1,57 +1,141 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
-public class Sprite extends JPanel {
+public class Sprite {
     BufferedImage spriteImage;
-    double hitboxWidth, hitboxHeight;
-    Shape[] playerShapes, rangedEnemyShapes, meleeEnemyShapes;
-    Color[] playerColors,rangedEnemyColors, meleeEnemyColors;
-    Graphics g1;
-    int spriteWidth;
-    int spriteHeight;
 
+    Shape[] spriteShapes;
+    Color[] spriteColors;
+
+    int spriteWidth, spriteHeight;
 
     enum SpriteType {
         PLAYER,
         ENEMY_RANGED,
-        ENEMY_MELEE,
-        FLOOR,
+        ENEMY_MELEE
     }
 
-    SpriteType sprite;
-    public Sprite(SpriteType sprite, int width, int height) {
-        this.spriteWidth = width;
-        this.spriteHeight = height;
-        this.setPreferredSize(new Dimension(400,400));
-        Color brown = new Color(222, 184, 135);
-        Color hair = new Color(10,10,10);
-        Color gray = new Color(100,100,100);
-        Color black = new Color(0,0,0);
+    private static final Color brown = new Color(222, 184, 135);
+    private static final Color hair = new Color(10,10,10);
+    private static final Color gray = new Color(100,100,100);
+    private static final Color black = new Color(0,0,0);
 
-        Color maroon = new Color(128,0,0);
-        Color darkred = new Color(139,0,0);
-        Color red = new Color(165,42,42);
-        Color black2 = new Color(0,0,0);
-        Color crimson = new Color(220,20,60);
+    private static final Color maroon = new Color(128,0,0);
+    private static final Color darkred = new Color(139,0,0);
+    private static final Color red = new Color(165,42,42);
+    private static final Color black2 = new Color(0,0,0);
+    private static final Color crimson = new Color(220,20,60);
 
-        Color maroon2 = new Color(50,0,0);
-        Color darkred2 = new Color(70,0,0);
-        Color red2 = new Color(125,42,42);
-        Color firebrick2= new Color(138,34,34);
-        Color crimson2 = new Color(120,20,60);
+    private static final Color maroon2 = new Color(50,0,0);
+    private static final Color darkred2 = new Color(70,0,0);
+    private static final Color red2 = new Color(125,42,42);
+    private static final Color firebrick2= new Color(138,34,34);
+    private static final Color crimson2 = new Color(120,20,60);
 
-        playerColors = new Color[] {brown, brown, hair, gray, black};
-        rangedEnemyColors = new Color[] {maroon, darkred, red, black2, crimson};
-        meleeEnemyColors = new Color[] {maroon2, darkred2, red2, firebrick2, crimson2};
+    private static final Color[] playerColors = new Color[] {brown, brown, hair, gray, black};
+    private static final Color[] rangedEnemyColors = new Color[] {maroon, darkred, red, black2, crimson};
+    private static final Color[] meleeEnemyColors = new Color[] {maroon2, darkred2, red2, firebrick2, crimson2};
 
-        spriteImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    private static final int playerWidth = 34;
+    private static final int playerHeight = 33;
 
+    private static final int meleeWidth = 40;
+    private static final int meleeHeight = 38;
+
+    private static final int rangedWidth = 32;
+    private static final int rangedHeight = 26;
+    // player       = 34 x 33
+    // melee enemy  = 40 x 38
+    // ranged enemy = 32 x 26
+
+
+    public Sprite(SpriteType sprite) {
+
+        switch (sprite) {
+            case PLAYER:
+                this.spriteShapes = playerShapes();
+                translatePlayerShapes(this.spriteShapes);
+
+                this.spriteColors = playerColors;
+
+                this.spriteWidth = playerWidth;
+                this.spriteHeight = playerHeight;
+
+                break;
+            case ENEMY_MELEE:
+                this.spriteShapes = meleeEnemyShapes();
+                translateMeleeEnemyShapes(this.spriteShapes);
+
+                this.spriteColors = meleeEnemyColors;
+
+                this.spriteWidth = meleeWidth;
+                this.spriteHeight = meleeHeight;
+
+                break;
+            case ENEMY_RANGED:
+                this.spriteShapes = rangedEnemyShapes();
+                translateRangedEnemyShapes(this.spriteShapes);
+
+                this.spriteColors = rangedEnemyColors;
+
+                this.spriteWidth = rangedWidth;
+                this.spriteHeight = rangedHeight;
+
+                break;
+            default:
+                System.out.println("No sprite"); //?
+        }
+
+
+
+
+//        Shape [] playershapes = drawRangedEnemy();
+//        translateRangedEnemyShapes(playershapes);
+//
+//        spriteImage = drawOnBufferedImage(playershapes , rangedEnemyColors);
+//
+//
+//        try {
+//            ImageIO.write(spriteImage, "png", new File("res/sprite.png"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    void rotate(double theta) {
+        AffineTransform at = new AffineTransform();
+        at.rotate(theta, spriteWidth/2, spriteHeight/2);
+
+        for (int i = 0; i < spriteShapes.length; i++)
+            spriteShapes[i] = at.createTransformedShape(spriteShapes[i]);
+    }
+
+    void translateRangedEnemyShapes(Shape [] shapes) {
+        AffineTransform at = new AffineTransform();
+        at.translate(-100, -95);
+
+        for (int i = 0; i < shapes.length; i++)
+            shapes[i] = at.createTransformedShape(shapes[i]);
+    }
+
+    void translateMeleeEnemyShapes(Shape [] shapes) {
+        AffineTransform at = new AffineTransform();
+        at.translate(0, 10);
+
+        for (int i = 0; i < shapes.length; i++)
+            shapes[i] = at.createTransformedShape(shapes[i]);
+    }
+
+    void translatePlayerShapes(Shape [] shapes) {
+        AffineTransform at = new AffineTransform();
+        at.translate(29, 13 +10);
+
+        for (int i = 0; i < shapes.length; i++)
+            shapes[i] = at.createTransformedShape(shapes[i]);
     }
 
     /**
@@ -60,27 +144,27 @@ public class Sprite extends JPanel {
      * @param spriteList
      * @param colorList
      */
-    public void drawOnBufferedImage(Shape[] spriteList, Color[] colorList) {
-        Graphics2D g2d = (Graphics2D) g1;
-        g2d = spriteImage.createGraphics();
+    public BufferedImage createSpriteImage(Shape[] spriteList, Color[] colorList) {
+        BufferedImage image = new BufferedImage(spriteWidth, spriteHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d  = image.createGraphics();
         for (int i = 0; i < spriteList.length; i++) {
                 g2d.setColor(Color.black);
                 g2d.draw(spriteList[i]);
                 g2d.setColor(colorList[i]);
                 g2d.fill(spriteList[i]);
         }
+        g2d.dispose();
+
+        return image;
     }
-
-
-
 
 
     /**
      * Assembling shapes to make an ENEMY_RANGED
      * @return rangedEnemyShapes
      */
-    public Shape[] drawRangedEnemy() {
-        rangedEnemyShapes = new Shape[4];
+    public Shape[] rangedEnemyShapes() {
+        Shape[] rangedEnemyShapes = new Shape[4];
         Ellipse2D.Double head = new Ellipse2D.Double( 100, 100, 13*1.2,13*1.2);
 
         Path2D.Double leftArm = new Path2D.Double();
@@ -120,8 +204,8 @@ public class Sprite extends JPanel {
      * Assembling shapes to make an ENEMY_MELEE
      * @return meleeEnemyShapes
      */
-    public Shape[] drawMeleeEnemy() {
-        meleeEnemyShapes = new Shape[2];
+    public Shape[] meleeEnemyShapes() {
+        Shape[] meleeEnemyShapes = new Shape[2];
 
         Ellipse2D head = new Ellipse2D.Double(0,0,15.6, 15.6);
         Path2D.Double arms = new Path2D.Double();
@@ -201,11 +285,11 @@ public class Sprite extends JPanel {
      * Assembling shapes to make a PLAYER
      * @return
      */
-    public Shape[] drawPlayer() {
+    public Shape[] playerShapes() {
         double halfHead = 6.5;
         int halfhitbox = 15;
 
-        playerShapes = new Shape[5];
+        Shape[] playerShapes = new Shape[5];
 
         Path2D.Double leftArm = new Path2D.Double();
         //-29, -30
@@ -234,6 +318,7 @@ public class Sprite extends JPanel {
 
         Rectangle2D.Double gun = new Rectangle2D.Double(-4, -6, 10, 2);
         Rectangle2D.Double headLamp = new Rectangle2D.Double(-halfHead*2, -8, 2, 5);
+
         Ellipse2D.Double head = new Ellipse2D.Double(-halfhitbox*2 + 1, -halfHead*2/*-6.5*/, 13*1.2,13*1.2);
 
         //adding bodyparts
@@ -242,24 +327,10 @@ public class Sprite extends JPanel {
         playerShapes[2] = head;
         playerShapes[3] = headLamp;
         playerShapes[4] = gun;
+
         return playerShapes;
     }
 
-    public Shape[] drawSprite(SpriteType spriteChosen) {
-        switch (spriteChosen) {
-            case PLAYER:
-                return drawPlayer();
-            case ENEMY_MELEE:
-                return drawMeleeEnemy();
-            case ENEMY_RANGED:
-                return drawRangedEnemy();
-            case FLOOR:
-                //  return;
-            default:
-                System.out.println("No sprite"); //?
-        }
-        return new Shape[]{}; //CHANGE
-    }
 
 //    @Override
 //    public void paintComponent(Graphics g) {
@@ -316,7 +387,9 @@ public class Sprite extends JPanel {
 //        g2d.draw(drawProjectile());     //DRAWING PROJECTILE
 //
 //    }
+
+
     public BufferedImage getImage() {
-        return spriteImage;
+        return createSpriteImage(this.spriteShapes, this.spriteColors);
     }
 }

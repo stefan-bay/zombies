@@ -12,35 +12,21 @@ public class Player extends GameObject {
         RIGHT,
     }
 
-    BufferedImage playerImage;
+    Sprite sprite;
 
     Direction direction;
 
-    Animation currentAnimation;
-
     Point2D pointFacing;
-    Point2D frontFace;
 
     int moveSpeed = 5;
     int sprintModifier = 5;
 
     Player(double x, double y, double width, double height) {
         super(x, y, width, height, 200);
-        playerImage = new BufferedImage((int) width,(int) height, BufferedImage.TYPE_INT_RGB);
-        Graphics g = playerImage.getGraphics();
 
-//        try {
-//            playerImage = ImageIO.read(new File("res/robot/Idle (1).png"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-        g.setColor(Color.CYAN);
-        g.fillRect(0,0,(int)width,(int)height);
-        g.fillOval(0, 0, (int)width, (int)height);
+        this.sprite = new Sprite(Sprite.SpriteType.PLAYER);
 
         this.pointFacing = new Point2D.Double(1, 1);
-        this.frontFace   = new Point2D.Double(getX(), getY() - (getHeight()/2.0));
 
         this.direction = Direction.RIGHT;
 
@@ -60,13 +46,20 @@ public class Player extends GameObject {
             this.direction = Direction.UP;
     }
 
+    Point2D getFrontFace() {
+        // this is the gun
+        Shape gun = sprite.spriteShapes[4];
+
+        return new Point2D.Double(gun.getBounds2D().getCenterX(), gun.getBounds2D().getCenterY());
+    }
+
     public void setPointFacing(Point2D pointFacing) {
         this.pointFacing = pointFacing;
     }
 
-    public void setCurrentAnimation(Animation animation) {
-        this.currentAnimation = animation;
-    }
+//    public void setCurrentAnimation(Animation animation) {
+//        this.currentAnimation = animation;
+//    }
 
     double imageRotationAngle() {
 //        return Math.toRadians(10);
@@ -75,8 +68,8 @@ public class Player extends GameObject {
         double p0y = getY();
 
         // P1 object front
-        double p1x = frontFace.getX();
-        double p1y = frontFace.getY();
+        double p1x = getFrontFace().getX();
+        double p1y = getFrontFace().getY();
 
         // P2 point facing (mouse location)
         double p2x = pointFacing.getX();
@@ -150,6 +143,7 @@ public class Player extends GameObject {
 
     @Override
     Image getImage() {
-        return playerImage;
+//        sprite.rotate(imageRotationAngle());
+        return sprite.getImage();
     }
 }

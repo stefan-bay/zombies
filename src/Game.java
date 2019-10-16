@@ -92,13 +92,9 @@ public class Game {
      * Initializes the game with a player, flashight and scene
      */
     void initializeGame() {
-        // Create the player.
-        player = new Player(0,0,30,30){
-            @Override
-            Image getImage() {
-                return playerImage;
-            }
-        };
+        Sprite playerSprite = new Sprite(Sprite.SpriteType.PLAYER);
+        player = new Player(0,0,34,33);
+
         player.setColliding(true);
         gameObjects.add(player);
         playerHealthBar = new HealthBar(player, 200);
