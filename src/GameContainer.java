@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.io.IOException;
 
 /**
  * Main class for game.
@@ -13,7 +14,7 @@ public class GameContainer {
         GameContainer container = new GameContainer();
     }
 
-    GameContainer() {
+    GameContainer(){
         frame = new JFrame();
         frame.setTitle("Game");
         mainMenu = new MainMenu(this);

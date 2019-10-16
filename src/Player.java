@@ -1,14 +1,10 @@
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
 public class Player extends GameObject {
+
     enum Direction {
         UP,
         DOWN,
@@ -52,10 +48,8 @@ public class Player extends GameObject {
 
     void move(double x, double y, ArrayList<GameObject> objects) {
         super.move(x,y,objects);
-
         if (x > 0)
             this.direction = Direction.RIGHT;
-
         else if (x < 0)
             this.direction = Direction.LEFT;
 
