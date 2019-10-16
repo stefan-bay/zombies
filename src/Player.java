@@ -144,6 +144,17 @@ public class Player extends GameObject {
     }
 
     @Override
+    boolean canMove(double x, double y, ArrayList<GameObject> others) {
+        for(GameObject other : others) {
+            // translate intersect to the top left.
+            if (!(other instanceof Enemy) && other != this && other.isColliding() && isColliding() && this.intersects(getX() + x - getWidth()/2, getY() + y - getHeight()/2, other)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
     Image getImage() {
         return playerImage;
     }

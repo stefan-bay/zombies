@@ -189,7 +189,7 @@ public class Game {
 
     void updateEnemy(Enemy enemy) {
         // Updating an enemy returns the projectile.
-        GameObject projectile = enemy.update(gameObjects, player.getX(), player.getY());
+        GameObject projectile = enemy.update(gameObjects, player);
         if (projectile != null) {
             gameObjects.add(projectile);
         }
@@ -282,6 +282,7 @@ public class Game {
 
     void spawnEnemy() {
         if(enemySpawnCooldown.startCooldown()) {
+            Random random = new Random();
             int enemyX = (int)player.getX() + enemyPos.nextInt(size*2)-size;
             int enemyY = (int)player.getY() + enemyPos.nextInt(size*2)-size;
             if (test_enemy_healthbar) {
@@ -292,6 +293,11 @@ public class Game {
             gameObjects.add(enemy);
             HealthBar bar = new HealthBar(enemy, enemyHealth);
             gameObjects.add(bar);
+
+            if(random.nextInt(10) < 5) {
+                enemy.setCanFire(false);
+                enemy.setEnemyMoveSpeed(8);
+            }
         }
     }
 
