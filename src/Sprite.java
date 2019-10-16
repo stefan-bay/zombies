@@ -5,6 +5,9 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+/**
+ * Class that draws sprites on a BufferedImage using Graphics2D.
+ */
 public class Sprite {
     BufferedImage spriteImage;
 
@@ -93,7 +96,7 @@ public class Sprite {
 
                 break;
             default:
-                System.out.println("No sprite"); //?
+                System.out.println("No sprite");
         }
     }
 
