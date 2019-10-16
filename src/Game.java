@@ -11,13 +11,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- *  Basic game to make the player run to the right.
+ *  Survival game class.
  */
 public class Game {
-    int moveSpeed = 5;
+    // The size of the game window
     int size = 800;
+    // All of the GameObjects to draw on the screen.
     ArrayList<GameObject> gameObjects = new ArrayList<>();
 
+    // True if the player has lost the game.
     boolean hasLost = false;
 
     // debug
@@ -25,42 +27,65 @@ public class Game {
     boolean test_hit_explosion = false;
     boolean explosion_on = false;
 
+    // The scene used to draw all the game objects
     Scene gameScene;
+    // The container to draw the scene in.
     JFrame container;
+    // The player that is controlled by a human
     Player player;
+    // The healthbar of the player so it can be drawn over the flashlight shading
     HealthBar playerHealthBar;
-    VictoryBox victoryBox;
+    // The flashlight object to control the shading of the scene.
     Flashlight flashlight;
+    // The cooldown between making the scene darker and lighter.
     Cooldown daylightCooldown = new Cooldown(5);
+    // True if it is daytime and the flashlight should not be shown.
     boolean isDayTime = true;
+    // The ambient light (darkness) in the scene between 0 and 255.
     int ambientLight = 0;
+    // The amount to increase or decrease the light by in the scene.
     int lightMod = 1;
 
+    // Array of keys that are currently pressed.
     boolean[] keysPressed = new boolean[26];
-    int projectileSpeed = 15;
+    // The cooldown between fires by the player.
     Cooldown fireCooldown = new Cooldown(100);
+    // The cooldown between enemies spawning.
     Cooldown enemySpawnCooldown = new Cooldown(5000);
+    // The size of an enemy.
     int enemySize = 40;
+    // The position generator for new enemies.
     Random enemyPos = new Random();
+    // True if the firekey is currently pressed. referenced on update.
     boolean firePressed = false;
-    Point2D.Double fireCoords;
 
-    // for scrolling
+    // the buffer between the edge of the screen and the player.
     int buffer = 50;
+    // The health of enemies.
     int enemyHealth = 100;
+    // The amount of kills the player has gotten, also tracks enemy friendly fire deaths.
     int killCount = 0;
+    // The time in MS between updates of this game.
     int tickTime = 50;
 
+    // The timer to use between updates to this game,
     java.util.Timer gameTimer = new Timer();
 
-    Game(JFrame frame) {
+    /**
+     *  Creates a game instance with the provided JFrame
+    */
+     Game(JFrame frame) {
         container = frame;
         initializeGame();
         start();
         mainLoop();
     }
 
+    /**
+     * Initializes the game with a player, flashight and scene
+     */
     void initializeGame() {
+        // Create the player.
         player = new Player(0,0,30,30){
             @Override
             Image getImage() {
@@ -69,7 +94,6 @@ public class Game {
         };
         player.setColliding(true);
         gameObjects.add(player);
-
         playerHealthBar = new HealthBar(player, 200);
         gameObjects.add(playerHealthBar);
 
@@ -77,23 +101,31 @@ public class Game {
             flashlight = new Flashlight(player.getX(), player.getY(), size, size, getMouseLoc());
             gameObjects.add(flashlight);
         }
-            gameScene = new Scene(gameObjects, size, size);
-            container.add(gameScene);
-            container.pack();
-            container.addKeyListener(keyListener);
-            container.addMouseListener(mouseListener);
+        // Construct the scene.
+        gameScene = new Scene(gameObjects, size, size);
+        container.add(gameScene);
+        container.pack();
+        // Add listeners to the window.
+        container.addKeyListener(keyListener);
+        container.addMouseListener(mouseListener);
 
-
+        // Debug
         if (straight_to_endscreen) {
             player.setHealth(0);
             killCount = 1100;
         }
     }
 
+    /**
+     * Adds the scene to the window.
+     */
     public void start() {
         container.add(gameScene, BorderLayout.EAST);
     }
 
+    /**
+     * The main game loop that reruns the update method. Should use cooldown.
+     */
     private void mainLoop() {
         update();
         gameTimer.schedule(new TimerTask() {
@@ -104,10 +136,14 @@ public class Game {
         }, tickTime );
     }
 
+    /**
+     * Updates the game state on an interval.
+     */
     public void update() {
         updateAllGameObjects();
         if (!test_hit_explosion) {
             if (!hasLost) {
+                // Perform player actions.
                 handleKeyPress();
                 spawnEnemy();
                 redrawFlashlight();
@@ -120,9 +156,13 @@ public class Game {
                 explosion_on = true;
             }
         }
+        // gameScene has a pointer to the list of objects, it draws all of them.
         gameScene.repaint();
     }
 
+    /**
+     * Update all of the game objects and remove the if necessary.
+     */
     void updateAllGameObjects() {
         for(int i = 0; i < gameObjects.size(); i++) {
             GameObject object = gameObjects.get(i);
@@ -137,13 +177,16 @@ public class Game {
             }
 
             object.update(gameObjects);
+            // Update the enemies to make them fire and move.
             if (object instanceof Enemy) {
                 updateEnemy((Enemy)object);
             }
         }
     }
 
+    // Perform an action based on which keys are pressed.
     void handleKeyPress() {
+        // Control movement of the player.
         if (keysPressed[3]) {
             runRight();
         }
@@ -156,13 +199,18 @@ public class Game {
         if(keysPressed[18]) {
             runDown();
         }
+        // Fire if the fire key is pressed and we are not on cooldown.
         if(!fireCooldown.isOnCooldown) {
             if(firePressed) {
+                // Shoot wherever the mouse is pointing.
                 shoot(getMouseLoc());
             }
         }
     }
 
+    /**
+     * Redraw the flashlight image. Make sure it, the player, and the player's healthbar are ontop of the shading.
+     */
     void redrawFlashlight() {
         setAmbientLight();
         flashlight.createFlashLight(player.getX(), player.getY(), size, size, getMouseLoc());
@@ -174,8 +222,10 @@ public class Game {
         gameObjects.add(playerHealthBar);
     }
 
-
-
+    /**
+     * Update an enemy to make it shoot if it can and move it.
+     * @param enemy the enemy to update.
+     */
     void updateEnemy(Enemy enemy) {
         // Updating an enemy returns the projectile.
         GameObject projectile = enemy.update(gameObjects, player);
@@ -185,6 +235,9 @@ public class Game {
 
     }
 
+    /**
+     * Check to see if the player has lost and if it has show the end screen.
+     */
     void checkLose() {
         if (player.getHealth() <= 0) {
             hasLost = true;
@@ -193,26 +246,40 @@ public class Game {
         }
     }
 
+    /**
+     * Gets the current location of the mouse on the screen relative to the player.
+     * @return a point that is the mouse's location on the screen.
+     */
     Point2D.Double getMouseLoc() {
         Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
+        // Translate the mouse coordinates by the offset between the window and the display.
+        // Make the mouse coordinates relative to the player.
         double mouseX = (mouseLoc.getX() - size/2 - 60 - player.getX());
         double mouseY = (mouseLoc.getY() - size/2 - 60 - player.getY());
 
         return new Point2D.Double(mouseX, mouseY);
     }
 
+    /**
+     * Updates the ambient light in the scene. Darkens or lightens the display regularly, make it oscilate.
+     */
     void setAmbientLight() {
         if(daylightCooldown.startCooldown()) {
             ambientLight += lightMod;
+            // Check if we need to reverse the direction we are increasing or decreasing the light by.
             if(ambientLight>=Flashlight.maxAmbientLight || ambientLight <=0) {
                 lightMod *= -1;
             }
+            // Set the light to daytime if there is less than 180 ambient light (darkness)
             isDayTime = ambientLight < 180;
             flashlight.setAmbientLight(ambientLight, isDayTime);
         }
 
     }
 
+    /**
+     * Move the player. If the player would hit a boundry, move everything else in the scene instead.
+     */
     void runRight() {
         if (player.getX() > size/2 - buffer) {
             for (GameObject go : gameObjects) {
@@ -225,6 +292,9 @@ public class Game {
         }
     }
 
+    /**
+     * Move the player. If the player would hit a boundry, move everything else in the scene instead.
+     */
     void runLeft() {
         if (player.getX() < -size/2 + buffer) {
             for (GameObject go : gameObjects) {
@@ -237,6 +307,9 @@ public class Game {
         }
     }
 
+    /**
+     * Move the player. If the player would hit a boundry, move everything else in the scene instead.
+     */
     void runUp() {
         if (player.getY() < -size/2 + buffer) {
             for (GameObject go : gameObjects) {
@@ -249,6 +322,9 @@ public class Game {
         }
     }
 
+    /**
+     * Move the player. If the player would hit a boundry, move everything else in the scene instead.
+     */
     void runDown() {
         if (player.getY() > size/2 - buffer) {
             for (GameObject go : gameObjects) {
@@ -261,6 +337,10 @@ public class Game {
         }
     }
 
+    /**
+     * Make the player shoot in a direction
+     * @param direction the direction to shoot in
+     */
     void shoot(Point2D.Double direction) {
         if(fireCooldown.startCooldown()) {
             Projectile projectile = player.getProjectile(direction);
@@ -269,23 +349,31 @@ public class Game {
 
     }
 
+    /**
+     * Spawn a new enemy.
+     */
     void spawnEnemy() {
         if(enemySpawnCooldown.startCooldown()) {
+            // Random generator for the class of the enemy.
             Random random = new Random();
+            // The position of the new enemy relative to the player, within two screen sizes.
             int enemyX = (int)player.getX() + enemyPos.nextInt(size*2)-size;
             int enemyY = (int)player.getY() + enemyPos.nextInt(size*2)-size;
             Enemy enemy = new Enemy(enemyX, enemyY, enemySize, enemySize, enemyHealth);
             gameObjects.add(enemy);
             HealthBar bar = new HealthBar(enemy, enemyHealth);
             gameObjects.add(bar);
-
+            // Set the class of the enemy, either it can fire and is slow or can only melee and is fast.
             if(random.nextInt(10) < 5) {
                 enemy.setCanFire(false);
-                enemy.setEnemyMoveSpeed(8);
+                enemy.setEnemyMoveSpeed(enemy.enemyMoveSpeed *2);
             }
         }
     }
 
+    /**
+     * Mouse listener for clicks in the screen to fire.
+     */
     MouseListener mouseListener = new MouseListener() {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) { }
@@ -307,6 +395,9 @@ public class Game {
         public void mouseExited(MouseEvent mouseEvent) { }
     };
 
+    /**
+     * Keylistener for keyboard pressed by the user.
+     */
     KeyListener keyListener = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent keyEvent) {
@@ -316,6 +407,7 @@ public class Game {
         public void keyPressed(KeyEvent keyEvent) {
             int keyCode = keyEvent.getKeyCode();
             int letterValue = keyCode - KeyEvent.VK_A;
+            // Set the appropriate key in the array to be pressed if it is available.
             if(letterValue < 26 && letterValue >= 0) {
                 keysPressed[letterValue] = true;
             }
