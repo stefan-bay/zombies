@@ -6,6 +6,7 @@ Game for desktop writen in Java using Swing for graphics. (Mac, Windows, Linux)
 
 Move with WASD, click to shoot. Last as long as you can!
 
+Upon losing, press 'Enter' to restart
 
 <img width="811" alt="Screen Shot 2019-11-07 at 8 01 55 PM" src="https://user-images.githubusercontent.com/49413410/68446351-acdcd880-0199-11ea-8525-94568bbdd6d6.png">
 
